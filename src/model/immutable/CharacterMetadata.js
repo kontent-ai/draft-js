@@ -24,6 +24,8 @@ type CharacterMetadataConfigValueType = DraftInlineStyle | ?string;
 type CharacterMetadataConfig = {
   style?: CharacterMetadataConfigValueType,
   entity?: CharacterMetadataConfigValueType,
+  // Collaborative ID
+  id?: CharacterMetadataConfigValueType,
 };
 
 const EMPTY_SET = OrderedSet();
@@ -31,6 +33,7 @@ const EMPTY_SET = OrderedSet();
 var defaultRecord: CharacterMetadataConfig = {
   style: EMPTY_SET,
   entity: null,
+  id: null,
 };
 
 var CharacterMetadataRecord = Record(defaultRecord);
@@ -46,6 +49,22 @@ class CharacterMetadata extends CharacterMetadataRecord {
 
   hasStyle(style: string): boolean {
     return this.getStyle().includes(style);
+  }
+
+  getId(): string {
+    return this.get('id');
+  }
+
+  static setId(record: CharacterMetadata, id: string): CharacterMetadata {
+    var withId = record.set('id', id);
+    // We don't need to pool this one as ID is not pooled
+    return withId;
+  }
+
+  static removeId(record: CharacterMetadata): CharacterMetadata {
+    var withoutId = record.remove('id');
+    // We don't need to pool this one as ID is not pooled
+    return CharacterMetadata.create(withoutId);
   }
 
   static applyStyle(
@@ -92,16 +111,24 @@ class CharacterMetadata extends CharacterMetadataRecord {
     };
 
     // Fill in unspecified properties, if necessary.
-    var configMap = Map(defaultConfig).merge(config);
+    var configMap = Map(defaultConfig)
+      .merge(config)
+      .merge({id: undefined});
 
+    // Pool base data without id which is always unique (pooling would be useless)
     var existing: ?CharacterMetadata = pool.get(configMap);
     if (existing) {
-      return existing;
+      return config.id
+        ? CharacterMetadata.setId(existing, config.id)
+        : existing;
     }
 
     var newCharacter = new CharacterMetadata(configMap);
     pool = pool.set(configMap, newCharacter);
-    return newCharacter;
+
+    return config.id
+      ? CharacterMetadata.setId(newCharacter, config.id)
+      : newCharacter;
   }
 }
 
