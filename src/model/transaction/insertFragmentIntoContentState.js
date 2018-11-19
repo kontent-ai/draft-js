@@ -67,13 +67,14 @@ const updateExistingBlock = (
       fragmentBlock.getCharacterList(),
       targetOffset,
     ),
-    data,
     // Inserted content is always treated as new (without IDs) to prevent incorrect order of IDs
     characterIds: insertIntoList(
       ids,
       List(Repeat(undefined, fragmentBlock.getLength())),
       targetOffset,
     ),
+    // We never use inserted content data in merged block, because it may be incompatible with current data, making the block inconsistent
+    // data,
   });
 
   return contentState.merge({
@@ -116,7 +117,8 @@ const updateHead = (
       List(Repeat(undefined, appendToHead.getLength())),
     ),
     type: headText ? block.getType() : appendToHead.getType(),
-    data: appendToHead.getData(),
+    // We never use inserted content data in merged block, because it may be incompatible with current data, making the block inconsistent
+    // data: appendToHead.getData(),
   });
 };
 
@@ -144,11 +146,12 @@ const updateTail = (
   return prependToTail.merge({
     text: prependToTail.getText() + tailText,
     characterList: prependToTail.getCharacterList().concat(tailCharacters),
-    data: prependToTail.getData(),
     // Inserted content is always treated as new (without IDs) to prevent inconsistent order of IDs
     characterIds: List(Repeat(undefined, prependToTail.getLength())).concat(
       tailIds,
     ),
+    // We never use inserted content data in merged block, because it may be incompatible with current data, making the block inconsistent
+    // data: prependToTail.getData(),
   });
 };
 
