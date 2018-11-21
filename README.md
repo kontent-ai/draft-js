@@ -1,3 +1,10 @@
+# Kentico
+This repository is a fork of the Draft.js framework by Facebook.
+Our intent is to change as little as possible while extending the data model to suit our needs (will be elaborated), and also making it friendlier to our development environment. The latter means particularly being able to develop the framework in more modern engines (npm/node).
+
+What follows is the original Readme.
+
+
 # [Draft.js](http://draftjs.org/) [![Build Status](https://img.shields.io/travis/facebook/draft-js/master.svg?style=flat)](https://travis-ci.org/facebook/draft-js) [![npm version](https://img.shields.io/npm/v/draft-js.svg?style=flat)](https://yarn.pm/draft-js)
 
 Draft.js is a JavaScript rich text editor framework, built for React and
