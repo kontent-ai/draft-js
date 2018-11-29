@@ -113,7 +113,7 @@ class CharacterMetadata extends CharacterMetadataRecord {
     // Fill in unspecified properties, if necessary.
     var configMap = Map(defaultConfig)
       .merge(config)
-      .merge({id: undefined});
+      .merge({id: null});
 
     // Pool base data without id which is always unique (pooling would be useless)
     var existing: ?CharacterMetadata = pool.get(configMap);

@@ -166,7 +166,7 @@ class DraftEditorLeaf extends React.Component<Props> {
 
     const className = styleObj.className;
     if (className) {
-      styleObj.className = undefined;
+      delete styleObj.className;
     }
 
     return (
