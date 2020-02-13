@@ -54,12 +54,17 @@ class ContentBlock extends ContentBlockRecord implements BlockNode {
     super(decorateCharacterList(config));
   }
 
+  // Internal cache for faster repetitive access to properties
+  _key;
+  _type;
+  _depth;
+
   getKey(): BlockNodeKey {
-    return this.get('key');
+    return this._key ?? (this._key = this.get('key'));
   }
 
   getType(): DraftBlockType {
-    return this.get('type');
+    return this._type ?? (this._type = this.get('type'));
   }
 
   getText(): string {
@@ -75,7 +80,7 @@ class ContentBlock extends ContentBlockRecord implements BlockNode {
   }
 
   getDepth(): number {
-    return this.get('depth');
+    return this._depth ?? (this._depth = this.get('depth'));
   }
 
   getData(): Map<any, any> {
@@ -127,14 +132,14 @@ function haveEqualStyle(
   charA: CharacterMetadata,
   charB: CharacterMetadata,
 ): boolean {
-  return charA.getStyle() === charB.getStyle();
+  return charA === charB || charA.getStyle() === charB.getStyle();
 }
 
 function haveEqualEntity(
   charA: CharacterMetadata,
   charB: CharacterMetadata,
 ): boolean {
-  return charA.getEntity() === charB.getEntity();
+  return charA === charB || charA.getEntity() === charB.getEntity();
 }
 
 module.exports = ContentBlock;

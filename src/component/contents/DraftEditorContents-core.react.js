@@ -207,20 +207,16 @@ class DraftEditorContents extends React.Component<Props> {
       }
 
       const Component = CustomComponent || DraftEditorBlock;
-      let childProps = {
+      const childProps = {
         className,
         'data-block': true,
         'data-editor': editorKey,
         'data-offset-key': offsetKey,
         key,
+        contentEditable:
+          customEditable !== undefined ? customEditable : undefined,
+        suppressContentEditableWarning: customEditable ? true : undefined,
       };
-      if (customEditable !== undefined) {
-        childProps = {
-          ...childProps,
-          contentEditable: customEditable,
-          suppressContentEditableWarning: true,
-        };
-      }
 
       const child = React.createElement(
         Element,

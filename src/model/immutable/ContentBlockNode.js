@@ -53,12 +53,12 @@ const defaultRecord: ContentBlockNodeConfig = {
 const haveEqualStyle = (
   charA: CharacterMetadata,
   charB: CharacterMetadata,
-): boolean => charA.getStyle() === charB.getStyle();
+): boolean => charA === charB || charA.getStyle() === charB.getStyle();
 
 const haveEqualEntity = (
   charA: CharacterMetadata,
   charB: CharacterMetadata,
-): boolean => charA.getEntity() === charB.getEntity();
+): boolean => charA === charB || charA.getEntity() === charB.getEntity();
 
 const decorateCharacterList = (
   config: ContentBlockNodeConfig,

@@ -99,8 +99,7 @@ function generateLeaves(
   offset: number,
 ): List<LeafRange> {
   const leaves = [];
-  const inlineStyles = characters.map(c => c.getStyle()).toList();
-  findRangesImmutable(inlineStyles, areEqual, returnTrue, (start, end) => {
+  findRangesImmutable(characters, haveEqualStyle, returnTrue, (start, end) => {
     leaves.push(
       new LeafRange({
         start: start + offset,
@@ -109,6 +108,13 @@ function generateLeaves(
     );
   });
   return List(leaves);
+}
+
+function haveEqualStyle(
+  charA: CharacterMetadata,
+  charB: CharacterMetadata,
+): boolean {
+  return charA === charB || charA.getStyle() === charB.getStyle();
 }
 
 function areEqual(a: any, b: any): boolean {
