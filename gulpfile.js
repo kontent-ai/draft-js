@@ -11,7 +11,7 @@ var packageData = require('./package.json');
 var moduleMap = require('./scripts/module-map');
 var fbjsConfigurePreset = require('babel-preset-fbjs/configure');
 var del = require('del');
-var gulpCheckDependencies = require('fbjs-scripts/gulp/check-dependencies');
+//var gulpCheckDependencies = require('fbjs-scripts/gulp/check-dependencies');
 var gulp = require('gulp');
 var babel = require('gulp-babel');
 var cleanCSS = require('gulp-clean-css');
@@ -250,7 +250,7 @@ gulp.task(
 );
 
 gulp.task(
-  'check-dependencies',
+  //'check-dependencies',
   gulp.series(function() {
     return gulp.src('package.json').pipe(gulpCheckDependencies());
   }),
@@ -273,7 +273,7 @@ gulp.task(
 gulp.task(
   'default',
   gulp.series(
-    'check-dependencies',
+    //'check-dependencies',
     'clean',
     gulp.parallel('modules', 'flow'),
     gulp.parallel('dist', 'dist:min'),
