@@ -31,5 +31,7 @@ module.exports = {
 
   UNDERLINE: {
     textDecoration: 'underline',
+    // Testing class name for the support of classes in inline styles
+    className: 'underline',
   },
 };
