@@ -144,24 +144,27 @@ class DraftEditorLeaf extends React.Component<Props> {
     }
 
     const {customStyleMap, customStyleFn, offsetKey, styleSet} = this.props;
-    let styleObj = styleSet.reduce((map, styleName) => {
-      const mergedStyles = {};
-      const style = customStyleMap[styleName];
+    const mergedStyleProps = ['textDecoration', 'className'];
 
-      if (style !== undefined && map.textDecoration !== style.textDecoration) {
-        // .trim() is necessary for IE9/10/11 and Edge
-        mergedStyles.textDecoration = [map.textDecoration, style.textDecoration]
-          .join(' ')
-          .trim();
-      }
+    let styleObj = styleSet
+      .map(styleName => customStyleMap[styleName])
+      .concat(customStyleFn ? customStyleFn(styleSet, block) : undefined)
+      .reduce((map, style) => {
+        const mergedStyles = {};
 
-      return Object.assign(map, style, mergedStyles);
-    }, {});
+        if (style !== undefined) {
+          mergedStyleProps.forEach(propName => {
+            if (map[propName] !== style[propName]) {
+              // .trim() is necessary for IE9/10/11 and Edge
+              mergedStyles[propName] = [map[propName], style[propName]]
+                .join(' ')
+                .trim();
+            }
+          });
+        }
 
-    if (customStyleFn) {
-      const newStyles = customStyleFn(styleSet, block);
-      styleObj = Object.assign(styleObj, newStyles);
-    }
+        return Object.assign(map, style, mergedStyles);
+      }, {});
 
     let renderClassName;
     if (styleObj.className) {
