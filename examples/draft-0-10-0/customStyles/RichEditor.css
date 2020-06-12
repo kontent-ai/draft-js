@@ -80,6 +80,10 @@
   line-height: 20px;
 }
 
+div[data-block] + div[data-block] {
+  margin-top: 10px;
+}
+
 .rte__inline-leaf {
   color: #231f20; /* Kontent.ai font color */
   background-color: #3dcca8; /* Official Kontent.ai primary color */
@@ -101,4 +105,229 @@
 
 .rte__highlight {
   background-image: linear-gradient(rgba(255, 255, 0, 0.5), rgba(255, 255, 0, 0.5));
+}
+
+.block--is-empty div[data-offset-key] {
+  max-width: 4px;
+}
+
+.block--is-empty span[data-offset-key] {
+  display: block;
+  width: 4px;
+  overflow: hidden;
+}
+
+/* Collaboration */
+span.leaf--has-caret span[data-text] {
+  // TODO - Use none here after the cursor is rendered only for the last character in leaf
+  user-select: text;
+}
+
+span.leaf--has-caret span[data-text]:after,
+.block--has-caret:before {
+  content: "\200C";
+  outline: solid 1px transparent;
+  position: absolute;
+}
+
+:root {
+  --authorA-color: rgb(139, 69, 19);
+  --authorA-color-60: rgba(139, 69, 19, 0.6);
+  --authorA-color-15: rgba(139, 69, 19, 0.15);
+
+  --authorB-color: rgb(0, 180, 0);
+  --authorB-color-60: rgba(0, 180, 0, 0.6);
+  --authorB-color-15: rgba(0, 180, 0, 0.15);
+
+  --authorC-color: rgb(0, 100, 0);
+  --authorC-color-60: rgba(0, 100, 0, 0.6);
+  --authorC-color-15: rgba(0, 100, 0, 0.15);
+
+  --authorD-color: rgb(0, 128, 255);
+  --authorD-color-60: rgba(0, 128, 255, 0.6);
+  --authorD-color-15: rgba(0, 128, 255, 0.15);
+
+  --authorE-color: rgb(255, 128, 0);
+  --authorE-color-60: rgba(255, 128, 0, 0.6);
+  --authorE-color-15: rgba(255, 128, 0, 0.15);
+
+  --authorF-color: rgb(128, 0, 255);
+  --authorF-color-60: rgba(128, 0, 255, 0.6);
+  --authorF-color-15: rgba(128, 0, 255, 0.15);
+
+  --authorG-color: rgb(255, 0, 0);
+  --authorG-color-60: rgba(255, 0, 0, 0.6);
+  --authorG-color-15: rgba(255, 0, 0, 0.15);
+
+  --authorH-color: rgba(0, 0, 255, 0.6);
+  --authorH-color-60: rgba(0, 0, 255, 0.6);
+  --authorH-color-15: rgba(0, 0, 255, 0.15);
+}
+
+/* A */
+span.leaf--has-caret.caret--user-A span[data-text]:after {
+  outline-color: var(--authorA-color-60);
+}
+
+.block--has-caret.caret--user-A:before {
+  outline-color: var(--authorA-color-60);
+}
+
+span.leaf--has-selection.selection--user-A {
+  background-color: var(--authorA-color-15);
+}
+
+.block--is-empty .block--has-selection.selection--user-A span[data-offset-key] {
+  background-color: var(--authorA-color-15);
+}
+
+span.author--A {
+  border-bottom: solid 3px var(--authorA-color) !important;
+}
+
+/* B */
+span.leaf--has-caret.caret--user-B span[data-text]:after {
+  outline-color: var(--authorB-color-60);
+}
+
+.block--has-caret.caret--user-B:before {
+  outline-color: var(--authorB-color-60);
+}
+
+span.leaf--has-selection.selection--user-B {
+  background-color: var(--authorB-color-15);
+}
+
+.block--is-empty .block--has-selection.selection--user-B span[data-offset-key] {
+  background-color: var(--authorB-color-15);
+}
+
+span.author--B {
+  border-bottom: solid 3px var(--authorB-color) !important;
+}
+
+/* C */
+span.leaf--has-caret.caret--user-C span[data-text]:after {
+  outline-color: var(--authorC-color-60);
+}
+
+.block--has-caret.caret--user-C:before {
+  outline-color: var(--authorC-color-60);
+}
+
+span.leaf--has-selection.selection--user-C {
+  background-color: var(--authorC-color-15);
+}
+
+.block--is-empty .block--has-selection.selection--user-C span[data-offset-key] {
+  background-color: var(--authorC-color-15);
+}
+
+span.author--C {
+  border-bottom: solid 3px var(--authorC-color) !important;
+}
+
+/* D */
+span.leaf--has-caret.caret--user-D span[data-text]:after {
+  outline-color: var(--authorD-color-60);
+}
+
+.block--has-caret.caret--user-D:before {
+  outline-color: var(--authorD-color-60);
+}
+
+span.leaf--has-selection.selection--user-D {
+  background-color: var(--authorD-color-15);
+}
+
+.block--is-empty .block--has-selection.selection--user-D span[data-offset-key] {
+  background-color: var(--authorD-color-15);
+}
+
+span.author--D {
+  border-bottom: solid 3px var(--authorD-color) !important;
+}
+
+/* E */
+span.leaf--has-caret.caret--user-E span[data-text]:after {
+  outline-color: var(--authorE-color-60);
+}
+
+.block--has-caret.caret--user-E:before {
+  outline-color: var(--authorE-color-60);
+}
+
+span.leaf--has-selection.selection--user-E {
+  background-color: var(--authorE-color-15);
+}
+
+.block--is-empty .block--has-selection.selection--user-E span[data-offset-key] {
+  background-color: var(--authorE-color-15);
+}
+
+span.author--E {
+  border-bottom: solid 3px var(--authorE-color) !important;
+}
+
+/* F */
+span.leaf--has-caret.caret--user-F span[data-text]:after {
+  outline-color: var(--authorF-color-60);
+}
+
+.block--has-caret.caret--user-F:before {
+  outline-color: var(--authorF-color-60);
+}
+
+span.leaf--has-selection.selection--user-F {
+  background-color: var(--authorF-color-15);
+}
+
+.block--is-empty .block--has-selection.selection--user-F span[data-offset-key] {
+  background-color: var(--authorF-color-15);
+}
+
+span.author--F {
+  border-bottom: solid 3px var(--authorF-color) !important;
+}
+
+/* G */
+span.leaf--has-caret.caret--user-G span[data-text]:after {
+  outline-color: var(--authorG-color-60);
+}
+
+.block--has-caret.caret--user-G:before {
+  outline-color: var(--authorG-color-60);
+}
+
+span.leaf--has-selection.selection--user-G {
+  background-color: var(--authorG-color-15);
+}
+
+.block--is-empty .block--has-selection.selection--user-G span[data-offset-key] {
+  background-color: var(--authorG-color-15);
+}
+
+span.author--G {
+  border-bottom: solid 3px var(--authorG-color) !important;
+}
+
+/* H */
+span.leaf--has-caret.caret--user-H span[data-text]:after {
+  outline-color: var(--authorH-color-60);
+}
+
+.block--has-caret.caret--user-H:before {
+  outline-color: var(--authorH-color-60);
+}
+
+span.leaf--has-selection.selection--user-H {
+  background-color: var(--authorH-color-15);
+}
+
+.block--is-empty .block--has-selection.selection--user-H span[data-offset-key] {
+  background-color: var(--authorH-color-15);
+}
+
+span.author--H {
+  border-bottom: solid 3px var(--authorH-color) !important;
 }

@@ -21,6 +21,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
     <style>
       #target { width: 600px; }
       .docs { width: 800px; }
+      body { font-family: 'Georgia', serif }
     </style>
   </head>
   <body>
@@ -46,15 +47,24 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
     <script type="text/babel">
       'use strict';
 
-      const {Editor, EditorState, RichUtils, getDefaultKeyBinding} = Draft;
+      const {CharacterMetadata, ContentState, Editor, EditorState, RichUtils, getDefaultKeyBinding, UserSelection} = Draft;
+      const {List, Set} = Immutable;
 
       class RichEditorExample extends React.Component {
         constructor(props) {
           super(props);
-          this.state = {editorState: EditorState.createEmpty()};
+          this.state = {editorState: EditorState.createWithContent(props.content ? props.content : ContentState.createFromText(''))};
 
           this.focus = () => this.refs.editor.focus();
-          this.onChange = (editorState) => this.setState({editorState});
+          this.onChange = (editorState) => {
+            if (props.disabled && (editorState.getCurrentContent() !== this.state.editorState.getCurrentContent())) {
+              alert('This editor does not allow content changes');
+              this.setState({editorState: EditorState.forceSelection(this.state.editorState, this.state.editorState.getSelection())});
+            }
+            else {
+              this.setState({editorState});
+            }
+          };
 
           this.handleKeyCommand = this._handleKeyCommand.bind(this);
           this.mapKeyToEditorCommand = this._mapKeyToEditorCommand.bind(this);
@@ -177,18 +187,22 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
       function getBlockStyle(block) {
         switch (block.getType()) {
           case 'blockquote': return 'RichEditor-blockquote';
-          default: return null;
+          default: return block.getText() ? null : 'block--is-empty';
         }
       }
 
       function getCustomStyle(style) {
+        const collaborativeClassNames = style
+          .filter(s => s.indexOf('--') > 0)
+          .toArray();
+
         if (style.includes('LEAF')) {
           return {
-            className: 'rte__inline-leaf-programmatic',
+            className: ['rte__inline-leaf-programmatic', ...collaborativeClassNames].join(' '),
             textDecoration: 'underline',
           };
         }
-        return {};
+        return collaborativeClassNames.length ? { className: collaborativeClassNames.join(' ') } : {};
       }
 
       class StyleButton extends React.Component {
@@ -277,6 +291,171 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
         );
       };
 
+      const authorIds = ['*', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
+      const explicitAuthorsCount = 3;
+
+      const applyCollaborativeData = (content) => {
+        var index = 0;
+
+        const getSelectionIdAfter = (id, authorId) => `${id}/${authorId}`;
+        const getNextCollaborativeId = (authorId) => `${index++}`.padStart(10, '0') + '/' + authorId;
+
+        var authorIndex = 0;
+        var selectionAuthorIndex = 1;
+
+        var wordIndex = 0;
+
+        const blocks = content.getBlocksAsArray();
+        const newBlocks = blocks.map((block, blockIndex) => {
+          const blockId = getNextCollaborativeId(authorIds[blockIndex] || '*');
+          const selections = [];
+
+          const text = block.getText();
+          if (!text) {
+              const caretInEmptyBlock = UserSelection.create(
+                getSelectionIdAfter(blockId, 'B'),
+                getSelectionIdAfter(blockId, 'B'),
+                'B'
+              );
+
+              return block.merge({
+                id: blockId,
+                selections: List([caretInEmptyBlock]),
+              });
+          }
+
+          const characterMetadata = block.getCharacterList().toArray();
+
+          var wordStartId = blockId;
+          const characterIds = text.split('').map(
+            (ch, charIndex) => {
+              // Each word has a different author
+              const isSpace = (ch === ' ');
+
+              const hasAuthor = (wordIndex % 2) === 1;
+              const wordAuthorId = hasAuthor ? authorIds[authorIndex] : undefined;
+
+              const charId = getNextCollaborativeId(wordAuthorId || '*');
+              wordStartId = isSpace ? charId : wordStartId;
+              if (hasAuthor && (authorIndex > 0)) {
+                // Here we test the author highlight (underline)
+                characterMetadata[charIndex] = CharacterMetadata.applyStyle(characterMetadata[charIndex], `author--${authorIds[authorIndex]}`);
+              }
+
+              // There is a selection after every `e`
+              if (ch.toLowerCase() === 'e') {
+                const isLastChar = (charIndex === text.length - 1);
+                const selectionAuthorId = isLastChar
+                  // Last word has explicit selection to test highlight and caret at the end of the block
+                  ? 'F'
+                  : (selectionAuthorIndex < authorIds.length - explicitAuthorsCount)
+                    ? authorIds[selectionAuthorIndex]
+                    : undefined;
+
+                if (selectionAuthorId) {
+                  const isAtTheWordEnd = (text[charIndex + 1] === ' ') || isLastChar;
+
+                  // If `e` is at the end of the word, the selection is over the entire word
+                  if (isAtTheWordEnd) {
+                    // If the word is 'the', the selection is backward to test backward selection display
+                    // Both at editor start and in the middle of the text
+                    const isThe = (text[charIndex - 2].toLowerCase() === 't') && (text[charIndex - 1].toLowerCase() === 'h');
+                    if (isThe) {
+                      const fullWordSelectionBackwards = UserSelection.create(
+                        getSelectionIdAfter(charId, selectionAuthorId),
+                        getSelectionIdAfter(wordStartId, selectionAuthorId),
+                        selectionAuthorId
+                      );
+                      selections.push(fullWordSelectionBackwards);
+                    } else {
+                      // Otherwise we test forward selection highlight
+                      const fullWordSelection = UserSelection.create(
+                        getSelectionIdAfter(wordStartId, selectionAuthorId),
+                        getSelectionIdAfter(charId, selectionAuthorId),
+                        selectionAuthorId
+                      );
+                      selections.push(fullWordSelection);
+                    }
+                  } else {
+                    // In all other cases we test collapsed selection (caret only)
+                    const collapsedSelection = UserSelection.create(
+                      getSelectionIdAfter(charId, selectionAuthorId),
+                      getSelectionIdAfter(charId, selectionAuthorId),
+                      selectionAuthorId
+                    );
+                    selections.push(collapsedSelection);
+                  }
+
+                  selectionAuthorIndex++;
+                }
+              }
+
+              if (isSpace) {
+                wordIndex++;
+                if (hasAuthor) {
+                  authorIndex = (authorIndex + 1) % authorIds.length;
+                }
+              }
+
+              return charId;
+            }
+          );
+
+          const newBlock = block.merge({
+            // Each block has a different author
+            id: blockId,
+            characterIds,
+            characterList: List(characterMetadata),
+            selections: List(selections),
+          });
+          console.log(newBlock.toJS());
+
+          return newBlock;
+        });
+
+        var addSelections = [];
+        const newBlocksWithMultiBlockSelections = newBlocks.map((block, blockIndex) => {
+          const updatedBlock = (addSelections.length > 0)
+            ? block.merge({
+              selections: block.selections.push(...addSelections)
+            })
+            : block;
+
+          addSelections = [];
+
+          if (updatedBlock.getText()) {
+            return updatedBlock;
+          }
+
+          // When there is an empty block, create a multi-block selection reaching the next block to test highlight of the empty block within selection
+          const nextBlock = newBlocks[blockIndex + 1];
+          if (nextBlock) {
+            const nextBlockCharacterIds = nextBlock.getCharacterIds();
+            const endSelectionCharacterId = nextBlockCharacterIds.get(5) || nextBlockCharacterIds.last();
+            const multiBlockSelection = UserSelection.create(
+              getSelectionIdAfter(updatedBlock.getId(), 'G'),
+              getSelectionIdAfter(endSelectionCharacterId, 'G'),
+              'G'
+            );
+            addSelections.push(multiBlockSelection);
+
+            return block.merge({
+              selections: block.selections.push(...addSelections)
+            });
+          }
+
+          return updatedBlock;
+        });
+
+        return ContentState.createFromBlockArray(newBlocksWithMultiBlockSelections);
+      };
+
+      const content = ContentState.createFromText(
+`The selections are shown with the colored caret and background, the content has the author color as underline
+
+^ Above is an empty block with caret and selection which continues to this block`);
+      const collaborativeContent = applyCollaborativeData(content);
+
       ReactDOM.render(
         (
           <React.Fragment>
@@ -284,6 +463,17 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
             <RichEditorExample />
             <h2>Second editor</h2>
             <RichEditorExample />
+            <h2>Collaborative display</h2>
+            <p>Disabled editor, only to verify rendering of content with collaborative metadata. You should see selections for all six authors as well as content marked as produced by all of them.</p>
+            <h3>Authors</h3>
+            <ul className="authors">
+              {authorIds.map(authorId =>
+                <li key={authorId}>
+                  Author {authorId}: <span className={`leaf--has-selection selection--user-${authorId} leaf--has-cursor cursor--user-${authorId}`}><span data-text="true">selection</span></span>, <span className={`leaf--has-cursor cursor--user-${authorId}`}><span data-text="true">caret</span></span>, <span className={`author--${authorId}`}><span data-text="true">content</span></span>
+                </li>
+              )}
+            </ul>
+            <RichEditorExample content={collaborativeContent} disabled />
           </React.Fragment>
         ),
         document.getElementById('target')
