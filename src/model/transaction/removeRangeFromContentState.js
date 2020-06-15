@@ -328,10 +328,16 @@ const removeRangeFromContentState = (
   }
 
   let characterList;
+  let characterIds;
 
   if (startBlock === endBlock) {
     characterList = removeFromList(
       startBlock.getCharacterList(),
+      startOffset,
+      endOffset,
+    );
+    characterIds = removeFromList(
+      startBlock.getCharacterIds(),
       startOffset,
       endOffset,
     );
@@ -340,6 +346,10 @@ const removeRangeFromContentState = (
       .getCharacterList()
       .slice(0, startOffset)
       .concat(endBlock.getCharacterList().slice(endOffset));
+    characterIds = startBlock
+      .getCharacterIds()
+      .slice(0, startOffset)
+      .concat(endBlock.getCharacterIds().slice(endOffset));
   }
 
   const modifiedStart = startBlock.merge({
@@ -347,6 +357,7 @@ const removeRangeFromContentState = (
       startBlock.getText().slice(0, startOffset) +
       endBlock.getText().slice(endOffset),
     characterList,
+    characterIds,
   });
 
   // If cursor (collapsed) is at the start of the first child, delete parent

@@ -31,6 +31,8 @@ const defaultRecord: BlockNodeConfig = {
   characterList: List(),
   depth: 0,
   data: Map(),
+  id: undefined,
+  characterIds: List(),
 };
 
 const ContentBlockRecord = (Record(defaultRecord): any);
@@ -49,9 +51,23 @@ const decorateCharacterList = (config: BlockNodeConfig): BlockNodeConfig => {
   return config;
 };
 
+const decorateCharacterIds = (config: BlockNodeConfig): BlockNodeConfig => {
+  if (!config) {
+    return config;
+  }
+
+  const {characterIds, text} = config;
+
+  if (text && !characterIds) {
+    config.characterIds = List(Repeat(undefined, text.length));
+  }
+
+  return config;
+};
+
 class ContentBlock extends ContentBlockRecord implements BlockNode {
   constructor(config: BlockNodeConfig) {
-    super(decorateCharacterList(config));
+    super(decorateCharacterIds(decorateCharacterList(config)));
   }
 
   getKey(): BlockNodeKey {
@@ -80,6 +96,14 @@ class ContentBlock extends ContentBlockRecord implements BlockNode {
 
   getData(): Map<any, any> {
     return this.get('data');
+  }
+
+  getId(): string | undefined {
+    return this.get('id');
+  }
+
+  getCharacterIds(): string {
+    return this.get('characterIds');
   }
 
   getInlineStyleAt(offset: number): DraftInlineStyle {
