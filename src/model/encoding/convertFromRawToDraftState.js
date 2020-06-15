@@ -35,7 +35,7 @@ const invariant = require('invariant');
 
 const experimentalTreeDataSupport = gkx('draft_tree_data_support');
 
-const {List, Map, OrderedMap} = Immutable;
+const {List, Map, OrderedMap, Repeat} = Immutable;
 
 const decodeBlockNodeConfig = (
   block: RawDraftContentBlock,
@@ -50,6 +50,7 @@ const decodeBlockNodeConfig = (
     key: key || generateRandomKey(),
     data: Map(data),
     characterList: decodeCharacterList(block, entityMap),
+    characterIds: List(Repeat(undefined, text.length)),
   };
 
   return blockNodeConfig;

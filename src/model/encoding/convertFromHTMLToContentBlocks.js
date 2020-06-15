@@ -27,7 +27,7 @@ const cx = require('cx');
 const generateRandomKey = require('generateRandomKey');
 const getSafeBodyFromHTML = require('getSafeBodyFromHTML');
 const gkx = require('gkx');
-const {List, Map, OrderedSet} = require('immutable');
+const {List, Map, OrderedSet, Repeat} = require('immutable');
 const isHTMLAnchorElement = require('isHTMLAnchorElement');
 const isHTMLBRElement = require('isHTMLBRElement');
 const isHTMLElement = require('isHTMLElement');
@@ -713,6 +713,9 @@ class ContentBlocksBuilder {
           ...config,
           text: config.text + text,
           characterList: config.characterList.concat(characterList),
+          characterIds: config.characterIds.concat(
+            List(Repeat(undefined, characterList.size)),
+          ),
         }),
       );
     });

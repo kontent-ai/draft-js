@@ -66,6 +66,7 @@ const AtomicBlockUtils = {
       type: 'atomic',
       text: character,
       characterList: List(Repeat(charData, character.length)),
+      characterIds: List(Repeat(undefined, character.length)),
     };
 
     let atomicDividerBlockConfig = {

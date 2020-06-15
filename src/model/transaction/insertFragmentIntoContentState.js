@@ -24,7 +24,7 @@ const insertIntoList = require('insertIntoList');
 const invariant = require('invariant');
 const randomizeBlockMapKeys = require('randomizeBlockMapKeys');
 
-const {List} = Immutable;
+const {List, Repeat} = Immutable;
 
 export type BlockDataMergeBehavior =
   | 'REPLACE_WITH_NEW_DATA'
@@ -42,6 +42,7 @@ const updateExistingBlock = (
   const targetBlock = blockMap.get(targetKey);
   const text = targetBlock.getText();
   const chars = targetBlock.getCharacterList();
+  const ids = targetBlock.getCharacterIds();
   const finalKey = targetKey;
   const finalOffset = targetOffset + fragmentBlock.getText().length;
 
@@ -66,7 +67,14 @@ const updateExistingBlock = (
       fragmentBlock.getCharacterList(),
       targetOffset,
     ),
-    data,
+    // Inserted content is always treated as new (without IDs) to prevent incorrect order of IDs
+    characterIds: insertIntoList(
+      ids,
+      List(Repeat(undefined, fragmentBlock.getLength())),
+      targetOffset,
+    ),
+    // We never use inserted content data in merged block, because it may be incompatible with current data, making the block inconsistent
+    // data,
   });
 
   return contentState.merge({
@@ -93,17 +101,24 @@ const updateHead = (
 ): BlockNodeRecord => {
   const text = block.getText();
   const chars = block.getCharacterList();
+  const ids = block.getCharacterIds();
 
   // Modify head portion of block.
   const headText = text.slice(0, targetOffset);
   const headCharacters = chars.slice(0, targetOffset);
+  const headIds = ids.slice(0, targetOffset);
   const appendToHead = fragment.first();
 
   return block.merge({
     text: headText + appendToHead.getText(),
     characterList: headCharacters.concat(appendToHead.getCharacterList()),
+    // Inserted content is always treated as new (without IDs) to prevent inconsistent order of IDs
+    characterIds: headIds.concat(
+      List(Repeat(undefined, appendToHead.getLength())),
+    ),
     type: headText ? block.getType() : appendToHead.getType(),
-    data: appendToHead.getData(),
+    // We never use inserted content data in merged block, because it may be incompatible with current data, making the block inconsistent
+    // data: appendToHead.getData(),
   });
 };
 
@@ -119,17 +134,24 @@ const updateTail = (
   // Modify tail portion of block.
   const text = block.getText();
   const chars = block.getCharacterList();
+  const ids = block.getCharacterIds();
 
   // Modify head portion of block.
   const blockSize = text.length;
   const tailText = text.slice(targetOffset, blockSize);
   const tailCharacters = chars.slice(targetOffset, blockSize);
+  const tailIds = ids.slice(targetOffset, blockSize);
   const prependToTail = fragment.last();
 
   return prependToTail.merge({
     text: prependToTail.getText() + tailText,
     characterList: prependToTail.getCharacterList().concat(tailCharacters),
-    data: prependToTail.getData(),
+    // Inserted content is always treated as new (without IDs) to prevent inconsistent order of IDs
+    characterIds: List(Repeat(undefined, prependToTail.getLength())).concat(
+      tailIds,
+    ),
+    // We never use inserted content data in merged block, because it may be incompatible with current data, making the block inconsistent
+    // data: prependToTail.getData(),
   });
 };
 
@@ -272,7 +294,14 @@ const insertFragment = (
       // head since its contents have already been merged with the target block otherwise we include
       // the whole fragment
       .slice(shouldNotUpdateFromFragmentBlock ? 0 : 1, fragmentSize - 1)
-      .forEach(fragmentBlock => newBlockArr.push(fragmentBlock));
+      .forEach(fragmentBlock =>
+        newBlockArr.push(
+          fragmentBlock.merge({
+            // Inserted content is always treated as new (without IDs) to prevent inconsistent order of IDs
+            characterIds: List(Repeat(undefined, fragmentBlock.getLength())),
+          }),
+        ),
+      );
 
     // update tail
     newBlockArr.push(updateTail(block, targetOffset, fragment));

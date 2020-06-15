@@ -64,6 +64,7 @@ const DraftPasteProcessor = {
         type,
         text: textLine,
         characterList: List(Repeat(character, textLine.length)),
+        characterIds: List(Repeat(undefined, textLine.length)),
       };
 
       // next block updates previous block

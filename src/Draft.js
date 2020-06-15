@@ -28,6 +28,7 @@ const KeyBindingUtil = require('KeyBindingUtil');
 const RawDraftContentState = require('RawDraftContentState');
 const RichTextEditorUtil = require('RichTextEditorUtil');
 const SelectionState = require('SelectionState');
+const UserSelection = require('UserSelection');
 
 const convertFromDraftStateToRaw = require('convertFromDraftStateToRaw');
 const convertFromRawToDraftState = require('convertFromRawToDraftState');
@@ -52,6 +53,7 @@ const DraftPublic = {
   ContentState,
   RawDraftContentState,
   SelectionState,
+  UserSelection,
 
   AtomicBlockUtils,
   KeyBindingUtil,

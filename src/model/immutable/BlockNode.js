@@ -12,6 +12,7 @@
 'use strict';
 
 import type CharacterMetadata from 'CharacterMetadata';
+import type {UserSelection} from 'src/model/immutable/UserSelection';
 import type {DraftBlockType} from 'DraftBlockType';
 import type {DraftInlineStyle} from 'DraftInlineStyle';
 import type {List, Map} from 'immutable';
@@ -25,6 +26,9 @@ export type BlockNodeConfig = {
   key?: BlockNodeKey,
   text?: string,
   type?: DraftBlockType,
+  id?: string,
+  characterIds?: List<string | undefined>,
+  selections?: List<UserSelection>,
   ...
 };
 
@@ -58,4 +62,10 @@ export interface BlockNode {
   +getText: () => string,
 
   +getType: () => DraftBlockType,
+
+  +getId: () => ?string,
+
+  +getCharacterIds: () => List<?string>,
+
+  +getSelections: () => List<UserSelection>,
 }

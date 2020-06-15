@@ -15,7 +15,7 @@ const Immutable = require('immutable');
 const insertIntoList = require('insertIntoList');
 const invariant = require('invariant');
 
-const {Repeat} = Immutable;
+const {Repeat, List} = Immutable;
 
 import type CharacterMetadata from 'CharacterMetadata';
 import type ContentState from 'ContentState';
@@ -54,7 +54,12 @@ function insertTextIntoContentState(
       blockText.slice(offset, block.getLength()),
     characterList: insertIntoList(
       block.getCharacterList(),
-      Repeat(characterMetadata, len).toList(),
+      List(Repeat(characterMetadata, len)),
+      offset,
+    ),
+    characterIds: insertIntoList(
+      block.getCharacterIds(),
+      List(Repeat(undefined, len)),
       offset,
     ),
   });

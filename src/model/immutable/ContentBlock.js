@@ -11,6 +11,7 @@
 
 'use strict';
 
+import type {UserSelection} from 'src/model/immutable/UserSelection';
 import type {BlockNode, BlockNodeConfig, BlockNodeKey} from 'BlockNode';
 import type {DraftBlockType} from 'DraftBlockType';
 import type {DraftInlineStyle} from 'DraftInlineStyle';
@@ -31,6 +32,9 @@ const defaultRecord: BlockNodeConfig = {
   characterList: List(),
   depth: 0,
   data: Map(),
+  id: undefined,
+  characterIds: List(),
+  selections: List(),
 };
 
 const ContentBlockRecord = (Record(defaultRecord): any);
@@ -49,9 +53,23 @@ const decorateCharacterList = (config: BlockNodeConfig): BlockNodeConfig => {
   return config;
 };
 
+const decorateCharacterIds = (config: BlockNodeConfig): BlockNodeConfig => {
+  if (!config) {
+    return config;
+  }
+
+  const {characterIds, text} = config;
+
+  if (text && !characterIds) {
+    config.characterIds = List(Repeat(undefined, text.length));
+  }
+
+  return config;
+};
+
 class ContentBlock extends ContentBlockRecord implements BlockNode {
   constructor(config: BlockNodeConfig) {
-    super(decorateCharacterList(config));
+    super(decorateCharacterIds(decorateCharacterList(config)));
   }
 
   getKey(): BlockNodeKey {
@@ -80,6 +98,18 @@ class ContentBlock extends ContentBlockRecord implements BlockNode {
 
   getData(): Map<any, any> {
     return this.get('data');
+  }
+
+  getId(): string | undefined {
+    return this.get('id');
+  }
+
+  getCharacterIds(): string {
+    return this.get('characterIds');
+  }
+
+  getSelections(): List<UserSelection> {
+    return this.get('selections');
   }
 
   getInlineStyleAt(offset: number): DraftInlineStyle {
