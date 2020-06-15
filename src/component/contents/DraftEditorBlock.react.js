@@ -28,13 +28,17 @@ const Style = require('Style');
 const UnicodeBidi = require('UnicodeBidi');
 const UnicodeBidiDirection = require('UnicodeBidiDirection');
 
+import type SelectionRange from 'SelectionRange';
+
 const cx = require('cx');
 const getElementPosition = require('getElementPosition');
+const getSelectionRanges = require('getSelectionRanges');
 const getScrollPosition = require('getScrollPosition');
 const getViewportDimensions = require('getViewportDimensions');
 const invariant = require('invariant');
 const isHTMLElement = require('isHTMLElement');
 const nullthrows = require('nullthrows');
+const getEntityClassName = require('getEntityClassName');
 
 const SCROLL_BUFFER = 10;
 
@@ -65,6 +69,40 @@ const isBlockOnSelectionEdge = (
 ): boolean => {
   return selection.getAnchorKey() === key || selection.getFocusKey() === key;
 };
+
+function getSelectionUserIds(
+  selectionRanges: List<SelectionRange>,
+  start: number,
+  end: number,
+) {
+  const selectionUserIds =
+    selectionRanges &&
+    selectionRanges
+      .filter(
+        selectionRange =>
+          selectionRange.startOffset <= start &&
+          selectionRange.endOffset >= end &&
+          !selectionRange.selection.getIsCollapsed(),
+      )
+      .map(selectionRange => selectionRange.selection.getUserId())
+      .toOrderedSet();
+
+  return selectionUserIds;
+}
+
+function getCaretUserIds(
+  selectionRanges: List<SelectionRange>,
+  end: number,
+): OrderedSet<string> {
+  const caretUserIds =
+    selectionRanges &&
+    selectionRanges
+      .filter(selectionRange => selectionRange.focusOffset === end)
+      .map(selectionRange => selectionRange.selection.getUserId())
+      .toOrderedSet();
+
+  return caretUserIds;
+}
 
 /**
  * The default block renderer for a `DraftEditor` component.
@@ -142,7 +180,9 @@ class DraftEditorBlock extends React.Component<Props> {
     }
   }
 
-  _renderChildren(): Array<React.Node> {
+  _renderChildren(
+    selectionRanges: List<SelectionRange>,
+  ): Array<React.Node> {
     const block = this.props.block;
     const blockKey = block.getKey();
     const text = block.getText();
@@ -162,6 +202,18 @@ class DraftEditorBlock extends React.Component<Props> {
             const offsetKey = DraftOffsetKey.encode(blockKey, ii, jj);
             const start = leaf.get('start');
             const end = leaf.get('end');
+
+            // Only apply selection to actual content, the block may be empty and have just <br /> without content
+            const leafSelectionUserIds =
+              end > start
+                ? getSelectionUserIds(selectionRanges, start, end)
+                : null;
+
+            // Do not apply cursor to empty leaf which has no content, the cursor is handled by the block itself
+            const caretUserIdsAtLeafEnd = end
+              ? getCaretUserIds(selectionRanges, end)
+              : null;
+
             return (
               <DraftEditorLeaf
                 key={offsetKey}
@@ -175,6 +227,16 @@ class DraftEditorBlock extends React.Component<Props> {
                 customStyleMap={this.props.customStyleMap}
                 customStyleFn={this.props.customStyleFn}
                 isLast={ii === lastLeafSet && jj === lastLeaf}
+                selectionUserIds={
+                  !leafSelectionUserIds || leafSelectionUserIds.isEmpty()
+                    ? undefined
+                    : leafSelectionUserIds
+                }
+                caretUserIds={
+                  !caretUserIdsAtLeafEnd || caretUserIdsAtLeafEnd.isEmpty()
+                    ? undefined
+                    : caretUserIdsAtLeafEnd
+                }
               />
             );
           })
@@ -234,11 +296,28 @@ class DraftEditorBlock extends React.Component<Props> {
   }
 
   render(): React.Node {
-    const {direction, offsetKey} = this.props;
+    const {direction, offsetKey, block} = this.props;
+
+    const nextBlock = this.props.contentState.getBlockAfter(block.getKey());
+    const selectionRanges = getSelectionRanges(block, nextBlock);
+
+    const blockSelectionUserIds = getSelectionUserIds(
+      selectionRanges,
+      0,
+      block.getLength(),
+    );
+    const caretUserIdsAtBlockStart = getCaretUserIds(selectionRanges, 0);
+    const selectionClassName = getEntityClassName(
+      'block',
+      blockSelectionUserIds,
+      caretUserIdsAtBlockStart,
+    );
+
     const className = cx({
       'public/DraftStyleDefault/block': true,
       'public/DraftStyleDefault/ltr': direction === 'LTR',
       'public/DraftStyleDefault/rtl': direction === 'RTL',
+      [selectionClassName]: !!selectionClassName,
     });
 
     return (
@@ -246,7 +325,7 @@ class DraftEditorBlock extends React.Component<Props> {
         data-offset-key={offsetKey}
         className={className}
         ref={ref => (this._node = ref)}>
-        {this._renderChildren()}
+        {this._renderChildren(selectionRanges)}
       </div>
     );
   }

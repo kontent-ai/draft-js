@@ -30,6 +30,11 @@ type CustomStyleFn = (
   style: DraftInlineStyle,
   block: BlockNodeRecord,
 ) => ?CSSStyleObject;
+const getEntityClassName = require('getEntityClassName');
+
+const Immutable = require('immutable');
+
+const {OrderedSet} = Immutable;
 
 type Props = {
   // The block that contains this leaf.
@@ -50,6 +55,11 @@ type Props = {
   start: number,
   // The set of style(s) names to apply to the node.
   styleSet: DraftInlineStyle,
+  // IDs of the users which have the node selected
+  selectionUserIds: OrderedSet<string> | null,
+
+  // IDs of the users which have caret at the end of the node
+  caretUserIds: OrderedSet<string> | null,
   // The full text to be rendered within this node.
   text: string,
   ...
@@ -121,6 +131,8 @@ class DraftEditorLeaf extends React.Component<Props> {
     const shouldUpdate =
       leafNode.textContent !== nextProps.text ||
       nextProps.styleSet !== this.props.styleSet ||
+      !areIdsTheSame(nextProps.selectionUserIds, this.props.selectionUserIds) ||
+      !areIdsTheSame(nextProps.caretUserIds, this.props.caretUserIds) ||
       nextProps.forceSelection;
     return shouldUpdate;
   }
@@ -178,12 +190,27 @@ class DraftEditorLeaf extends React.Component<Props> {
       <span
         data-offset-key={offsetKey}
         ref={ref => (this.leaf = ref)}
-        className={renderClassName}
+        className={getEntityClassName(
+          'leaf',
+          this.props.selectionUserIds,
+          this.props.caretUserIds,
+          renderClassName,
+        )}
         style={styleObj}>
         <DraftEditorTextNode>{text}</DraftEditorTextNode>
       </span>
     );
   }
+}
+
+function areIdsTheSame(
+  first: OrderedSet<string> | null,
+  second: OrderedSet<string> | null,
+): boolean {
+  if (!first) {
+    return !second;
+  }
+  return first.equals(second);
 }
 
 module.exports = DraftEditorLeaf;

@@ -16,11 +16,12 @@ import type CharacterMetadata from 'CharacterMetadata';
 import type ContentState from 'ContentState';
 import type {DraftDecoratorType} from 'DraftDecoratorType';
 
+const getSelectionRanges = require('getSelectionRanges');
 const findRangesImmutable = require('findRangesImmutable');
 const getOwnObjectValues = require('getOwnObjectValues');
 const Immutable = require('immutable');
 
-const {List, Repeat, Record} = Immutable;
+const {List, Set, Repeat, Record} = Immutable;
 
 const returnTrue = function() {
   return true;
@@ -90,13 +91,28 @@ const BlockTree = {
 
     const chars = block.getCharacterList();
 
+    const selectionRanges = getSelectionRanges(block);
+    const selectionEdgeOffsets =
+      selectionRanges &&
+      selectionRanges
+        .flatMap(selectionRange => [
+          selectionRange.startOffset,
+          selectionRange.endOffset,
+        ])
+        .toSet()
+        .toList();
+
     findRangesImmutable(decorations, areEqual, returnTrue, (start, end) => {
       leafSets.push(
         new DecoratorRange({
           start,
           end,
           decoratorKey: decorations.get(start),
-          leaves: generateLeaves(chars.slice(start, end).toList(), start),
+          leaves: generateLeaves(
+            chars.slice(start, end).toList(),
+            start,
+            selectionEdgeOffsets && selectionEdgeOffsets.map(index => index - start),
+          ),
         }),
       );
     });
@@ -123,10 +139,17 @@ const BlockTree = {
 function generateLeaves(
   characters: List<CharacterMetadata>,
   offset: number,
+  splitAtOffsets: Set<number> | null,
 ): List<LeafRange> {
   const leaves = [];
   const inlineStyles = characters.map(c => c.getStyle()).toList();
-  findRangesImmutable(inlineStyles, areEqual, returnTrue, (start, end) => {
+
+  const isSameLeaf =
+    splitAtOffsets && !splitAtOffsets.isEmpty()
+      ? (a, b, bOffset) => areEqual(a, b) && !splitAtOffsets.contains(bOffset)
+      : areEqual;
+
+  findRangesImmutable(inlineStyles, isSameLeaf, returnTrue, (start, end) => {
     leaves.push(
       new LeafRange({
         start: start + offset,

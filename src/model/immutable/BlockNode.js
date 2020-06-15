@@ -13,6 +13,7 @@
 
 import type CharacterMetadata from 'CharacterMetadata';
 import type {CharacterMetadataRawConfig} from 'CharacterMetadata';
+import type {UserSelection} from 'src/model/immutable/UserSelection';
 import type {DraftBlockType} from 'DraftBlockType';
 import type {DraftInlineStyle} from 'DraftInlineStyle';
 import type {List, Map} from 'immutable';
@@ -38,6 +39,7 @@ export type BlockNodeConfig = {
   type?: DraftBlockType,
   id?: string,
   characterIds?: List<string | undefined>,
+  selections?: List<UserSelection>,
   ...
 };
 
@@ -75,4 +77,6 @@ export interface BlockNode {
   +getId: () => ?string,
 
   +getCharacterIds: () => List<?string>,
+
+  +getSelections: () => List<UserSelection>,
 }
