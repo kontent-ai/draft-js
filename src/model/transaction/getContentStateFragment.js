@@ -44,11 +44,13 @@ const getContentStateFragment = (
     blockMap.slice(startIndex, endIndex).map((block, blockKey) => {
       const text = block.getText();
       const chars = block.getCharacterList();
+      const ids = block.getCharacterIds();
 
       if (startKey === endKey) {
         return block.merge({
           text: text.slice(startOffset, endOffset),
           characterList: chars.slice(startOffset, endOffset),
+          characterIds: ids.slice(startOffset, endOffset),
         });
       }
 
@@ -56,6 +58,7 @@ const getContentStateFragment = (
         return block.merge({
           text: text.slice(startOffset),
           characterList: chars.slice(startOffset),
+          characterIds: ids.slice(startOffset),
         });
       }
 
@@ -63,6 +66,7 @@ const getContentStateFragment = (
         return block.merge({
           text: text.slice(0, endOffset),
           characterList: chars.slice(0, endOffset),
+          characterIds: ids.slice(0, endOffset),
         });
       }
 

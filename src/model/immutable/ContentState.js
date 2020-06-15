@@ -210,6 +210,7 @@ class ContentState extends ContentStateRecord {
         text: block,
         type: 'unstyled',
         characterList: List(Repeat(CharacterMetadata.EMPTY, block.length)),
+        characterIds: List(Repeat(undefined, block.length)),
       });
     });
     return ContentState.createFromBlockArray(blocks);

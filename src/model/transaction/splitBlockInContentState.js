@@ -112,17 +112,22 @@ const splitBlockInContentState = (
 
   const offset = selectionState.getAnchorOffset();
   const chars = blockToSplit.getCharacterList();
+  const ids = blockToSplit.getCharacterIds();
   const keyBelow = generateRandomKey();
   const isExperimentalTreeBlock = blockToSplit instanceof ContentBlockNode;
 
   const blockAbove = blockToSplit.merge({
     text: text.slice(0, offset),
     characterList: chars.slice(0, offset),
+    characterIds: ids.slice(0, offset),
   });
   const blockBelow = blockAbove.merge({
     key: keyBelow,
     text: text.slice(offset),
+    // Split block is always treated as new (without ID) to prevent inconsistent order of IDs
+    id: undefined,
     characterList: chars.slice(offset),
+    characterIds: ids.slice(offset),
     data: Map(),
   });
 

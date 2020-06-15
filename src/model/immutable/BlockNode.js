@@ -25,6 +25,8 @@ export type BlockNodeConfig = {
   key?: BlockNodeKey,
   text?: string,
   type?: DraftBlockType,
+  id?: string,
+  characterIds?: List<string | undefined>,
   ...
 };
 
@@ -58,4 +60,8 @@ export interface BlockNode {
   +getText: () => string,
 
   +getType: () => DraftBlockType,
+
+  +getId: () => ?string,
+
+  +getCharacterIds: () => List<?string>,
 }
