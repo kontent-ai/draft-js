@@ -11,6 +11,7 @@
 
 'use strict';
 
+import type {UserSelection} from 'src/model/immutable/UserSelection';
 import type {BlockNode, BlockNodeConfig, BlockNodeKey} from 'BlockNode';
 import type {DraftBlockType} from 'DraftBlockType';
 import type {DraftInlineStyle} from 'DraftInlineStyle';
@@ -33,6 +34,7 @@ const defaultRecord: BlockNodeConfig = {
   data: Map(),
   id: undefined,
   characterIds: List(),
+  selections: List(),
 };
 
 const ContentBlockRecord = (Record(defaultRecord): any);
@@ -104,6 +106,10 @@ class ContentBlock extends ContentBlockRecord implements BlockNode {
 
   getCharacterIds(): string {
     return this.get('characterIds');
+  }
+
+  getSelections(): List<UserSelection> {
+    return this.get('selections');
   }
 
   getInlineStyleAt(offset: number): DraftInlineStyle {
