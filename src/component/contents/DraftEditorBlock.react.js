@@ -67,6 +67,76 @@ const isBlockOnSelectionEdge = (
 };
 
 /**
+ * Calculates scrollParent position.
+ * @param scrollParent HTML element of Window object. Depending on what is the scroll-parent of the block.
+ * @returns {{x: number, width: number, y: number, height: number}} Position object of scroll parent element or an object representing the view-port.
+ */
+const getScrollParentPosition = scrollParent => {
+  if (scrollParent === window) {
+    const docElem = elem.ownerDocument.documentElement;
+    return {
+      x: 0 - docElem.clientLeft,
+      y: 0 - docElem.clientTop,
+      ...getViewportDimensions(),
+    };
+  }
+
+  return getElementPosition(scrollParent);
+};
+
+/**
+ * Calculates whether to align bottoms or tops of block and scroll parent
+ * @returns {'bottom'|'top'}
+ */
+const getDesiredScrollAlignment = (
+  selection: SelectionState,
+  block: BlockNodeRecord,
+  blockNodeHeight: number,
+  scrollParentHeight: number,
+): 'bottom' | 'top' => {
+  if (blockNodeHeight > scrollParentHeight) {
+    const textLength = block.getLength();
+    const caretPosition = selection.getEndOffset();
+    const isCloserToStart = caretPosition < textLength / 2;
+
+    return isCloserToStart ? 'top' : 'bottom';
+  }
+  return 'bottom';
+};
+
+/**
+ * Calculates how much scrolling is needed to put the caret into the visible area.
+ * @returns {number}
+ */
+const getScrollDelta = (
+  blockNode: HTMLElement,
+  scrollParent,
+  block: BlockNodeRecord,
+  selection: SelectionState,
+): number => {
+  const nodePosition = getElementPosition(blockNode);
+  const scrollParentPosition = getScrollParentPosition(scrollParent);
+  const align = getDesiredScrollAlignment(
+    selection,
+    block,
+    nodePosition.height,
+    scrollParentPosition.height,
+  );
+
+  const nodeBottom = nodePosition.y + nodePosition.height;
+  const nodeTop = nodePosition.y;
+  const scrollParentBottom =
+    scrollParentPosition.y + scrollParentPosition.height;
+  const scrollParentTop = scrollParentPosition.y;
+  const scrollDelta =
+    align === 'bottom'
+      ? nodeBottom - scrollParentBottom + SCROLL_BUFFER
+      : nodeTop - scrollParentTop - SCROLL_BUFFER;
+
+  return scrollDelta;
+};
+
+/**
  * The default block renderer for a `DraftEditor` component.
  *
  * A `DraftEditorBlock` is able to render a given `ContentBlock` to its
@@ -87,7 +157,7 @@ class DraftEditorBlock extends React.Component<Props> {
 
   /**
    * When a block is mounted and overlaps the selection state, we need to make
-   * sure that the cursor is visible to match native behavior. This may not
+   * sure that the caret is visible to match native behavior. This may not
    * be the case if the user has pressed `RETURN` or pasted some content, since
    * programmatically creating these new blocks and setting the DOM selection
    * will miss out on the browser natively scrolling to that position.
@@ -95,7 +165,10 @@ class DraftEditorBlock extends React.Component<Props> {
    * To replicate native behavior, if the block overlaps the selection state
    * on mount, force the scroll position. Check the scroll state of the scroll
    * parent, and adjust it to align the entire block to the bottom of the
-   * scroll parent.
+   * scroll parent provided the caret is closer to the end of the block
+   * or the block fits vertically within available space. In case the focused
+   * block is taller than the scroll parent and caret is closer to the start of
+   * that block, top of that block is aligned with top of the scroll parent.
    */
   componentDidMount(): void {
     if (this.props.preventScroll) {
@@ -111,33 +184,20 @@ class DraftEditorBlock extends React.Component<Props> {
     if (blockNode == null) {
       return;
     }
+    invariant(isHTMLElement(blockNode), 'blockNode is not an HTMLElement');
     const scrollParent = Style.getScrollParent(blockNode);
-    const scrollPosition = getScrollPosition(scrollParent);
-    let scrollDelta;
-
-    if (scrollParent === window) {
-      const nodePosition = getElementPosition(blockNode);
-      const nodeBottom = nodePosition.y + nodePosition.height;
-      const viewportHeight = getViewportDimensions().height;
-      scrollDelta = nodeBottom - viewportHeight;
-      if (scrollDelta > 0) {
-        window.scrollTo(
-          scrollPosition.x,
-          scrollPosition.y + scrollDelta + SCROLL_BUFFER,
-        );
-      }
-    } else {
-      invariant(isHTMLElement(blockNode), 'blockNode is not an HTMLElement');
-      const blockBottom = blockNode.offsetHeight + blockNode.offsetTop;
-      const pOffset = scrollParent.offsetTop + scrollParent.offsetHeight;
-      const scrollBottom = pOffset + scrollPosition.y;
-
-      scrollDelta = blockBottom - scrollBottom;
-      if (scrollDelta > 0) {
-        Scroll.setTop(
-          scrollParent,
-          Scroll.getTop(scrollParent) + scrollDelta + SCROLL_BUFFER,
-        );
+    const scrollDelta = getScrollDelta(
+      blockNode,
+      scrollParent,
+      this.props.block,
+      selection,
+    );
+    if (scrollDelta > 0) {
+      if (scrollParent === window) {
+        const scrollPosition = getScrollPosition(scrollParent);
+        window.scrollTo(scrollPosition.x, scrollPosition.y + scrollDelta);
+      } else {
+        Scroll.setTop(scrollParent, Scroll.getTop(scrollParent) + scrollDelta);
       }
     }
   }
