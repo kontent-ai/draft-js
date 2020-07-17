@@ -73,7 +73,7 @@ const isBlockOnSelectionEdge = (
  */
 const getScrollParentPosition = scrollParent => {
   if (scrollParent === window) {
-    const docElem = elem.ownerDocument.documentElement;
+    const docElem = window.document.documentElement;
     return {
       x: 0 - docElem.clientLeft,
       y: 0 - docElem.clientTop,
@@ -86,20 +86,27 @@ const getScrollParentPosition = scrollParent => {
 
 /**
  * Calculates whether to align bottoms or tops of block and scroll parent
- * @returns {'bottom'|'top'}
+ * @returns {'bottom'|'top'|'middle'}
  */
 const getDesiredScrollAlignment = (
   selection: SelectionState,
   block: BlockNodeRecord,
   blockNodeHeight: number,
   scrollParentHeight: number,
-): 'bottom' | 'top' => {
+): 'bottom' | 'top' | 'middle' => {
   if (blockNodeHeight > scrollParentHeight) {
     const textLength = block.getLength();
     const caretPosition = selection.getEndOffset();
-    const isCloserToStart = caretPosition < textLength / 2;
+    if (caretPosition > textLength - 50) {
+      // Caret is close to the end of block
+      return 'bottom';
+    }
+    if (caretPosition < 50) {
+      // Caret is close to start of block
+      return 'top';
+    }
 
-    return isCloserToStart ? 'top' : 'bottom';
+    return 'middle';
   }
   return 'bottom';
 };
@@ -123,17 +130,26 @@ const getScrollDelta = (
     scrollParentPosition.height,
   );
 
-  const nodeBottom = nodePosition.y + nodePosition.height;
-  const nodeTop = nodePosition.y;
-  const scrollParentBottom =
-    scrollParentPosition.y + scrollParentPosition.height;
-  const scrollParentTop = scrollParentPosition.y;
-  const scrollDelta =
-    align === 'bottom'
-      ? nodeBottom - scrollParentBottom + SCROLL_BUFFER
-      : nodeTop - scrollParentTop - SCROLL_BUFFER;
+  console.log(scrollParentPosition, align);
 
-  return scrollDelta;
+  if (align === 'bottom') {
+    const nodeBottom = nodePosition.y + nodePosition.height;
+    const scrollParentBottom =
+      scrollParentPosition.y + scrollParentPosition.height;
+    return nodeBottom - scrollParentBottom + SCROLL_BUFFER;
+  }
+  if (align === 'top') {
+    const nodeTop = nodePosition.y;
+    const scrollParentTop = scrollParentPosition.y;
+    return nodeTop - scrollParentTop - SCROLL_BUFFER;
+  }
+
+  const scrollParentMiddle =
+    scrollParentPosition.y + scrollParentPosition.height / 2;
+  const nodeApproxPosition =
+    nodePosition.y +
+    nodePosition.height * (selection.getEndOffset() / block.getLength());
+  return nodeApproxPosition - scrollParentMiddle;
 };
 
 /**
@@ -192,6 +208,7 @@ class DraftEditorBlock extends React.Component<Props> {
       this.props.block,
       selection,
     );
+    console.log(scrollDelta);
     if (scrollDelta > 0) {
       if (scrollParent === window) {
         const scrollPosition = getScrollPosition(scrollParent);
