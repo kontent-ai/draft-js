@@ -274,8 +274,16 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
           <React.Fragment>
             <h2>First editor</h2>
             <RichEditorExample />
-            <h2>Second editor</h2>
-            <RichEditorExample />
+            <div
+              style={{
+                overflowY:'scroll',
+                maxHeight: 500,
+                minHeight: 500,
+              }}
+            >
+              <h2>Second editor with limited height</h2>
+              <RichEditorExample />
+            </div>
           </React.Fragment>
         ),
         document.getElementById('target')
