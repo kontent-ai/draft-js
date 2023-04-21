@@ -16,14 +16,15 @@
  * found on the DOM tree of given node.
  */
 const isElement = require('isElement');
+const getOffsetKeyFromNode = require('getOffsetKeyFromNode');
 
 function getSelectionOffsetKeyForNode(node: Node): ?string {
   if (isElement(node)) {
-    const castedNode: Element = (node: any);
-    const offsetKey = castedNode.getAttribute('data-offset-key');
+    const offsetKey = getOffsetKeyFromNode(node);
     if (offsetKey) {
       return offsetKey;
     }
+    const castedNode: Element = (node: any);
     for (let ii = 0; ii < castedNode.childNodes.length; ii++) {
       const childOffsetKey = getSelectionOffsetKeyForNode(
         castedNode.childNodes[ii],

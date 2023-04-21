@@ -16,6 +16,7 @@ import type DraftEditor from 'DraftEditor.react';
 const DOMObserver = require('DOMObserver');
 const DraftModifier = require('DraftModifier');
 const DraftOffsetKey = require('DraftOffsetKey');
+const ContentState = require('ContentState');
 const EditorState = require('EditorState');
 const Keys = require('Keys');
 const UserAgent = require('UserAgent');
@@ -178,7 +179,16 @@ const DraftEditorCompositionHandler = {
     // }
 
     let contentState = editorState.getCurrentContent();
-    mutations.forEach((composedChars, offsetKey) => {
+
+    const updateEditorState = () => {
+      // We need to update the editorState so the leaf node ranges are properly
+      // updated and multiple mutations are correctly applied.
+      editorState = EditorState.set(editorState, {
+        currentContent: contentState,
+      });
+    };
+
+    const applyTextMutation = (composedChars, offsetKey) => {
       const {blockKey, decoratorKey, leafKey} = DraftOffsetKey.decode(
         offsetKey,
       );
@@ -210,11 +220,50 @@ const DraftEditorCompositionHandler = {
         currentStyle,
         entityKey,
       );
-      // We need to update the editorState so the leaf node ranges are properly
-      // updated and multiple mutations are correctly applied.
-      editorState = EditorState.set(editorState, {
-        currentContent: contentState,
+      updateEditorState();
+    };
+
+    let removedBlocks = false;
+    const applyRemovedBlockMutation = (blockOffsetKey: string) => {
+      const {blockKey} = DraftOffsetKey.decode(blockOffsetKey);
+
+      const block = contentState.getBlockForKey(blockKey);
+      if (!block) {
+        return;
+      }
+
+      removedBlocks = true;
+      contentState = ContentState.createFromBlockArray(
+        contentState
+          .getBlocksAsArray()
+          .filter(block => block.getKey() !== blockKey),
+        contentState.getEntityMap(),
+      );
+      updateEditorState();
+    };
+
+    // We sort the mutations by their offset key in descending order to perform
+    // the text replacements in case of multiple mutations in a single block from the back.
+    // This way the preceding blockTree is not influenced by the replacement,
+    // and we don't need to recalculate ranges for the next mutations
+    const sortedMutations = mutations
+      .map((text, offsetKey): [string, string | null] => [offsetKey, text])
+      .sort(([a], [b]) => {
+        if (a > b) {
+          return -1;
+        } else if (a < b) {
+          return 1;
+        } else {
+          return 0;
+        }
       });
+
+    sortedMutations.forEach(([offsetKey, text]) => {
+      if (text == null) {
+        applyRemovedBlockMutation(offsetKey);
+      } else {
+        applyTextMutation(text, offsetKey);
+      }
     });
 
     // When we apply the text changes to the ContentState, the selection always
@@ -241,7 +290,7 @@ const DraftEditorCompositionHandler = {
       EditorState.push(
         editorStateWithUpdatedSelection,
         contentState,
-        'insert-characters',
+        removedBlocks ? 'remove-range' : 'insert-characters',
       ),
     );
   },
