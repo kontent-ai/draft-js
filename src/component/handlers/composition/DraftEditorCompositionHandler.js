@@ -49,7 +49,8 @@ const RESOLVE_DELAY = 20;
  */
 let resolved = false;
 let stillComposing = false;
-let domObserver = null;
+let domObserver: DOMObserver | null = null;
+let selectionAtCompositionStart: SelectionState | null = null;
 
 function startDOMObserver(editor: DraftEditor) {
   if (!domObserver) {
@@ -65,6 +66,7 @@ const DraftEditorCompositionHandler = {
    */
   onCompositionStart(editor: DraftEditor): void {
     stillComposing = true;
+    selectionAtCompositionStart = editor._latestEditorState.getSelection();
     startDOMObserver(editor);
   },
 
@@ -150,9 +152,14 @@ const DraftEditorCompositionHandler = {
     domObserver = null;
     resolved = true;
 
-    let editorState = EditorState.set(editor._latestEditorState, {
+    const editorState = EditorState.set(editor._latestEditorState, {
       inCompositionMode: false,
+      // As resolving composition happens asynchronously, the editor selection
+      // may be already updated via `editOnSelect` after the composed chars are inserted
+      // To get consistent selection handling for undo, we use the original selection instead.
+      selection: selectionAtCompositionStart || editorState.getSelection(),
     });
+    selectionAtCompositionStart = null;
 
     editor.exitCurrentMode();
 
@@ -179,11 +186,12 @@ const DraftEditorCompositionHandler = {
     // }
 
     let contentState = editorState.getCurrentContent();
+    let mutatedEditorState = editorState;
 
     const updateEditorState = () => {
       // We need to update the editorState so the leaf node ranges are properly
       // updated and multiple mutations are correctly applied.
-      editorState = EditorState.set(editorState, {
+      mutatedEditorState = EditorState.set(mutatedEditorState, {
         currentContent: contentState,
       });
     };
@@ -273,26 +281,31 @@ const DraftEditorCompositionHandler = {
       editorState,
       getContentEditableContainer(editor),
     );
-    const compositionEndSelectionState = documentSelection.selectionState;
+    const finalSelection = documentSelection.selectionState;
 
     editor.restoreEditorDOM();
+
+    // Set proper metadata to content and editor state to properly handle undo
+    const contentStateWithSelection = contentState.merge({
+      selectionBefore: editorState.getSelection(),
+      selectionAfter: finalSelection,
+    });
+    const newEditorState = EditorState.push(
+      editorState,
+      contentStateWithSelection,
+      removedBlocks ? 'remove-range' : 'insert-characters',
+    );
 
     // See:
     // - https://github.com/facebook/draft-js/issues/2093
     // - https://github.com/facebook/draft-js/pull/2094
     // Apply this fix only in IE for now. We can test it in
     // other browsers in the future to ensure no regressions
-    const editorStateWithUpdatedSelection = isIE
-      ? EditorState.forceSelection(editorState, compositionEndSelectionState)
-      : EditorState.acceptSelection(editorState, compositionEndSelectionState);
+    const newEditorStateWithSelection = isIE
+      ? EditorState.forceSelection(newEditorState, finalSelection)
+      : EditorState.acceptSelection(newEditorState, finalSelection);
 
-    editor.update(
-      EditorState.push(
-        editorStateWithUpdatedSelection,
-        contentState,
-        removedBlocks ? 'remove-range' : 'insert-characters',
-      ),
-    );
+    editor.update(newEditorStateWithSelection);
   },
 };
 
