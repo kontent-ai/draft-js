@@ -21,6 +21,7 @@ const UserAgent = require('UserAgent');
 
 const {notEmptyKey} = require('draftKeyUtils');
 const findAncestorOffsetKey = require('findAncestorOffsetKey');
+const findAncestorWithOffsetKey = require('findAncestorWithOffsetKey');
 const keyCommandPlainBackspace = require('keyCommandPlainBackspace');
 const nullthrows = require('nullthrows');
 
@@ -64,11 +65,12 @@ function editOnInput(editor: DraftEditor, e: SyntheticInputEvent<>): void {
     editor.update(editor._pendingStateFromBeforeInput);
     editor._pendingStateFromBeforeInput = undefined;
   }
-  // at this point editor is not null for sure (after input)
-  const castedEditorElement: HTMLElement = (editor.editor: any);
-  const domSelection: SelectionObject = castedEditorElement.ownerDocument.defaultView.getSelection();
 
+  reconcileTextNodesAtSelection(editor);
+
+  const domSelection = getDomSelection(editor);
   const {anchorNode, isCollapsed} = domSelection;
+
   const isNotTextOrElementNode =
     anchorNode?.nodeType !== Node.TEXT_NODE &&
     anchorNode?.nodeType !== Node.ELEMENT_NODE;
@@ -76,31 +78,6 @@ function editOnInput(editor: DraftEditor, e: SyntheticInputEvent<>): void {
   if (anchorNode == null || isNotTextOrElementNode) {
     // TODO: (t16149272) figure out context for this change
     return;
-  }
-
-  if (
-    anchorNode.nodeType === Node.TEXT_NODE &&
-    (anchorNode.previousSibling !== null || anchorNode.nextSibling !== null)
-  ) {
-    // When typing at the beginning of a visual line, Chrome splits the text
-    // nodes into two. Why? No one knows. This commit is suspicious:
-    // https://chromium.googlesource.com/chromium/src/+/a3b600981286b135632371477f902214c55a1724
-    // To work around, we'll merge the sibling text nodes back into this one.
-    const span = anchorNode.parentNode;
-    if (span == null) {
-      // Handle null-parent case.
-      return;
-    }
-    anchorNode.nodeValue = span.textContent;
-    for (
-      let child = span.firstChild;
-      child != null;
-      child = child.nextSibling
-    ) {
-      if (child !== anchorNode) {
-        span.removeChild(child);
-      }
-    }
   }
 
   let domText = anchorNode.textContent;
@@ -212,6 +189,104 @@ function editOnInput(editor: DraftEditor, e: SyntheticInputEvent<>): void {
   editor.update(
     EditorState.push(editorState, contentWithAdjustedDOMSelection, changeType),
   );
+}
+
+function reconcileTextNodesAtSelection(editor: DraftEditor): void {
+  const domSelection = getDomSelection(editor);
+  const {anchorNode, anchorOffset, isCollapsed} = domSelection;
+  if (!anchorNode || !isCollapsed) {
+    return;
+  }
+
+  // Chrome produces new text nodes in several scenarios.
+
+  // 1) When typing at the beginning of a visual line, Chrome splits the text
+  // nodes into two. Why? No one knows. This commit is suspicious:
+  // https://chromium.googlesource.com/chromium/src/+/a3b600981286b135632371477f902214c55a1724
+
+  // 2) When typing into a node which contains TAB character, it splits the leaf node cloning its attributes
+  // and adds additional anonymous text node in between
+
+  // Assume that the original content is <span data-text="true">Hello\tworld</span>
+
+  // <span data-text="true">hello</span>X<span data-text="true">\tworld</span>
+  // <span data-text="true">hello\t</span>X<span data-text="true">world</span>
+  // <span data-text="true">hello\tworld</span>X
+
+  // In both cases (and possibly more that may occur), we merge the sibling text nodes back into a consistent one.
+  if (
+    anchorNode.nodeType === Node.TEXT_NODE &&
+    (anchorNode.previousSibling !== null || anchorNode.nextSibling !== null)
+  ) {
+    const span: ?Node = findAncestorWithOffsetKey(anchorNode);
+    if (span == null || span.nodeName.toLowerCase() !== 'span') {
+      return;
+    }
+
+    // Capture the original anchor offset relative to the parent
+    let newAnchorOffset = anchorOffset;
+    let currentNode = anchorNode;
+
+    while (currentNode && currentNode !== span) {
+      if (currentNode.previousSibling) {
+        currentNode = currentNode.previousSibling;
+        newAnchorOffset += currentNode.textContent.length;
+      } else {
+        currentNode = currentNode.parentNode;
+      }
+    }
+
+    let unprocessedText: string = '';
+    let resultTextNode: ?Node = null;
+
+    // Reconcile the child nodes content into a single leaf node with data-text attribute
+    // to make sure the DOM reflects structure supported by DraftJS
+    // delete the other child nodes
+    for (let i = span.childNodes.length - 1; i >= 0; i--) {
+      const child = span.childNodes[i];
+      if (!resultTextNode && child.hasAttribute?.('data-text')) {
+        resultTextNode = child;
+        if (unprocessedText) {
+          child.textContent += unprocessedText;
+          unprocessedText = '';
+        }
+      } else {
+        if (resultTextNode) {
+          resultTextNode.textContent =
+            child.textContent + resultTextNode.textContent;
+        } else {
+          unprocessedText = child.textContent + unprocessedText;
+        }
+        span.removeChild(child);
+      }
+    }
+
+    // Add a consistent text node in case none was left
+    if (!resultTextNode && unprocessedText) {
+      const missingTextNode = document.createElement('span');
+      missingTextNode.setAttribute('data-text', 'true');
+      missingTextNode.textContent = unprocessedText;
+      span.appendChild(missingTextNode);
+      resultTextNode = missingTextNode;
+    }
+
+    // Update the DOM selection
+    domSelection.removeAllRanges();
+    const newRange = document.createRange();
+    newRange.setStart(
+      resultTextNode.firstChild ?? resultTextNode,
+      newAnchorOffset,
+    );
+    domSelection.addRange(newRange);
+  }
+}
+
+function getDomSelection(editor: DraftEditor) {
+  // at this point editor is not null for sure (after input)
+  const castedEditorElement: HTMLElement = (editor.editor: any);
+  const domSelection: SelectionObject = castedEditorElement.ownerDocument.defaultView.getSelection();
+
+  return domSelection;
 }
 
 module.exports = editOnInput;
