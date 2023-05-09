@@ -56,6 +56,18 @@ function startDOMObserver(editor: DraftEditor) {
 
 const DraftEditorCompositionHandler = {
   /**
+   * When the composition finished but there is still some input before the editor switches
+   * to the standard handler, we ignore it.
+   * This may happen in case you type some text during composition, undo it, and press ESC to close IME
+   * Observed in Chrome.
+   */
+  onBeforeInput(editor: DraftEditor, event: SyntheticInputEvent<>): void {
+    if (!stillComposing) {
+      event.preventDefault();
+    }
+  },
+
+  /**
    * A `compositionstart` event has fired while we're still in composition
    * mode. Continue the current composition session to prevent a re-render.
    */
@@ -80,13 +92,15 @@ const DraftEditorCompositionHandler = {
    * Google Input Tools on Windows 8.1 fires `compositionend` three times.
    */
   onCompositionEnd(editor: DraftEditor): void {
-    resolved = false;
-    stillComposing = false;
-    setTimeout(() => {
-      if (!resolved) {
-        DraftEditorCompositionHandler.resolveComposition(editor);
-      }
-    }, RESOLVE_DELAY);
+    if (stillComposing) {
+      resolved = false;
+      stillComposing = false;
+      setTimeout(() => {
+        if (!resolved) {
+          DraftEditorCompositionHandler.resolveComposition(editor);
+        }
+      }, RESOLVE_DELAY);
+    }
   },
 
   onSelect: editOnSelect,
@@ -105,7 +119,16 @@ const DraftEditorCompositionHandler = {
       DraftEditorCompositionHandler.resolveComposition(editor);
       editor._onKeyDown(e);
       return;
+    } else if (!e.nativeEvent.isComposing) {
+      // In some cases, the `compositionend` event may not fire but composition ends anyway.
+      // E.g. in Chrome when you type some text during composition, then undo with CTRL+Z
+      // and exit the composition with ESC
+      // Thus when we receive an event without isComposing flag, we need to end the composition
+      e.preventDefault();
+      DraftEditorCompositionHandler.onCompositionEnd(editor);
+      return;
     }
+
     if (e.which === Keys.RIGHT || e.which === Keys.LEFT) {
       e.preventDefault();
     }
