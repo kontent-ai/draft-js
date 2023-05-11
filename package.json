@@ -78,11 +78,13 @@
     "stats-webpack-plugin": "^0.7.0",
     "through2": "^4.0.2",
     "uglifyjs-webpack-plugin": "^2.2.0",
-    "webpack-stream": "5.2.1"
+    "webpack": "5.79.0",
+    "webpack-cli": "5.0.1",
+    "webpack-stream": "7.0.0"
   },
   "devEngines": {
-    "node": "10.x || 12.x || 13.x",
-    "npm": "2.x || 3.x || 5.x || 6.x"
+    "npm": "^9.6.0",
+    "node": "^20.0.0"
   },
   "jest": {
     "globals": {
