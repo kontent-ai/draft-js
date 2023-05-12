@@ -20,7 +20,7 @@ const getOffsetKeyFromNode = require('getOffsetKeyFromNode');
  */
 function findAncestorWithOffsetKey(
   node: Node,
-  predicate: ?(node: node) => boolean,
+  predicate: (node: node) => boolean = () => true,
 ): ?Node {
   let searchNode = node;
   while (
@@ -28,7 +28,7 @@ function findAncestorWithOffsetKey(
     searchNode !== getCorrectDocumentFromNode(node).documentElement
   ) {
     const key = getOffsetKeyFromNode(searchNode);
-    if (key != null && (!predicate || predicate(searchNode))) {
+    if (key != null && predicate(searchNode)) {
       return searchNode;
     }
     searchNode = searchNode.parentNode;

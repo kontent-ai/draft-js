@@ -23,7 +23,7 @@ const getOffsetKeyFromNode = require('getOffsetKeyFromNode');
 /**
  * Reconstructs selection based on the current DOM and DOM selection.
  * It locates the selection edges relatively from the root element for the given block,
- * so it returns valid selection even in case block child nodes have inconsistent .
+ * so it returns valid selection even in case block child nodes have inconsistent metadata.
  * Use in combination with getReconstructedBlock in cases where
  * consistency of the DOM is not guaranteed after native edits.
  */

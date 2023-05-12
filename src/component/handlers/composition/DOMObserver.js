@@ -137,7 +137,7 @@ class DOMObserver {
 
         // Some blocks may be reintroduced with undo during composition.
         // We register them for data reconstruction to overwrite the earlier removal recorded in the mutations.
-        // Also, we don't know what else happened to the block in the meantime so reconstructing them is a safety guard.
+        // Also, we don't know what else happened to the block in the meantime so reconstructing them is a safeguard.
         if (addedNodes && addedNodes.length) {
           Array.from(addedNodes)
             .filter(node => node.hasAttribute?.('data-block'))
@@ -153,7 +153,7 @@ class DOMObserver {
       // Other mutations, typically around text nodes.
       // We record the offset key from the block root as in some cases (observed in Firefox),
       // the nodes with offset key from another block may get merged to the target block making the metadata inconsistent.
-      // We let the reconstruction process in resolveComposition to handle that.
+      // We let the reconstruction process in resolveComposition handle that.
       const blockNode = findAncestorWithOffsetKey(ancestorWithOffsetKey, node =>
         node.hasAttribute('data-block'),
       );
