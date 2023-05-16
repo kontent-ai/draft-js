@@ -15,16 +15,20 @@ const getCorrectDocumentFromNode = require('getCorrectDocumentFromNode');
 const getOffsetKeyFromNode = require('getOffsetKeyFromNode');
 
 /**
- * Gets the nearest ancestor with offset key.
+ * Gets the nearest ancestor with offset key, matching the given predicate.
+ * If the predicate doesn't match, it continues searching.
  */
-function findAncestorWithOffsetKey(node: Node): ?Node {
+function findAncestorWithOffsetKey(
+  node: Node,
+  predicate: (node: node) => boolean = () => true,
+): ?Node {
   let searchNode = node;
   while (
     searchNode &&
     searchNode !== getCorrectDocumentFromNode(node).documentElement
   ) {
     const key = getOffsetKeyFromNode(searchNode);
-    if (key != null) {
+    if (key != null && predicate(searchNode)) {
       return searchNode;
     }
     searchNode = searchNode.parentNode;

@@ -12,12 +12,14 @@
 'use strict';
 
 const UserAgent = require('UserAgent');
+const DraftOffsetKey = require('DraftOffsetKey');
 
 const findAncestorOffsetKey = require('findAncestorOffsetKey');
+const findAncestorWithOffsetKey = require('findAncestorWithOffsetKey');
+const getOffsetKeyFromNode = require('getOffsetKeyFromNode');
 const getWindowForNode = require('getWindowForNode');
 const Immutable = require('immutable');
 const invariant = require('invariant');
-const nullthrows = require('nullthrows');
 
 const {Map} = Immutable;
 
@@ -40,7 +42,7 @@ const USE_CHAR_DATA = UserAgent.isBrowser('IE <= 11');
 class DOMObserver {
   observer: ?MutationObserver;
   container: HTMLElement;
-  mutations: Map<string, string>;
+  mutations: Map<string, Node | null>;
   onCharData: ?({
     target: EventTarget,
     type: string,
@@ -82,7 +84,7 @@ class DOMObserver {
     }
   }
 
-  stopAndFlushMutations(): Map<string, string> {
+  stopAndFlushMutations(): Map<string, Node | null> {
     const {observer} = this;
     if (observer) {
       this.registerMutations(observer.takeRecords());
@@ -106,46 +108,61 @@ class DOMObserver {
     }
   }
 
-  getMutationTextContent(mutation: MutationRecordT): ?string {
-    const {type, target, removedNodes} = mutation;
-    if (type === 'characterData') {
-      // When `textContent` is '', there is a race condition that makes
-      // getting the offsetKey from the target not possible.
-      // These events are also followed by a `childList`, which is the one
-      // we are able to retrieve the offsetKey and apply the '' text.
-      if (target.textContent !== '') {
-        // IE 11 considers the enter keypress that concludes the composition
-        // as an input char. This strips that newline character so the draft
-        // state does not receive spurious newlines.
-        if (USE_CHAR_DATA) {
-          return target.textContent.replace('\n', '');
-        }
-        return target.textContent;
-      }
-    } else if (type === 'childList') {
-      if (removedNodes && removedNodes.length) {
-        // `characterData` events won't happen or are ignored when
-        // removing the last character of a leaf node, what happens
-        // instead is a `childList` event with a `removedNodes` array.
-        // For this case the textContent should be '' and
-        // `DraftModifier.replaceText` will make sure the content is
-        // updated properly.
-        return '';
-      } else if (target.textContent !== '') {
-        // Typing Chinese in an empty block in MS Edge results in a
-        // `childList` event with non-empty textContent.
-        // See https://github.com/facebook/draft-js/issues/2082
-        return target.textContent;
-      }
-    }
-    return null;
+  addMutation(offsetKey: string, blockNode: Node | null): void {
+    const {blockKey} = DraftOffsetKey.decode(offsetKey);
+    this.mutations = this.mutations.set(blockKey, blockNode);
   }
 
   registerMutation(mutation: MutationRecordT): void {
-    const textContent = this.getMutationTextContent(mutation);
-    if (textContent != null) {
-      const offsetKey = nullthrows(findAncestorOffsetKey(mutation.target));
-      this.mutations = this.mutations.set(offsetKey, textContent);
+    const {type, target, removedNodes, addedNodes} = mutation;
+
+    // When multiple blocks are selected during the composition, some of them may get
+    // completely overwritten (removed or added) in the process.
+    // This always happens at the root of the editor where there are no more offset aware nodes up the hierarchy
+    // otherwise all leaf node mutations must work with their ancestor offset key.
+    const ancestorWithOffsetKey = findAncestorWithOffsetKey(target);
+    if (ancestorWithOffsetKey == null) {
+      if (type === 'childList') {
+        // Removed blocks are marked with null in the mutations and get removed in resolveComposition
+        if (removedNodes && removedNodes.length) {
+          Array.from(removedNodes)
+            .filter(node => node.hasAttribute?.('data-block'))
+            .forEach(node => {
+              const offsetKey = findAncestorOffsetKey(node);
+              if (offsetKey) {
+                this.addMutation(offsetKey, null);
+              }
+            });
+        }
+
+        // Some blocks may be reintroduced with undo during composition.
+        // We register them for data reconstruction to overwrite the earlier removal recorded in the mutations.
+        // Also, we don't know what else happened to the block in the meantime so reconstructing them is a safeguard.
+        if (addedNodes && addedNodes.length) {
+          Array.from(addedNodes)
+            .filter(node => node.hasAttribute?.('data-block'))
+            .forEach(node => {
+              const offsetKey = findAncestorOffsetKey(node);
+              if (offsetKey) {
+                this.addMutation(offsetKey, node);
+              }
+            });
+        }
+      }
+    } else {
+      // Other mutations, typically around text nodes.
+      // We record the offset key from the block root as in some cases (observed in Firefox),
+      // the nodes with offset key from another block may get merged to the target block making the metadata inconsistent.
+      // We let the reconstruction process in resolveComposition handle that.
+      const blockNode = findAncestorWithOffsetKey(ancestorWithOffsetKey, node =>
+        node.hasAttribute('data-block'),
+      );
+      if (blockNode) {
+        const offsetKey = getOffsetKeyFromNode(blockNode);
+        if (offsetKey) {
+          this.addMutation(offsetKey, blockNode);
+        }
+      }
     }
   }
 }

@@ -14,19 +14,15 @@
 import type DraftEditor from 'DraftEditor.react';
 
 const DOMObserver = require('DOMObserver');
-const DraftModifier = require('DraftModifier');
-const DraftOffsetKey = require('DraftOffsetKey');
+const ContentState = require('ContentState');
 const EditorState = require('EditorState');
 const Keys = require('Keys');
-const UserAgent = require('UserAgent');
 
 const editOnSelect = require('editOnSelect');
 const getContentEditableContainer = require('getContentEditableContainer');
-const getDraftEditorSelection = require('getDraftEditorSelection');
-const getEntityKeyForSelection = require('getEntityKeyForSelection');
+const getReconstructedBlock = require('getReconstructedBlock');
+const getReconstructedSelection = require('getReconstructedSelection');
 const nullthrows = require('nullthrows');
-
-const isIE = UserAgent.isBrowser('IE');
 
 /**
  * Millisecond delay to allow `compositionstart` to fire again upon
@@ -48,7 +44,8 @@ const RESOLVE_DELAY = 20;
  */
 let resolved = false;
 let stillComposing = false;
-let domObserver = null;
+let domObserver: DOMObserver | null = null;
+let selectionAtCompositionStart: SelectionState | null = null;
 
 function startDOMObserver(editor: DraftEditor) {
   if (!domObserver) {
@@ -59,11 +56,24 @@ function startDOMObserver(editor: DraftEditor) {
 
 const DraftEditorCompositionHandler = {
   /**
+   * When the composition finished but there is still some input before the editor switches
+   * to the standard handler, we ignore it.
+   * This may happen in case you type some text during composition, undo it, and press ESC to close IME
+   * Observed in Chrome.
+   */
+  onBeforeInput(editor: DraftEditor, event: SyntheticInputEvent<>): void {
+    if (!stillComposing) {
+      event.preventDefault();
+    }
+  },
+
+  /**
    * A `compositionstart` event has fired while we're still in composition
    * mode. Continue the current composition session to prevent a re-render.
    */
   onCompositionStart(editor: DraftEditor): void {
     stillComposing = true;
+    selectionAtCompositionStart = editor._latestEditorState.getSelection();
     startDOMObserver(editor);
   },
 
@@ -82,13 +92,15 @@ const DraftEditorCompositionHandler = {
    * Google Input Tools on Windows 8.1 fires `compositionend` three times.
    */
   onCompositionEnd(editor: DraftEditor): void {
-    resolved = false;
-    stillComposing = false;
-    setTimeout(() => {
-      if (!resolved) {
-        DraftEditorCompositionHandler.resolveComposition(editor);
-      }
-    }, RESOLVE_DELAY);
+    if (stillComposing) {
+      resolved = false;
+      stillComposing = false;
+      setTimeout(() => {
+        if (!resolved) {
+          DraftEditorCompositionHandler.resolveComposition(editor);
+        }
+      }, RESOLVE_DELAY);
+    }
   },
 
   onSelect: editOnSelect,
@@ -107,7 +119,16 @@ const DraftEditorCompositionHandler = {
       DraftEditorCompositionHandler.resolveComposition(editor);
       editor._onKeyDown(e);
       return;
+    } else if (!e.nativeEvent.isComposing) {
+      // In some cases, the `compositionend` event may not fire but composition ends anyway.
+      // E.g. in Chrome when you type some text during composition, then undo with CTRL+Z
+      // and exit the composition with ESC
+      // Thus when we receive an event without isComposing flag, we need to end the composition
+      e.preventDefault();
+      DraftEditorCompositionHandler.onCompositionEnd(editor);
+      return;
     }
+
     if (e.which === Keys.RIGHT || e.which === Keys.LEFT) {
       e.preventDefault();
     }
@@ -149,9 +170,14 @@ const DraftEditorCompositionHandler = {
     domObserver = null;
     resolved = true;
 
-    let editorState = EditorState.set(editor._latestEditorState, {
+    const editorState = EditorState.set(editor._latestEditorState, {
       inCompositionMode: false,
+      // As resolving composition happens asynchronously, the editor selection
+      // may be already updated via `editOnSelect` after the composed chars are inserted
+      // To get consistent selection handling for undo, we use the original selection instead.
+      selection: selectionAtCompositionStart || editorState.getSelection(),
     });
+    selectionAtCompositionStart = null;
 
     editor.exitCurrentMode();
 
@@ -177,73 +203,56 @@ const DraftEditorCompositionHandler = {
     //   return;
     // }
 
-    let contentState = editorState.getCurrentContent();
-    mutations.forEach((composedChars, offsetKey) => {
-      const {blockKey, decoratorKey, leafKey} = DraftOffsetKey.decode(
-        offsetKey,
-      );
+    const contentState = editorState.getCurrentContent();
+    const blocks = contentState.getBlocksAsArray();
+    const newBlocks = blocks
+      .map(block => {
+        const blockKey = block.getKey();
+        if (!mutations.has(blockKey)) {
+          return block;
+        }
 
-      const {start, end} = editorState
-        .getBlockTree(blockKey)
-        .getIn([decoratorKey, 'leaves', leafKey]);
+        // No longer existing blocks are completely removed
+        const blockNode = mutations.get(blockKey);
+        if (!blockNode) {
+          return null;
+        }
 
-      const replacementRange = editorState.getSelection().merge({
-        anchorKey: blockKey,
-        focusKey: blockKey,
-        anchorOffset: start,
-        focusOffset: end,
-        isBackward: false,
-      });
+        // For blocks with some mutations detected, we reconstruct the block content based on the current DOM
+        // while preserving the metadata from original editorState based on the original leaf offset keys (if found).
+        // For completely anonymous text nodes we just keep the text with empty metadata.
+        return getReconstructedBlock(block, blockNode, editorState);
+      })
+      .filter(block => !!block);
 
-      const entityKey = getEntityKeyForSelection(
-        contentState,
-        replacementRange,
-      );
-      const currentStyle = contentState
-        .getBlockForKey(blockKey)
-        .getInlineStyleAt(start);
+    const newContentState = ContentState.createFromBlockArray(
+      newBlocks,
+      contentState.getEntityMap(),
+    );
 
-      contentState = DraftModifier.replaceText(
-        contentState,
-        replacementRange,
-        composedChars,
-        currentStyle,
-        entityKey,
-      );
-      // We need to update the editorState so the leaf node ranges are properly
-      // updated and multiple mutations are correctly applied.
-      editorState = EditorState.set(editorState, {
-        currentContent: contentState,
-      });
+    // We need to reconstruct the selection based on relative offset from the block,
+    // as the rendered content metadata may be malformed at this point.
+    const finalSelection = getReconstructedSelection(editor, newContentState);
+
+    // Set proper metadata to content and editor state to properly handle undo
+    const newContentStateWithSelection = newContentState.merge({
+      selectionBefore: editorState.getSelection(),
+      selectionAfter: finalSelection,
     });
-
-    // When we apply the text changes to the ContentState, the selection always
-    // goes to the end of the field, but it should just stay where it is
-    // after compositionEnd.
-    const documentSelection = getDraftEditorSelection(
+    const newEditorState = EditorState.push(
       editorState,
-      getContentEditableContainer(editor),
+      newContentStateWithSelection,
+      newBlocks.length !== blocks.length ? 'remove-range' : 'insert-characters',
     );
-    const compositionEndSelectionState = documentSelection.selectionState;
 
+    const newEditorStateWithSelection = EditorState.forceSelection(
+      newEditorState,
+      finalSelection,
+    );
+
+    // We need to remount the editor DOM to a consistent state before it is re-rendered to avoid rendering inconsistencies
     editor.restoreEditorDOM();
-
-    // See:
-    // - https://github.com/facebook/draft-js/issues/2093
-    // - https://github.com/facebook/draft-js/pull/2094
-    // Apply this fix only in IE for now. We can test it in
-    // other browsers in the future to ensure no regressions
-    const editorStateWithUpdatedSelection = isIE
-      ? EditorState.forceSelection(editorState, compositionEndSelectionState)
-      : EditorState.acceptSelection(editorState, compositionEndSelectionState);
-
-    editor.update(
-      EditorState.push(
-        editorStateWithUpdatedSelection,
-        contentState,
-        'insert-characters',
-      ),
-    );
+    editor.update(newEditorStateWithSelection);
   },
 };
 
