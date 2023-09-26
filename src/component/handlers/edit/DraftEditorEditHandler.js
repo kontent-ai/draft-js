@@ -13,7 +13,6 @@
 
 import type DraftEditor from 'DraftEditor.react';
 
-const UserAgent = require('UserAgent');
 const Keys = require('Keys');
 
 const onBeforeInput = require('editOnBeforeInput');
@@ -28,15 +27,6 @@ const onInput = require('editOnInput');
 const onKeyDown = require('editOnKeyDown');
 const onPaste = require('editOnPaste');
 const onSelect = require('editOnSelect');
-
-const isChrome = UserAgent.isBrowser('Chrome');
-const isFirefox = UserAgent.isBrowser('Firefox');
-
-// In certain cases, contenteditable on chrome does not fire the onSelect
-// event, causing problems with cursor positioning. Therefore, the selection
-// state update handler is added to more events to ensure that the selection
-// state is always synced with the current cursor positions.
-const explicitlyHandleCaretPositioning = isChrome || isFirefox;
 
 const keysDown: Set<number> = new Set();
 
@@ -68,16 +58,14 @@ function updateMouseButtons(editor: DraftEditor, e: SyntheticMouseEvent) {
 }
 
 const DraftEditorEditHandler = {
-  onBeforeInput: explicitlyHandleCaretPositioning
-    ? (editor, e) => {
-        // Selection event may not fire if one starts typing before mouse/key up, so in this case we need to update the selection first
-        // otherwise the editor content could be malformed and handleBeforeInput could get incorrect selection
-        if (mouseButtonsDown || keysDown.size) {
-          onSelect(editor);
-        }
-        onBeforeInput(editor, e);
-      }
-    : onBeforeInput,
+  onBeforeInput: (editor, e) => {
+    // Selection event may not fire if one starts typing before mouse/key up, so in this case we need to update the selection first
+    // otherwise the editor content could be malformed and handleBeforeInput could get incorrect selection
+    if (mouseButtonsDown || keysDown.size) {
+      onSelect(editor);
+    }
+    onBeforeInput(editor, e);
+  },
   onBlur,
   onCompositionStart,
   onCopy,
@@ -89,27 +77,24 @@ const DraftEditorEditHandler = {
   onPaste,
   onSelect,
 
-  onMouseDown: explicitlyHandleCaretPositioning
-    ? updateMouseButtons
-    : undefined,
-  onMouseUp: explicitlyHandleCaretPositioning
-    ? (editor: DraftEditor, e: SyntheticMouseEvent) => {
-        updateMouseButtons(editor, e);
-        onSelect(editor);
-      }
-    : undefined,
-  onKeyDown: explicitlyHandleCaretPositioning
-    ? (editor: DraftEditor, e: SyntheticKeyboardEvent<HTMLElement>) => {
-        markTrackedKeyDown(e);
-        onKeyDown(editor, e);
-      }
-    : onKeyDown,
-  onKeyUp: explicitlyHandleCaretPositioning
-    ? (editor: DraftEditor, e: SyntheticKeyboardEvent<HTMLElement>) => {
-        markKeyUp(e);
-        onSelect(editor);
-      }
-    : undefined,
+  // In certain cases, contenteditable does not fire the onSelect
+  // event, causing problems with cursor positioning. Therefore, the selection
+  // state update handler is added to more events to ensure that the selection
+  // state is always synced with the current cursor positions.
+  // We also need to track the status of keys and mouse buttons to properly handle selection in input events, see above
+  onMouseDown: updateMouseButtons,
+  onMouseUp: (editor: DraftEditor, e: SyntheticMouseEvent) => {
+    updateMouseButtons(editor, e);
+    onSelect(editor);
+  },
+  onKeyDown: (editor: DraftEditor, e: SyntheticKeyboardEvent<HTMLElement>) => {
+    markTrackedKeyDown(e);
+    onKeyDown(editor, e);
+  },
+  onKeyUp: (editor: DraftEditor, e: SyntheticKeyboardEvent<HTMLElement>) => {
+    markKeyUp(e);
+    onSelect(editor);
+  },
 };
 
 module.exports = DraftEditorEditHandler;
