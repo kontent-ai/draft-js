@@ -40,7 +40,12 @@ function getDraftEditorSelection(
     // No selection, ever. As in, the user hasn't selected anything since
     // opening the document.
     anchorNode == null ||
-    focusNode == null
+    focusNode == null ||
+    // Selection is outside the current editor.
+    // This may happen when you make selection from one editor to another
+    // or when selection moves outside the editor other way
+    !root.contains(anchorNode) ||
+    !root.contains(focusNode)
   ) {
     return {
       selectionState: editorState.getSelection().set('hasFocus', false),
