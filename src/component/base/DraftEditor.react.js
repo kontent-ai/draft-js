@@ -393,6 +393,7 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
           ref={this._handleEditorContainerRef}>
           {/* Note: _handleEditorContainerRef assumes this div won't move: */}
           <div
+            id={this.props.id}
             aria-activedescendant={
               readOnly ? null : this.props.ariaActiveDescendantID
             }
