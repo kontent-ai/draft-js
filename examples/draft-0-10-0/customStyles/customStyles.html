@@ -53,7 +53,13 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
           super(props);
           this.state = {editorState: EditorState.createEmpty()};
 
-          this.focus = () => this.refs.editor.focus();
+          this.editorRef = React.createRef();
+          this.updateSelection = () => {
+            setTimeout(() => {
+              this.editorRef.current.updateSelection();
+            }, 5000);
+          }
+          this.focus = () => this.editorRef.current.focus();
           this.onChange = (editorState) => this.setState({editorState});
 
           this.handleKeyCommand = this._handleKeyCommand.bind(this);
@@ -134,7 +140,8 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
                 editorState={editorState}
                 onToggle={this.toggleInlineStyle}
               />
-              <button onClick={this.insertSoftNewLine}>Insert soft new line</button>
+              <button onClick={this.insertSoftNewLine}>Insert soft new line</button>&nbsp;
+              <button onClick={this.updateSelection} title="Calls updateSelection after 5s to test it. Catch it in the debugger to check if it executed.">Update selection</button>
               <div className={className} onClick={this.focus}>
                 <Editor
                   blockStyleFn={getBlockStyle}
@@ -145,7 +152,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
                   customStyleFn={getCustomStyle}
                   onChange={this.onChange}
                   placeholder="Tell a story..."
-                  ref="editor"
+                  ref={this.editorRef}
                   id="content-editable-id"
                   spellCheck={true}
                 />
