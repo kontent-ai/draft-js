@@ -194,6 +194,7 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
   getClipboard: () => ?BlockMap;
   getEditorKey: () => string;
   update: (editorState: EditorState) => void;
+  updateSelection: () => void;
   onDragEnter: () => void;
   onDragLeave: () => void;
 
@@ -583,6 +584,21 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
 
   exitCurrentMode: () => void = (): void => {
     this.setMode('edit');
+  };
+
+  /**
+   * Used via `this.updateSelection()`.
+   *
+   * Updates the editor state's selection based on the current DOM selection
+   * Use when (before) updating the editor state while mouse selection is in progress to prevent interrupting it
+   */
+  updateSelection: () => void = (): void => {
+    this._onSelect(
+      new Event('select', {
+        bubbles: true,
+        cancelable: true,
+      }),
+    );
   };
 
   /**
