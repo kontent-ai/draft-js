@@ -21,11 +21,13 @@ var flatten = require('gulp-flatten');
 var header = require('gulp-header');
 var gulpif = require('gulp-if');
 var rename = require('gulp-rename');
-var gulpUtil = require('gulp-util');
-var StatsPlugin = require('stats-webpack-plugin');
+// gulp-util is deprecated, using recommended alternatives
+var log = require('fancy-log');
+var PluginError = require('plugin-error');
 var through = require('through2');
-var UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+var TerserPlugin = require('terser-webpack-plugin');
 var webpackStream = require('webpack-stream');
+var webpack = require('webpack');
 
 var paths = {
   dist: 'dist',
@@ -102,28 +104,29 @@ var buildDist = function(opts) {
       library: 'Draft',
     },
     plugins: [
-      new webpackStream.webpack.DefinePlugin({
+      new webpack.DefinePlugin({
         'process.env.NODE_ENV': JSON.stringify(
           opts.debug ? 'development' : 'production',
         ),
       }),
-      new webpackStream.webpack.LoaderOptionsPlugin({
+      new webpack.LoaderOptionsPlugin({
         debug: opts.debug,
       }),
-      new StatsPlugin(`../meta/bundle-size-stats/${opts.output}.json`, {
-        chunkModules: true,
-      }),
     ],
+    mode: opts.debug ? 'development' : 'production',
   };
   if (!opts.debug) {
-    webpackOpts.plugins.push(new UglifyJsPlugin());
+    webpackOpts.optimization = {
+      minimize: true,
+      minimizer: [new TerserPlugin()],
+    };
   }
   const wpStream = webpackStream(webpackOpts, null, function(err, stats) {
     if (err) {
-      throw new gulpUtil.PluginError('webpack', err);
+      throw new PluginError('webpack', err);
     }
     if (stats.compilation.errors.length) {
-      gulpUtil.log('webpack', '\n' + stats.toString({colors: true}));
+      log('webpack', '\n' + stats.toString({colors: true}));
     }
   });
   return wpStream;
@@ -273,7 +276,6 @@ gulp.task(
 gulp.task(
   'default',
   gulp.series(
-    'check-dependencies',
     'clean',
     gulp.parallel('modules', 'flow'),
     gulp.parallel('dist', 'dist:min'),
