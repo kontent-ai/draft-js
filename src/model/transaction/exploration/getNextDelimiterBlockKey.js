@@ -12,10 +12,10 @@
  * production systems. This file may be update/removed without notice.
  */
 
-import type {BlockMap} from 'BlockMap';
-import type {BlockNodeRecord} from 'BlockNodeRecord';
+import type {BlockMap} from '../../immutable/BlockMap.js';
+import type {BlockNodeRecord} from '../../immutable/BlockNodeRecord.js';
 
-const ContentBlockNode = require('ContentBlockNode');
+const ContentBlockNode = require('../../immutable/ContentBlockNode.js');
 
 const getNextDelimiterBlockKey = (
   block: BlockNodeRecord,

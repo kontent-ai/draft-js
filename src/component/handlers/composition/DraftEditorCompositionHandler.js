@@ -11,18 +11,18 @@
 
 'use strict';
 
-import type DraftEditor from 'DraftEditor.react';
+import type DraftEditor from '../../base/DraftEditor.react.js';
 
-const DOMObserver = require('DOMObserver');
-const ContentState = require('ContentState');
-const EditorState = require('EditorState');
-const Keys = require('Keys');
+const DOMObserver = require('./DOMObserver.js');
+const ContentState = require('../../../model/immutable/ContentState.js');
+const EditorState = require('../../../model/immutable/EditorState.js');
+const Keys = require('fbjs/lib/Keys');
 
-const editOnSelect = require('editOnSelect');
-const getContentEditableContainer = require('getContentEditableContainer');
-const getReconstructedBlock = require('getReconstructedBlock');
-const getReconstructedSelection = require('getReconstructedSelection');
-const nullthrows = require('nullthrows');
+const editOnSelect = require('../edit/editOnSelect.js');
+const getContentEditableContainer = require('../../utils/getContentEditableContainer.js');
+const getReconstructedBlock = require('./getReconstructedBlock.js');
+const getReconstructedSelection = require('./getReconstructedSelection.js');
+const nullthrows = require('fbjs/lib/nullthrows');
 
 /**
  * Millisecond delay to allow `compositionstart` to fire again upon

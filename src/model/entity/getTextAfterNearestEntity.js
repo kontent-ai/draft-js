@@ -11,7 +11,7 @@
 
 'use strict';
 
-import type {BlockNodeRecord} from 'BlockNodeRecord';
+import type {BlockNodeRecord} from '../immutable/BlockNodeRecord.js';
 
 /**
  * Find the string of text between the previous entity and the specified

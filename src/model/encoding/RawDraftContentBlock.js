@@ -11,9 +11,9 @@
 
 'use strict';
 
-import type {DraftBlockType} from 'DraftBlockType';
-import type {EntityRange} from 'EntityRange';
-import type {InlineStyleRange} from 'InlineStyleRange';
+import type {DraftBlockType} from '../constants/DraftBlockType.js';
+import type {EntityRange} from './EntityRange.js';
+import type {InlineStyleRange} from './InlineStyleRange.js';
 
 /**
  * A plain object representation of a ContentBlock, with all style and entity

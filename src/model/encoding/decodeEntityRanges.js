@@ -11,9 +11,9 @@
 
 'use strict';
 
-import type {EntityRange} from 'EntityRange';
+import type {EntityRange} from './EntityRange.js';
 
-const UnicodeUtils = require('UnicodeUtils');
+const UnicodeUtils = require('fbjs/lib/UnicodeUtils');
 
 const {substr} = UnicodeUtils;
 

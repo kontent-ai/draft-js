@@ -11,22 +11,22 @@
 
 'use strict';
 
-import type DraftEditor from 'DraftEditor.react';
+import type DraftEditor from '../../base/DraftEditor.react.js';
 
-const Keys = require('Keys');
+const Keys = require('fbjs/lib/Keys');
 
-const onBeforeInput = require('editOnBeforeInput');
-const onBlur = require('editOnBlur');
-const onCompositionStart = require('editOnCompositionStart');
-const onCopy = require('editOnCopy');
-const onCut = require('editOnCut');
-const onDragOver = require('editOnDragOver');
-const onDragStart = require('editOnDragStart');
-const onFocus = require('editOnFocus');
-const onInput = require('editOnInput');
-const onKeyDown = require('editOnKeyDown');
-const onPaste = require('editOnPaste');
-const onSelect = require('editOnSelect');
+const onBeforeInput = require('./editOnBeforeInput.js');
+const onBlur = require('./editOnBlur.js');
+const onCompositionStart = require('./editOnCompositionStart.js');
+const onCopy = require('./editOnCopy.js');
+const onCut = require('./editOnCut.js');
+const onDragOver = require('./editOnDragOver.js');
+const onDragStart = require('./editOnDragStart.js');
+const onFocus = require('./editOnFocus.js');
+const onInput = require('./editOnInput.js');
+const onKeyDown = require('./editOnKeyDown.js');
+const onPaste = require('./editOnPaste.js');
+const onSelect = require('./editOnSelect.js');
 
 const keysDown: Set<number> = new Set();
 

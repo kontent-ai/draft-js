@@ -17,13 +17,13 @@
 
 'use strict';
 
-import type {BlockNode, BlockNodeConfig, BlockNodeKey} from 'BlockNode';
-import type {DraftBlockType} from 'DraftBlockType';
-import type {DraftInlineStyle} from 'DraftInlineStyle';
+import type {BlockNode, BlockNodeConfig, BlockNodeKey} from './BlockNode.js';
+import type {DraftBlockType} from '../constants/DraftBlockType.js';
+import type {DraftInlineStyle} from './DraftInlineStyle.js';
 
-const CharacterMetadata = require('CharacterMetadata');
+const CharacterMetadata = require('./CharacterMetadata.js');
 
-const findRangesImmutable = require('findRangesImmutable');
+const findRangesImmutable = require('./findRangesImmutable.js');
 const Immutable = require('immutable');
 
 const {List, Map, OrderedSet, Record, Repeat} = Immutable;

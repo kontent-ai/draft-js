@@ -11,14 +11,14 @@
 
 'use strict';
 
-import type {BlockNodeRecord} from 'BlockNodeRecord';
-import type {DraftInlineStyle} from 'DraftInlineStyle';
-import type {InlineStyleRange} from 'InlineStyleRange';
+import type {BlockNodeRecord} from '../immutable/BlockNodeRecord.js';
+import type {DraftInlineStyle} from '../immutable/DraftInlineStyle.js';
+import type {InlineStyleRange} from './InlineStyleRange.js';
 import type {List} from 'immutable';
 
-const UnicodeUtils = require('UnicodeUtils');
+const UnicodeUtils = require('fbjs/lib/UnicodeUtils');
 
-const findRangesImmutable = require('findRangesImmutable');
+const findRangesImmutable = require('../immutable/findRangesImmutable.js');
 
 const areEqual = (a, b) => a === b;
 const isTruthy = a => !!a;

@@ -12,11 +12,11 @@
 'use strict';
 
 const Immutable = require('immutable');
-const DraftOffsetKey = require('DraftOffsetKey');
-const CharacterMetadata = require('CharacterMetadata');
+const DraftOffsetKey = require('../../selection/DraftOffsetKey.js');
+const CharacterMetadata = require('../../../model/immutable/CharacterMetadata.js');
 
-const findAncestorWithOffsetKey = require('findAncestorWithOffsetKey');
-const getOffsetKeyFromNode = require('getOffsetKeyFromNode');
+const findAncestorWithOffsetKey = require('../../selection/findAncestorWithOffsetKey.js');
+const getOffsetKeyFromNode = require('../../selection/getOffsetKeyFromNode.js');
 
 /**
  * Reconstructs content block data from the current state of DOM and known editor state.

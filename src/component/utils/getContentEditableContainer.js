@@ -11,10 +11,10 @@
 
 'use strict';
 
-import type DraftEditor from 'DraftEditor.react';
+import type DraftEditor from '../base/DraftEditor.react.js';
 
-const invariant = require('invariant');
-const isHTMLElement = require('isHTMLElement');
+const invariant = require('fbjs/lib/invariant');
+const isHTMLElement = require('./isHTMLElement.js');
 
 function getContentEditableContainer(editor: DraftEditor): HTMLElement {
   const editorNode = editor.editorContainer;

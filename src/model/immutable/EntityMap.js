@@ -11,7 +11,7 @@
 
 'use strict';
 
-import type {DraftEntityMapObject} from 'DraftEntity';
+import type {DraftEntityMapObject} from '../entity/DraftEntity.js';
 
 // TODO: when removing the deprecated Entity api
 // change this to be

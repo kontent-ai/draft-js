@@ -12,10 +12,10 @@
 'use strict';
 
 const React = require('React');
-const UserAgent = require('UserAgent');
+const UserAgent = require('fbjs/lib/UserAgent');
 
-const invariant = require('invariant');
-const isElement = require('isElement');
+const invariant = require('fbjs/lib/invariant');
+const isElement = require('../utils/isElement.js');
 
 // In IE, spans with <br> tags render as two newlines. By rendering a span
 // with only a newline character, we can be sure to render a single line.

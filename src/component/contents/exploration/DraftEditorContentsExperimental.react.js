@@ -16,17 +16,17 @@
 
 'use strict';
 
-import type {BlockNodeRecord} from 'BlockNodeRecord';
-import type {DraftBlockRenderMap} from 'DraftBlockRenderMap';
-import type {DraftInlineStyle} from 'DraftInlineStyle';
-import type EditorState from 'EditorState';
-import type {BidiDirection} from 'UnicodeBidiDirection';
+import type {BlockNodeRecord} from '../../../model/immutable/BlockNodeRecord.js';
+import type {DraftBlockRenderMap} from '../../../model/immutable/DraftBlockRenderMap.js';
+import type {DraftInlineStyle} from '../../../model/immutable/DraftInlineStyle.js';
+import type EditorState from '../../../model/immutable/EditorState.js';
+import type {BidiDirection} from 'fbjs/lib/UnicodeBidiDirection';
 
-const DraftEditorBlockNode = require('DraftEditorBlockNode.react');
-const DraftOffsetKey = require('DraftOffsetKey');
+const DraftEditorBlockNode = require('./DraftEditorBlockNode.react.js');
+const DraftOffsetKey = require('../../selection/DraftOffsetKey.js');
 const React = require('React');
 
-const nullthrows = require('nullthrows');
+const nullthrows = require('fbjs/lib/nullthrows');
 
 type Props = {
   blockRenderMap: DraftBlockRenderMap,

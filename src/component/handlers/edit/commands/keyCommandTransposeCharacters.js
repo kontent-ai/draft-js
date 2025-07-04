@@ -11,10 +11,10 @@
 
 'use strict';
 
-const DraftModifier = require('DraftModifier');
-const EditorState = require('EditorState');
+const DraftModifier = require('../../../../model/modifier/DraftModifier.js');
+const EditorState = require('../../../../model/immutable/EditorState.js');
 
-const getContentStateFragment = require('getContentStateFragment');
+const getContentStateFragment = require('../../../../model/transaction/getContentStateFragment.js');
 
 /**
  * Transpose the characters on either side of a collapsed cursor, or

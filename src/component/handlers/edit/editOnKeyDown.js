@@ -11,27 +11,27 @@
 
 'use strict';
 
-import type DraftEditor from 'DraftEditor.react';
-import type {DraftEditorCommand} from 'DraftEditorCommand';
+import type DraftEditor from '../../base/DraftEditor.react.js';
+import type {DraftEditorCommand} from '../../../model/constants/DraftEditorCommand.js';
 
-const DraftModifier = require('DraftModifier');
-const EditorState = require('EditorState');
-const KeyBindingUtil = require('KeyBindingUtil');
-const Keys = require('Keys');
-const SecondaryClipboard = require('SecondaryClipboard');
-const UserAgent = require('UserAgent');
+const DraftModifier = require('../../../model/modifier/DraftModifier.js');
+const EditorState = require('../../../model/immutable/EditorState.js');
+const KeyBindingUtil = require('../../utils/KeyBindingUtil.js');
+const Keys = require('fbjs/lib/Keys');
+const SecondaryClipboard = require('./commands/SecondaryClipboard.js');
+const UserAgent = require('fbjs/lib/UserAgent');
 
-const isEventHandled = require('isEventHandled');
-const keyCommandBackspaceToStartOfLine = require('keyCommandBackspaceToStartOfLine');
-const keyCommandBackspaceWord = require('keyCommandBackspaceWord');
-const keyCommandDeleteWord = require('keyCommandDeleteWord');
-const keyCommandInsertNewline = require('keyCommandInsertNewline');
-const keyCommandMoveSelectionToEndOfBlock = require('keyCommandMoveSelectionToEndOfBlock');
-const keyCommandMoveSelectionToStartOfBlock = require('keyCommandMoveSelectionToStartOfBlock');
-const keyCommandPlainBackspace = require('keyCommandPlainBackspace');
-const keyCommandPlainDelete = require('keyCommandPlainDelete');
-const keyCommandTransposeCharacters = require('keyCommandTransposeCharacters');
-const keyCommandUndo = require('keyCommandUndo');
+const isEventHandled = require('../../utils/isEventHandled.js');
+const keyCommandBackspaceToStartOfLine = require('./commands/keyCommandBackspaceToStartOfLine.js');
+const keyCommandBackspaceWord = require('./commands/keyCommandBackspaceWord.js');
+const keyCommandDeleteWord = require('./commands/keyCommandDeleteWord.js');
+const keyCommandInsertNewline = require('./commands/keyCommandInsertNewline.js');
+const keyCommandMoveSelectionToEndOfBlock = require('./commands/keyCommandMoveSelectionToEndOfBlock.js');
+const keyCommandMoveSelectionToStartOfBlock = require('./commands/keyCommandMoveSelectionToStartOfBlock.js');
+const keyCommandPlainBackspace = require('./commands/keyCommandPlainBackspace.js');
+const keyCommandPlainDelete = require('./commands/keyCommandPlainDelete.js');
+const keyCommandTransposeCharacters = require('./commands/keyCommandTransposeCharacters.js');
+const keyCommandUndo = require('./commands/keyCommandUndo.js');
 
 const {isOptionKeyCommand} = KeyBindingUtil;
 const isChrome = UserAgent.isBrowser('Chrome');

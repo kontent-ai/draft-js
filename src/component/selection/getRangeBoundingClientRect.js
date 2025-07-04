@@ -11,7 +11,7 @@
 
 'use strict';
 
-const getRangeClientRects = require('getRangeClientRects');
+const getRangeClientRects = require('./getRangeClientRects.js');
 
 export type FakeClientRect = {|
   left: number,

@@ -11,10 +11,10 @@
 
 'use strict';
 
-import type {BlockNodeKey} from 'BlockNode';
-import type {BlockNodeRecord} from 'BlockNodeRecord';
-import type ContentState from 'ContentState';
-import type {HTMLDir} from 'UnicodeBidiDirection';
+import type {BlockNodeKey} from '../immutable/BlockNode.js';
+import type {BlockNodeRecord} from '../immutable/BlockNodeRecord.js';
+import type ContentState from '../immutable/ContentState.js';
+import type {HTMLDir} from 'fbjs/lib/UnicodeBidiDirection';
 
 const React = require('React');
 

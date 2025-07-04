@@ -12,8 +12,8 @@
 
 'use strict';
 
-import type {DraftEntityMutability} from 'DraftEntityMutability';
-import type {DraftEntityType} from 'DraftEntityType';
+import type {DraftEntityMutability} from './DraftEntityMutability.js';
+import type {DraftEntityType} from './DraftEntityType.js';
 
 const Immutable = require('immutable');
 

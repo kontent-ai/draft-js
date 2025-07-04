@@ -11,11 +11,11 @@
 
 'use strict';
 
-import type {BlockMap} from 'BlockMap';
+import type {BlockMap} from '../immutable/BlockMap.js';
 
-const ContentBlockNode = require('ContentBlockNode');
+const ContentBlockNode = require('../immutable/ContentBlockNode.js');
 
-const generateRandomKey = require('generateRandomKey');
+const generateRandomKey = require('../keys/generateRandomKey.js');
 const Immutable = require('immutable');
 
 const {OrderedMap} = Immutable;

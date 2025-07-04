@@ -11,23 +11,23 @@
  * This is unstable and not part of the public API and should not be used by
  * production systems. This file may be update/removed without notice.
  */
-import type {BlockMap} from 'BlockMap';
-import type ContentState from 'ContentState';
-import type {DraftBlockType} from 'DraftBlockType';
-import type {DraftEditorCommand} from 'DraftEditorCommand';
-import type {DataObjectForLink, RichTextUtils} from 'RichTextUtils';
-import type SelectionState from 'SelectionState';
-import type URI from 'URI';
+import type {BlockMap} from '../../immutable/BlockMap.js';
+import type ContentState from '../../immutable/ContentState.js';
+import type {DraftBlockType} from '../../constants/DraftBlockType.js';
+import type {DraftEditorCommand} from '../../constants/DraftEditorCommand.js';
+import type {DataObjectForLink, RichTextUtils} from '../RichTextUtils.js';
+import type SelectionState from '../../immutable/SelectionState.js';
+import type URI from 'fbjs/lib/URI';
 
-const ContentBlockNode = require('ContentBlockNode');
-const DraftModifier = require('DraftModifier');
-const DraftTreeOperations = require('DraftTreeOperations');
-const EditorState = require('EditorState');
-const RichTextEditorUtil = require('RichTextEditorUtil');
+const ContentBlockNode = require('../../immutable/ContentBlockNode.js');
+const DraftModifier = require('../DraftModifier.js');
+const DraftTreeOperations = require('./DraftTreeOperations.js');
+const EditorState = require('../../immutable/EditorState.js');
+const RichTextEditorUtil = require('../RichTextEditorUtil.js');
 
-const adjustBlockDepthForContentState = require('adjustBlockDepthForContentState');
-const generateRandomKey = require('generateRandomKey');
-const invariant = require('invariant');
+const adjustBlockDepthForContentState = require('../../transaction/adjustBlockDepthForContentState.js');
+const generateRandomKey = require('../../keys/generateRandomKey.js');
+const invariant = require('fbjs/lib/invariant');
 
 // Eventually we could allow to control this list by either allowing user configuration
 // and/or a schema in conjunction to DraftBlockRenderMap

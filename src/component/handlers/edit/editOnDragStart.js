@@ -11,7 +11,7 @@
 
 'use strict';
 
-import type DraftEditor from 'DraftEditor.react';
+import type DraftEditor from '../../base/DraftEditor.react.js';
 
 /**
  * A `dragstart` event has begun within the text editor component.

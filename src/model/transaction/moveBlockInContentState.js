@@ -11,16 +11,16 @@
 
 'use strict';
 
-import type {BlockMap} from 'BlockMap';
-import type {BlockNodeRecord} from 'BlockNodeRecord';
-import type ContentState from 'ContentState';
-import type {DraftInsertionType} from 'DraftInsertionType';
+import type {BlockMap} from '../immutable/BlockMap.js';
+import type {BlockNodeRecord} from '../immutable/BlockNodeRecord.js';
+import type ContentState from '../immutable/ContentState.js';
+import type {DraftInsertionType} from '../constants/DraftInsertionType.js';
 
-const ContentBlockNode = require('ContentBlockNode');
+const ContentBlockNode = require('../immutable/ContentBlockNode.js');
 
-const getNextDelimiterBlockKey = require('getNextDelimiterBlockKey');
+const getNextDelimiterBlockKey = require('./exploration/getNextDelimiterBlockKey.js');
 const Immutable = require('immutable');
-const invariant = require('invariant');
+const invariant = require('fbjs/lib/invariant');
 
 const {OrderedMap, List} = Immutable;
 

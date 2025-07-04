@@ -11,14 +11,14 @@
 
 'use strict';
 
-import type {BlockMap} from 'BlockMap';
-import type SelectionState from 'SelectionState';
+import type {BlockMap} from '../../../../model/immutable/BlockMap.js';
+import type SelectionState from '../../../../model/immutable/SelectionState.js';
 
-const DraftModifier = require('DraftModifier');
-const EditorState = require('EditorState');
+const DraftModifier = require('../../../../model/modifier/DraftModifier.js');
+const EditorState = require('../../../../model/immutable/EditorState.js');
 
-const getContentStateFragment = require('getContentStateFragment');
-const nullthrows = require('nullthrows');
+const getContentStateFragment = require('../../../../model/transaction/getContentStateFragment.js');
+const nullthrows = require('fbjs/lib/nullthrows');
 
 let clipboard: ?BlockMap = null;
 

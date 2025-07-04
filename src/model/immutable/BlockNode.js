@@ -11,10 +11,10 @@
 
 'use strict';
 
-import type CharacterMetadata from 'CharacterMetadata';
-import type {CharacterMetadataRawConfig} from 'CharacterMetadata';
-import type {DraftBlockType} from 'DraftBlockType';
-import type {DraftInlineStyle} from 'DraftInlineStyle';
+import type CharacterMetadata from './CharacterMetadata.js';
+import type {CharacterMetadataRawConfig} from './CharacterMetadata.js';
+import type {DraftBlockType} from '../constants/DraftBlockType.js';
+import type {DraftInlineStyle} from './DraftInlineStyle.js';
 import type {List, Map} from 'immutable';
 
 export type BlockNodeKey = string;

@@ -14,19 +14,19 @@
 
 'use strict';
 
-import type {BlockNodeRecord} from 'BlockNodeRecord';
-import type ContentState from 'ContentState';
-import type {DraftDecoratorType} from 'DraftDecoratorType';
-import type SelectionState from 'SelectionState';
-import type {BidiDirection} from 'UnicodeBidiDirection';
+import type {BlockNodeRecord} from '../../../model/immutable/BlockNodeRecord.js';
+import type ContentState from '../../../model/immutable/ContentState.js';
+import type {DraftDecoratorType} from '../../../model/decorators/DraftDecoratorType.js';
+import type SelectionState from '../../../model/immutable/SelectionState.js';
+import type {BidiDirection} from 'fbjs/lib/UnicodeBidiDirection';
 
-const DraftEditorDecoratedLeaves = require('DraftEditorDecoratedLeaves.react');
-const DraftEditorLeaf = require('DraftEditorLeaf.react');
-const DraftOffsetKey = require('DraftOffsetKey');
+const DraftEditorDecoratedLeaves = require('./DraftEditorDecoratedLeaves.react.js');
+const DraftEditorLeaf = require('../DraftEditorLeaf.react.js');
+const DraftOffsetKey = require('../../selection/DraftOffsetKey.js');
 const Immutable = require('immutable');
 const React = require('React');
 
-const cx = require('cx');
+const cx = require('fbjs/lib/cx');
 
 const {List} = Immutable;
 

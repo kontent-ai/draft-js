@@ -1,6 +1,6 @@
 'use strict';
 
-import type EditorState from 'EditorState';
+import type EditorState from '../../model/immutable/EditorState.js';
 
 function isSelectionAtBlockEndWithNewLine(editorState: EditorState): boolean {
   const selection = editorState.getSelection();

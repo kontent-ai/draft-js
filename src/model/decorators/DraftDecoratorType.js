@@ -11,8 +11,8 @@
 
 'use strict';
 
-import type {BlockNodeRecord} from 'BlockNodeRecord';
-import type ContentState from 'ContentState';
+import type {BlockNodeRecord} from '../immutable/BlockNodeRecord.js';
+import type ContentState from '../immutable/ContentState.js';
 import type {List} from 'immutable';
 
 /**

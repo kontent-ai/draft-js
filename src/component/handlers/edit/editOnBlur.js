@@ -11,13 +11,13 @@
 
 'use strict';
 
-import type {SelectionObject} from 'DraftDOMTypes';
-import type DraftEditor from 'DraftEditor.react';
+import type {SelectionObject} from '../../utils/DraftDOMTypes.js';
+import type DraftEditor from '../../base/DraftEditor.react.js';
 
-const EditorState = require('EditorState');
+const EditorState = require('../../../model/immutable/EditorState.js');
 
-const containsNode = require('containsNode');
-const getActiveElement = require('getActiveElement');
+const containsNode = require('fbjs/lib/containsNode');
+const getActiveElement = require('fbjs/lib/getActiveElement');
 
 function editOnBlur(editor: DraftEditor, e: SyntheticEvent<HTMLElement>): void {
   // In a contentEditable element, when you select a range and then click

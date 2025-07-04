@@ -11,8 +11,8 @@
 
 'use strict';
 
-import type {RawDraftContentBlock} from 'RawDraftContentBlock';
-import type {RawDraftEntity} from 'RawDraftEntity';
+import type {RawDraftContentBlock} from './RawDraftContentBlock.js';
+import type {RawDraftEntity} from './RawDraftEntity.js';
 
 /**
  * A type that represents a composed document as vanilla JavaScript objects,

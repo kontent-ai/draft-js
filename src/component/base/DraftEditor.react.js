@@ -12,34 +12,34 @@
 
 'use strict';
 
-import type {BlockMap} from 'BlockMap';
-import type {DraftEditorModes} from 'DraftEditorModes';
-import type {DraftEditorDefaultProps, DraftEditorProps} from 'DraftEditorProps';
-import type {DraftScrollPosition} from 'DraftScrollPosition';
+import type {BlockMap} from '../../model/immutable/BlockMap.js';
+import type {DraftEditorModes} from '../handlers/DraftEditorModes.js';
+import type {DraftEditorDefaultProps, DraftEditorProps} from './DraftEditorProps.js';
+import type {DraftScrollPosition} from './DraftScrollPosition.js';
 
-const DefaultDraftBlockRenderMap = require('DefaultDraftBlockRenderMap');
-const DefaultDraftInlineStyle = require('DefaultDraftInlineStyle');
-const DraftEditorCompositionHandler = require('DraftEditorCompositionHandler');
-const DraftEditorContents = require('DraftEditorContents.react');
-const DraftEditorDragHandler = require('DraftEditorDragHandler');
-const DraftEditorEditHandler = require('DraftEditorEditHandler');
-const flushControlled = require('DraftEditorFlushControlled');
-const DraftEditorPlaceholder = require('DraftEditorPlaceholder.react');
-const DraftEffects = require('DraftEffects');
-const EditorState = require('EditorState');
+const DefaultDraftBlockRenderMap = require('../../model/immutable/DefaultDraftBlockRenderMap.js');
+const DefaultDraftInlineStyle = require('../../model/immutable/DefaultDraftInlineStyle.js');
+const DraftEditorCompositionHandler = require('../handlers/composition/DraftEditorCompositionHandler.js');
+const DraftEditorContents = require('../../stubs/DraftEditorContents.react.js');
+const DraftEditorDragHandler = require('../handlers/drag/DraftEditorDragHandler.js');
+const DraftEditorEditHandler = require('../handlers/edit/DraftEditorEditHandler.js');
+const flushControlled = require('./DraftEditorFlushControlled.js');
+const DraftEditorPlaceholder = require('./DraftEditorPlaceholder.react.js');
+const DraftEffects = require('../../stubs/DraftEffects.js');
+const EditorState = require('../../model/immutable/EditorState.js');
 const React = require('React');
-const Scroll = require('Scroll');
-const Style = require('Style');
-const UserAgent = require('UserAgent');
+const Scroll = require('fbjs/lib/Scroll');
+const Style = require('fbjs/lib/Style');
+const UserAgent = require('fbjs/lib/UserAgent');
 
-const cx = require('cx');
-const generateRandomKey = require('generateRandomKey');
-const getDefaultKeyBinding = require('getDefaultKeyBinding');
-const getScrollPosition = require('getScrollPosition');
-const gkx = require('gkx');
-const invariant = require('invariant');
-const isHTMLElement = require('isHTMLElement');
-const nullthrows = require('nullthrows');
+const cx = require('fbjs/lib/cx');
+const generateRandomKey = require('../../model/keys/generateRandomKey.js');
+const getDefaultKeyBinding = require('../utils/getDefaultKeyBinding.js');
+const getScrollPosition = require('fbjs/lib/getScrollPosition');
+const gkx = require('../../stubs/gkx.js');
+const invariant = require('fbjs/lib/invariant');
+const isHTMLElement = require('../utils/isHTMLElement.js');
+const nullthrows = require('fbjs/lib/nullthrows');
 
 const isIE = UserAgent.isBrowser('IE');
 

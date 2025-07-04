@@ -11,10 +11,10 @@
 
 'use strict';
 
-import type EditorState from 'EditorState';
-import type SelectionState from 'SelectionState';
+import type EditorState from '../../../../model/immutable/EditorState.js';
+import type SelectionState from '../../../../model/immutable/SelectionState.js';
 
-const warning = require('warning');
+const warning = require('fbjs/lib/warning');
 
 /**
  * Given a collapsed selection, move the focus `maxDistance` forward within

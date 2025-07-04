@@ -11,13 +11,13 @@
 
 'use strict';
 
-import type {BlockNodeRecord} from 'BlockNodeRecord';
-import type CharacterMetadata from 'CharacterMetadata';
-import type ContentState from 'ContentState';
-import type {DraftDecoratorType} from 'DraftDecoratorType';
+import type {BlockNodeRecord} from './BlockNodeRecord.js';
+import type CharacterMetadata from './CharacterMetadata.js';
+import type ContentState from './ContentState.js';
+import type {DraftDecoratorType} from '../decorators/DraftDecoratorType.js';
 
-const findRangesImmutable = require('findRangesImmutable');
-const getOwnObjectValues = require('getOwnObjectValues');
+const findRangesImmutable = require('./findRangesImmutable.js');
+const getOwnObjectValues = require('../../util/getOwnObjectValues.js');
 const Immutable = require('immutable');
 
 const {List, Repeat, Record} = Immutable;

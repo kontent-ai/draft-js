@@ -11,8 +11,8 @@
 
 'use strict';
 
-import type ContentState from 'ContentState';
-import type SelectionState from 'SelectionState';
+import type ContentState from '../immutable/ContentState.js';
+import type SelectionState from '../immutable/SelectionState.js';
 
 function adjustBlockDepthForContentState(
   contentState: ContentState,

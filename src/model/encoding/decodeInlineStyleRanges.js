@@ -11,10 +11,10 @@
 
 'use strict';
 
-import type {DraftInlineStyle} from 'DraftInlineStyle';
-import type {InlineStyleRange} from 'InlineStyleRange';
+import type {DraftInlineStyle} from '../immutable/DraftInlineStyle.js';
+import type {InlineStyleRange} from './InlineStyleRange.js';
 
-const UnicodeUtils = require('UnicodeUtils');
+const UnicodeUtils = require('fbjs/lib/UnicodeUtils');
 
 const {OrderedSet} = require('immutable');
 const {substr} = UnicodeUtils;

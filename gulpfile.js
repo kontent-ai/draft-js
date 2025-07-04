@@ -8,8 +8,6 @@
 'use strict';
 
 var packageData = require('./package.json');
-var moduleMap = require('./scripts/module-map');
-var fbjsConfigurePreset = require('babel-preset-fbjs/configure');
 var del = require('del');
 var gulpCheckDependencies = require('fbjs-scripts/gulp/check-dependencies');
 var gulp = require('gulp');
@@ -17,7 +15,6 @@ var babel = require('gulp-babel');
 var cleanCSS = require('gulp-clean-css');
 var concatCSS = require('gulp-concat-css');
 var derequire = require('gulp-derequire');
-var flatten = require('gulp-flatten');
 var header = require('gulp-header');
 var gulpif = require('gulp-if');
 var rename = require('gulp-rename');
@@ -31,7 +28,6 @@ var webpack = require('webpack');
 
 var paths = {
   dist: 'dist',
-  lib: 'lib',
   src: [
     'src/**/*.js',
     '!src/**/__tests__/**/*.js',
@@ -42,10 +38,13 @@ var paths = {
 
 var babelOptsJS = {
   presets: [
-    fbjsConfigurePreset({
-      stripDEV: true,
-      rewriteModules: {map: moduleMap},
-    }),
+    ['@babel/preset-env', {
+      targets: {
+        browsers: ['> 1%', 'last 2 versions', 'not ie <= 8']
+      }
+    }],
+    '@babel/preset-react',
+    '@babel/preset-flow'
   ],
   plugins: [
     require('@babel/plugin-proposal-nullish-coalescing-operator'),
@@ -55,10 +54,7 @@ var babelOptsJS = {
 
 var babelOptsFlow = {
   presets: [
-    fbjsConfigurePreset({
-      target: 'flow',
-      rewriteModules: {map: moduleMap},
-    }),
+    '@babel/preset-flow'
   ],
   plugins: [
     require('@babel/plugin-proposal-nullish-coalescing-operator'),
@@ -135,7 +131,7 @@ var buildDist = function(opts) {
 gulp.task(
   'clean',
   gulp.series(function() {
-    return del([paths.dist, paths.lib]);
+    return del([paths.dist]);
   }),
 );
 
@@ -145,20 +141,7 @@ gulp.task(
     return gulp
       .src(paths.src)
       .pipe(babel(babelOptsJS))
-      .pipe(flatten())
-      .pipe(gulp.dest(paths.lib));
-  }),
-);
-
-gulp.task(
-  'flow',
-  gulp.series(function() {
-    return gulp
-      .src(paths.src)
-      .pipe(babel(babelOptsFlow))
-      .pipe(flatten())
-      .pipe(rename({extname: '.js.flow'}))
-      .pipe(gulp.dest(paths.lib));
+      .pipe(gulp.dest('dist/modules'));
   }),
 );
 
@@ -219,7 +202,7 @@ gulp.task(
       output: 'Draft.js',
     };
     return gulp
-      .src('./lib/Draft.js')
+      .src('./dist/modules/Draft.js')
       .pipe(buildDist(opts))
       .pipe(derequire())
       .pipe(
@@ -240,7 +223,7 @@ gulp.task(
       output: 'Draft.min.js',
     };
     return gulp
-      .src('./lib/Draft.js')
+      .src('./dist/modules/Draft.js')
       .pipe(buildDist(opts))
       .pipe(
         gulpif(
@@ -277,7 +260,7 @@ gulp.task(
   'default',
   gulp.series(
     'clean',
-    gulp.parallel('modules', 'flow'),
+    gulp.parallel('modules'),
     gulp.parallel('dist', 'dist:min'),
   ),
 );

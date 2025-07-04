@@ -11,7 +11,7 @@
 
 'use strict';
 
-const EditorState = require('EditorState');
+const EditorState = require('../../../../model/immutable/EditorState.js');
 
 /**
  * See comment for `moveSelectionToStartOfBlock`.

@@ -11,10 +11,10 @@
 
 'use strict';
 
-import type ContentState from 'ContentState';
-import type SelectionState from 'SelectionState';
+import type ContentState from '../immutable/ContentState.js';
+import type SelectionState from '../immutable/SelectionState.js';
 
-const CharacterMetadata = require('CharacterMetadata');
+const CharacterMetadata = require('../immutable/CharacterMetadata.js');
 const {Map} = require('immutable');
 
 const ContentStateInlineStyle = {

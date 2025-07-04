@@ -11,9 +11,9 @@
 
 'use strict';
 
-import type {DraftInlineStyle} from 'DraftInlineStyle';
+import type {DraftInlineStyle} from '../immutable/DraftInlineStyle.js';
 
-const CharacterMetadata = require('CharacterMetadata');
+const CharacterMetadata = require('../immutable/CharacterMetadata.js');
 
 const Immutable = require('immutable');
 

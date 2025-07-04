@@ -11,13 +11,13 @@
 
 'use strict';
 
-import type DraftEditor from 'DraftEditor.react';
+import type DraftEditor from '../../base/DraftEditor.react.js';
 
-const DraftJsDebugLogging = require('DraftJsDebugLogging');
-const EditorState = require('EditorState');
+const DraftJsDebugLogging = require('../../../stubs/DraftJsDebugLogging.js');
+const EditorState = require('../../../model/immutable/EditorState.js');
 
-const getContentEditableContainer = require('getContentEditableContainer');
-const getDraftEditorSelection = require('getDraftEditorSelection');
+const getContentEditableContainer = require('../../utils/getContentEditableContainer.js');
+const getDraftEditorSelection = require('../../selection/getDraftEditorSelection.js');
 
 function editOnSelect(editor: DraftEditor): void {
   if (

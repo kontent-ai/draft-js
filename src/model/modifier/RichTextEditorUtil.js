@@ -11,18 +11,18 @@
 
 'use strict';
 
-import type ContentState from 'ContentState';
-import type {DraftBlockType} from 'DraftBlockType';
-import type {DraftEditorCommand} from 'DraftEditorCommand';
-import type {DataObjectForLink, RichTextUtils} from 'RichTextUtils';
-import type SelectionState from 'SelectionState';
-import type URI from 'URI';
+import type ContentState from '../immutable/ContentState.js';
+import type {DraftBlockType} from '../constants/DraftBlockType.js';
+import type {DraftEditorCommand} from '../constants/DraftEditorCommand.js';
+import type {DataObjectForLink, RichTextUtils} from './RichTextUtils.js';
+import type SelectionState from '../immutable/SelectionState.js';
+import type URI from 'fbjs/lib/URI';
 
-const DraftModifier = require('DraftModifier');
-const EditorState = require('EditorState');
+const DraftModifier = require('./DraftModifier.js');
+const EditorState = require('../immutable/EditorState.js');
 
-const adjustBlockDepthForContentState = require('adjustBlockDepthForContentState');
-const nullthrows = require('nullthrows');
+const adjustBlockDepthForContentState = require('../transaction/adjustBlockDepthForContentState.js');
+const nullthrows = require('fbjs/lib/nullthrows');
 
 const RichTextEditorUtil: RichTextUtils = {
   currentBlockContainsLink: function(editorState: EditorState): boolean {

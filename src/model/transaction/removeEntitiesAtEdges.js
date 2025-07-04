@@ -11,16 +11,16 @@
 
 'use strict';
 
-import type {BlockNodeRecord} from 'BlockNodeRecord';
-import type ContentState from 'ContentState';
-import type {EntityMap} from 'EntityMap';
-import type SelectionState from 'SelectionState';
+import type {BlockNodeRecord} from '../immutable/BlockNodeRecord.js';
+import type ContentState from '../immutable/ContentState.js';
+import type {EntityMap} from '../immutable/EntityMap.js';
+import type SelectionState from '../immutable/SelectionState.js';
 import type {List} from 'immutable';
 
-const CharacterMetadata = require('CharacterMetadata');
+const CharacterMetadata = require('../immutable/CharacterMetadata.js');
 
-const findRangesImmutable = require('findRangesImmutable');
-const invariant = require('invariant');
+const findRangesImmutable = require('../immutable/findRangesImmutable.js');
+const invariant = require('fbjs/lib/invariant');
 
 function removeEntitiesAtEdges(
   contentState: ContentState,

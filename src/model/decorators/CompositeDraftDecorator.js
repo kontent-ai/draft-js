@@ -11,9 +11,9 @@
 
 'use strict';
 
-import type {BlockNodeRecord} from 'BlockNodeRecord';
-import type ContentState from 'ContentState';
-import type {DraftDecorator} from 'DraftDecorator';
+import type {BlockNodeRecord} from '../immutable/BlockNodeRecord.js';
+import type ContentState from '../immutable/ContentState.js';
+import type {DraftDecorator} from './DraftDecorator.js';
 
 const Immutable = require('immutable');
 

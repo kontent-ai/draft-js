@@ -11,18 +11,18 @@
 
 'use strict';
 
-import type {SelectionObject} from 'DraftDOMTypes';
-import type SelectionState from 'SelectionState';
+import type {SelectionObject} from '../utils/DraftDOMTypes.js';
+import type SelectionState from '../../model/immutable/SelectionState.js';
 
-const DraftEffects = require('DraftEffects');
-const DraftJsDebugLogging = require('DraftJsDebugLogging');
-const UserAgent = require('UserAgent');
+const DraftEffects = require('../../stubs/DraftEffects.js');
+const DraftJsDebugLogging = require('../../stubs/DraftJsDebugLogging.js');
+const UserAgent = require('fbjs/lib/UserAgent');
 
-const containsNode = require('containsNode');
-const getActiveElement = require('getActiveElement');
-const getCorrectDocumentFromNode = require('getCorrectDocumentFromNode');
-const invariant = require('invariant');
-const isElement = require('isElement');
+const containsNode = require('fbjs/lib/containsNode');
+const getActiveElement = require('fbjs/lib/getActiveElement');
+const getCorrectDocumentFromNode = require('../utils/getCorrectDocumentFromNode.js');
+const invariant = require('fbjs/lib/invariant');
+const isElement = require('../utils/isElement.js');
 
 const isIE = UserAgent.isBrowser('IE');
 

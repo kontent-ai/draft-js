@@ -11,18 +11,18 @@
 
 'use strict';
 
-import type DraftEditor from 'DraftEditor.react';
-import type {DraftInlineStyle} from 'DraftInlineStyle';
+import type DraftEditor from '../../base/DraftEditor.react.js';
+import type {DraftInlineStyle} from '../../../model/immutable/DraftInlineStyle.js';
 
-const DraftModifier = require('DraftModifier');
-const EditorState = require('EditorState');
-const UserAgent = require('UserAgent');
+const DraftModifier = require('../../../model/modifier/DraftModifier.js');
+const EditorState = require('../../../model/immutable/EditorState.js');
+const UserAgent = require('fbjs/lib/UserAgent');
 
-const getEntityKeyForSelection = require('getEntityKeyForSelection');
-const isEventHandled = require('isEventHandled');
-const isSelectionAtLeafStart = require('isSelectionAtLeafStart');
-const isSelectionAtBlockEndWithNewLine = require('isSelectionAtBlockEndWithNewLine');
-const nullthrows = require('nullthrows');
+const getEntityKeyForSelection = require('../../../model/entity/getEntityKeyForSelection.js');
+const isEventHandled = require('../../utils/isEventHandled.js');
+const isSelectionAtLeafStart = require('../../selection/isSelectionAtLeafStart.js');
+const isSelectionAtBlockEndWithNewLine = require('../../selection/isSelectionAtBlockEndWithNewLine.js');
+const nullthrows = require('fbjs/lib/nullthrows');
 const setImmediate = require('setImmediate');
 
 // When nothing is focused, Firefox regards two characters, `'` and `/`, as

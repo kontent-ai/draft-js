@@ -11,7 +11,7 @@
 
 'use strict';
 
-import type SelectionState from 'SelectionState';
+import type SelectionState from '../../model/immutable/SelectionState.js';
 
 export type DOMDerivedSelection = {|
   selectionState: SelectionState,

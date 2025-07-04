@@ -11,27 +11,27 @@
 
 'use strict';
 
-import type {BlockMap} from 'BlockMap';
-import type {BlockNodeConfig} from 'BlockNode';
-import type CharacterMetadata from 'CharacterMetadata';
-import type {RawDraftContentBlock} from 'RawDraftContentBlock';
-import type {RawDraftContentState} from 'RawDraftContentState';
+import type {BlockMap} from '../immutable/BlockMap.js';
+import type {BlockNodeConfig} from '../immutable/BlockNode.js';
+import type CharacterMetadata from '../immutable/CharacterMetadata.js';
+import type {RawDraftContentBlock} from './RawDraftContentBlock.js';
+import type {RawDraftContentState} from './RawDraftContentState.js';
 
-const ContentBlock = require('ContentBlock');
-const ContentBlockNode = require('ContentBlockNode');
-const ContentState = require('ContentState');
-const DraftEntity = require('DraftEntity');
-const DraftTreeAdapter = require('DraftTreeAdapter');
-const DraftTreeInvariants = require('DraftTreeInvariants');
-const SelectionState = require('SelectionState');
+const ContentBlock = require('../immutable/ContentBlock.js');
+const ContentBlockNode = require('../immutable/ContentBlockNode.js');
+const ContentState = require('../immutable/ContentState.js');
+const DraftEntity = require('../entity/DraftEntity.js');
+const DraftTreeAdapter = require('../../component/utils/exploration/DraftTreeAdapter.js');
+const DraftTreeInvariants = require('../../component/utils/exploration/DraftTreeInvariants.js');
+const SelectionState = require('../immutable/SelectionState.js');
 
-const createCharacterList = require('createCharacterList');
-const decodeEntityRanges = require('decodeEntityRanges');
-const decodeInlineStyleRanges = require('decodeInlineStyleRanges');
-const generateRandomKey = require('generateRandomKey');
-const gkx = require('gkx');
+const createCharacterList = require('./createCharacterList.js');
+const decodeEntityRanges = require('./decodeEntityRanges.js');
+const decodeInlineStyleRanges = require('./decodeInlineStyleRanges.js');
+const generateRandomKey = require('../keys/generateRandomKey.js');
+const gkx = require('../../stubs/gkx.js');
 const Immutable = require('immutable');
-const invariant = require('invariant');
+const invariant = require('fbjs/lib/invariant');
 
 const experimentalTreeDataSupport = gkx('draft_tree_data_support');
 

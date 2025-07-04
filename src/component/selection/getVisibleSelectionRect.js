@@ -11,9 +11,9 @@
 
 'use strict';
 
-import type {FakeClientRect} from 'getRangeBoundingClientRect';
+import type {FakeClientRect} from './getRangeBoundingClientRect.js';
 
-const getRangeBoundingClientRect = require('getRangeBoundingClientRect');
+const getRangeBoundingClientRect = require('./getRangeBoundingClientRect.js');
 
 /**
  * Return the bounding ClientRect for the visible DOM selection, if any.

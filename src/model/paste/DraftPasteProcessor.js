@@ -11,21 +11,21 @@
 
 'use strict';
 
-import type {BlockNodeRecord} from 'BlockNodeRecord';
-import type CharacterMetadata from 'CharacterMetadata';
-import type {DraftBlockRenderMap} from 'DraftBlockRenderMap';
-import type {DraftBlockType} from 'DraftBlockType';
-import type {EntityMap} from 'EntityMap';
+import type {BlockNodeRecord} from '../immutable/BlockNodeRecord.js';
+import type CharacterMetadata from '../immutable/CharacterMetadata.js';
+import type {DraftBlockRenderMap} from '../immutable/DraftBlockRenderMap.js';
+import type {DraftBlockType} from '../constants/DraftBlockType.js';
+import type {EntityMap} from '../immutable/EntityMap.js';
 
-const ContentBlock = require('ContentBlock');
-const ContentBlockNode = require('ContentBlockNode');
+const ContentBlock = require('../immutable/ContentBlock.js');
+const ContentBlockNode = require('../immutable/ContentBlockNode.js');
 
-const convertFromHTMLToContentBlocks = require('convertFromHTMLToContentBlocks');
-const generateRandomKey = require('generateRandomKey');
-const getSafeBodyFromHTML = require('getSafeBodyFromHTML');
-const gkx = require('gkx');
+const convertFromHTMLToContentBlocks = require('../encoding/convertFromHTMLToContentBlocks.js');
+const generateRandomKey = require('../keys/generateRandomKey.js');
+const getSafeBodyFromHTML = require('./getSafeBodyFromHTML.js');
+const gkx = require('../../stubs/gkx.js');
 const Immutable = require('immutable');
-const sanitizeDraftText = require('sanitizeDraftText');
+const sanitizeDraftText = require('../encoding/sanitizeDraftText.js');
 
 const {List, Repeat} = Immutable;
 

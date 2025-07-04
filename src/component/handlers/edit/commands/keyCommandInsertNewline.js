@@ -11,8 +11,8 @@
 
 'use strict';
 
-const DraftModifier = require('DraftModifier');
-const EditorState = require('EditorState');
+const DraftModifier = require('../../../../model/modifier/DraftModifier.js');
+const EditorState = require('../../../../model/immutable/EditorState.js');
 
 function keyCommandInsertNewline(editorState: EditorState): EditorState {
   const contentState = DraftModifier.splitBlock(

@@ -11,27 +11,27 @@
 
 'use strict';
 
-import type {BlockMap} from 'BlockMap';
-import type {BlockNodeRawConfig} from 'BlockNode';
-import type {BlockNodeRecord} from 'BlockNodeRecord';
-import type {ContentStateRawType} from 'ContentStateRawType';
-import type DraftEntityInstance from 'DraftEntityInstance';
-import type {DraftEntityMutability} from 'DraftEntityMutability';
-import type {DraftEntityType} from 'DraftEntityType';
+import type {BlockMap} from './BlockMap.js';
+import type {BlockNodeRawConfig} from './BlockNode.js';
+import type {BlockNodeRecord} from './BlockNodeRecord.js';
+import type {ContentStateRawType} from './ContentStateRawType.js';
+import type DraftEntityInstance from '../entity/DraftEntityInstance.js';
+import type {DraftEntityMutability} from '../entity/DraftEntityMutability.js';
+import type {DraftEntityType} from '../entity/DraftEntityType.js';
 import type {Map} from 'immutable';
 
-const BlockMapBuilder = require('BlockMapBuilder');
-const CharacterMetadata = require('CharacterMetadata');
-const ContentBlock = require('ContentBlock');
-const ContentBlockNode = require('ContentBlockNode');
-const DraftEntity = require('DraftEntity');
-const SelectionState = require('SelectionState');
+const BlockMapBuilder = require('./BlockMapBuilder.js');
+const CharacterMetadata = require('./CharacterMetadata.js');
+const ContentBlock = require('./ContentBlock.js');
+const ContentBlockNode = require('./ContentBlockNode.js');
+const DraftEntity = require('../entity/DraftEntity.js');
+const SelectionState = require('./SelectionState.js');
 
-const generateRandomKey = require('generateRandomKey');
-const getOwnObjectValues = require('getOwnObjectValues');
-const gkx = require('gkx');
+const generateRandomKey = require('../keys/generateRandomKey.js');
+const getOwnObjectValues = require('../../util/getOwnObjectValues.js');
+const gkx = require('../../stubs/gkx.js');
 const Immutable = require('immutable');
-const sanitizeDraftText = require('sanitizeDraftText');
+const sanitizeDraftText = require('../encoding/sanitizeDraftText.js');
 
 const {List, Record, Repeat, Map: ImmutableMap, OrderedMap} = Immutable;
 

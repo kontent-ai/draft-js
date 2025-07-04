@@ -11,21 +11,21 @@
 
 'use strict';
 
-import type {BlockNodeRecord} from 'BlockNodeRecord';
-import type {DraftInsertionType} from 'DraftInsertionType';
-import type SelectionState from 'SelectionState';
+import type {BlockNodeRecord} from '../immutable/BlockNodeRecord.js';
+import type {DraftInsertionType} from '../constants/DraftInsertionType.js';
+import type SelectionState from '../immutable/SelectionState.js';
 
-const BlockMapBuilder = require('BlockMapBuilder');
-const CharacterMetadata = require('CharacterMetadata');
-const ContentBlock = require('ContentBlock');
-const ContentBlockNode = require('ContentBlockNode');
-const DraftModifier = require('DraftModifier');
-const EditorState = require('EditorState');
+const BlockMapBuilder = require('../immutable/BlockMapBuilder.js');
+const CharacterMetadata = require('../immutable/CharacterMetadata.js');
+const ContentBlock = require('../immutable/ContentBlock.js');
+const ContentBlockNode = require('../immutable/ContentBlockNode.js');
+const DraftModifier = require('./DraftModifier.js');
+const EditorState = require('../immutable/EditorState.js');
 
-const generateRandomKey = require('generateRandomKey');
-const gkx = require('gkx');
+const generateRandomKey = require('../keys/generateRandomKey.js');
+const gkx = require('../../stubs/gkx.js');
 const Immutable = require('immutable');
-const moveBlockInContentState = require('moveBlockInContentState');
+const moveBlockInContentState = require('../transaction/moveBlockInContentState.js');
 
 const experimentalTreeDataSupport = gkx('draft_tree_data_support');
 const ContentBlockRecord = experimentalTreeDataSupport

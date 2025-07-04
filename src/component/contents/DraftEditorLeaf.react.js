@@ -11,16 +11,16 @@
 
 'use strict';
 
-import type {BlockNodeRecord} from 'BlockNodeRecord';
-import type {DraftInlineStyle} from 'DraftInlineStyle';
-import type SelectionState from 'SelectionState';
+import type {BlockNodeRecord} from '../../model/immutable/BlockNodeRecord.js';
+import type {DraftInlineStyle} from '../../model/immutable/DraftInlineStyle.js';
+import type SelectionState from '../../model/immutable/SelectionState.js';
 
-const DraftEditorTextNode = require('DraftEditorTextNode.react');
+const DraftEditorTextNode = require('./DraftEditorTextNode.react.js');
 const React = require('React');
 
-const invariant = require('invariant');
-const isHTMLBRElement = require('isHTMLBRElement');
-const setDraftEditorSelection = require('setDraftEditorSelection')
+const invariant = require('fbjs/lib/invariant');
+const isHTMLBRElement = require('../utils/isHTMLBRElement.js');
+const setDraftEditorSelection = require('../selection/setDraftEditorSelection.js')
   .setDraftEditorSelection;
 
 type CSSStyleObject = {[property: string]: string | number, ...};
