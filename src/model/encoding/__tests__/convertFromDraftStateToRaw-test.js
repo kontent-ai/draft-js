@@ -11,18 +11,18 @@
 
 'use strict';
 
-const mockUUID = require('mockUUID');
-jest.mock('uuid', () => jest.fn(mockUUID));
+const mockUUID = require('../../keys/mockUUID.js');
+jest.mock('../../../util/uuid.js', () => jest.fn(mockUUID));
 
-const BlockMapBuilder = require('BlockMapBuilder');
-const CharacterMetadata = require('CharacterMetadata');
-const ContentBlock = require('ContentBlock');
-const ContentBlockNode = require('ContentBlockNode');
-const ContentState = require('ContentState');
-const DraftEntityInstance = require('DraftEntityInstance');
+const BlockMapBuilder = require('../../immutable/BlockMapBuilder.js');
+const CharacterMetadata = require('../../immutable/CharacterMetadata.js');
+const ContentBlock = require('../../immutable/ContentBlock.js');
+const ContentBlockNode = require('../../immutable/ContentBlockNode.js');
+const ContentState = require('../../immutable/ContentState.js');
+const DraftEntityInstance = require('../../entity/DraftEntityInstance.js');
 
-const convertFromDraftStateToRaw = require('convertFromDraftStateToRaw');
-const getSampleStateForTesting = require('getSampleStateForTesting');
+const convertFromDraftStateToRaw = require('../convertFromDraftStateToRaw.js');
+const getSampleStateForTesting = require('../../transaction/getSampleStateForTesting.js');
 const Immutable = require('immutable');
 
 const {contentState} = getSampleStateForTesting();

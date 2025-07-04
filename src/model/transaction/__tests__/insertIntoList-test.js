@@ -12,7 +12,7 @@
 'use strict';
 
 const Immutable = require('immutable');
-const insertIntoList = require('insertIntoList');
+const insertIntoList = require('../insertIntoList.js');
 
 const SAMPLE_LIST = Immutable.List.of(0, 1, 2, 3, 4);
 

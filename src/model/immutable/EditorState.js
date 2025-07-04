@@ -621,9 +621,9 @@ function updateSelection(
  * Returns an OrderedMap that maps all available ContentBlock objects.
  */
 function generateNewTreeMap(
-  contentState: ContentState,
-  decorator?: ?DraftDecoratorType,
-): OrderedMap<string, List<any>> {
+  contentState,
+  decorator,
+) {
   return contentState
     .getBlockMap()
     .map(block => BlockTree.generate(contentState, block, decorator))

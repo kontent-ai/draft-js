@@ -11,14 +11,12 @@
 
 'use strict';
 
-jest.mock('generateRandomKey');
-
-const BlockMapBuilder = require('BlockMapBuilder');
-const ContentBlock = require('ContentBlock');
-const ContentBlockNode = require('ContentBlockNode');
+const BlockMapBuilder = require('../../immutable/BlockMapBuilder.js');
+const ContentBlock = require('../../immutable/ContentBlock.js');
+const ContentBlockNode = require('../../immutable/ContentBlockNode.js');
 
 const Immutable = require('immutable');
-const randomizeBlockMapKeys = require('randomizeBlockMapKeys');
+const randomizeBlockMapKeys = require('../randomizeBlockMapKeys.js');
 
 const {List} = Immutable;
 

@@ -11,8 +11,8 @@
 
 'use strict';
 
-const CharacterMetadata = require('CharacterMetadata');
-const {BOLD, BOLD_ITALIC, NONE, UNDERLINE} = require('SampleDraftInlineStyle');
+const CharacterMetadata = require('../CharacterMetadata.js');
+const {BOLD, BOLD_ITALIC, NONE, UNDERLINE} = require('../SampleDraftInlineStyle.js');
 
 const plain = CharacterMetadata.create();
 const bold = CharacterMetadata.create({style: BOLD});

@@ -8,13 +8,13 @@
  * @format
  */
 
-const AtomicBlockUtils = require('AtomicBlockUtils');
-const DraftModifier = require('DraftModifier');
-const EditorState = require('EditorState');
-const RichTextEditorUtil = require('RichTextEditorUtil');
-const SelectionState = require('SelectionState');
+const AtomicBlockUtils = require('../AtomicBlockUtils.js');
+const DraftModifier = require('../DraftModifier.js');
+const EditorState = require('../../immutable/EditorState.js');
+const RichTextEditorUtil = require('../RichTextEditorUtil.js');
+const SelectionState = require('../../immutable/SelectionState.js');
 
-const getSampleStateForTesting = require('getSampleStateForTesting');
+const getSampleStateForTesting = require('../../transaction/getSampleStateForTesting.js');
 
 const {editorState, selectionState} = getSampleStateForTesting();
 const {

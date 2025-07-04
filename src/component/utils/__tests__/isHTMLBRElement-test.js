@@ -11,7 +11,7 @@
 
 'use strict';
 
-const isHTMLBRElement = require('isHTMLBRElement');
+const isHTMLBRElement = require('../isHTMLBRElement.js');
 
 test('isHTMLBRElement recognizes null', () => {
   expect(isHTMLBRElement(null)).toBe(false);

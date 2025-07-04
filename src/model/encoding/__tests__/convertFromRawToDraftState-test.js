@@ -10,13 +10,11 @@
 
 'use strict';
 
-jest.mock('generateRandomKey');
-
-const convertFromRawToDraftState = require('convertFromRawToDraftState');
-const mockUUID = require('mockUUID');
+const convertFromRawToDraftState = require('../convertFromRawToDraftState.js');
+const mockUUID = require('../../keys/mockUUID.js');
 
 const toggleExperimentalTreeDataSupport = enabled => {
-  jest.doMock('gkx', () => name => {
+  jest.doMock('../../../stubs/gkx.js', () => name => {
     return name === 'draft_tree_data_support' ? enabled : false;
   });
 };
@@ -31,7 +29,7 @@ const assertDraftState = rawState => {
 
 beforeEach(() => {
   jest.resetModules();
-  jest.mock('uuid', () => mockUUID);
+  jest.mock('../../../util/uuid.js', () => mockUUID);
 });
 
 test('must map falsey block types to default value of unstyled', () => {

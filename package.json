@@ -96,11 +96,11 @@
     "setupFiles": [
       "<rootDir>/scripts/jest/shims.js"
     ],
+    "setupFilesAfterEnv": [
+      "<rootDir>/test/setupMockGenerateRandomKey.js"
+    ],
     "transform": {
       ".*": "<rootDir>/scripts/jest/preprocessor.js"
-    },
-    "haste": {
-      "hasteImplModulePath": "<rootDir>/scripts/jest/hasteImpl.js"
     },
     "modulePathIgnorePatterns": [
       "<rootDir>/dist/",

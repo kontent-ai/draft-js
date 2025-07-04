@@ -11,14 +11,14 @@
 
 'use strict';
 
-jest.mock('generateRandomKey');
+jest.mock('../../../keys/generateRandomKey.js');
 
-const ContentBlock = require('ContentBlock');
-const ContentBlockNode = require('ContentBlockNode');
-const ContentState = require('ContentState');
-const EditorState = require('EditorState');
+const ContentBlock = require('../../../immutable/ContentBlock.js');
+const ContentBlockNode = require('../../../immutable/ContentBlockNode.js');
+const ContentState = require('../../../immutable/ContentState.js');
+const EditorState = require('../../../immutable/EditorState.js');
 
-const getNextDelimiterBlockKey = require('getNextDelimiterBlockKey');
+const getNextDelimiterBlockKey = require('../getNextDelimiterBlockKey.js');
 const Immutable = require('immutable');
 
 const {List} = Immutable;

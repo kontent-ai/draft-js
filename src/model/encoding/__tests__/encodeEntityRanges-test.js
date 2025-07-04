@@ -11,10 +11,10 @@
 
 'use strict';
 
-const ContentBlock = require('ContentBlock');
+const ContentBlock = require('../../immutable/ContentBlock.js');
 
-const createCharacterList = require('createCharacterList');
-const encodeEntityRanges = require('encodeEntityRanges');
+const createCharacterList = require('../createCharacterList.js');
+const encodeEntityRanges = require('../encodeEntityRanges.js');
 const Immutable = require('immutable');
 
 const {OrderedSet, Repeat} = Immutable;

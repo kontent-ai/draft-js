@@ -17,10 +17,10 @@ const BLOCK_DELIMITER_CHAR = '\n';
 const TEST_A = 'Hello';
 const TEST_B = ' World!';
 
-const DraftEditorTextNode = require('DraftEditorTextNode.react');
+const DraftEditorTextNode = require('../DraftEditorTextNode.react.js');
 const React = require('React');
 const ReactDOM = require('ReactDOM');
-const UserAgent = require('UserAgent');
+const UserAgent = require('fbjs/lib/UserAgent');
 
 let container;
 

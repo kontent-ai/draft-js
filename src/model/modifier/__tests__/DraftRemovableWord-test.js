@@ -11,9 +11,9 @@
 
 'use strict';
 
-expect.addSnapshotSerializer(require('NonASCIIStringSnapshotSerializer'));
+expect.addSnapshotSerializer(require('../../../NonASCIIStringSnapshotSerializer.js'));
 
-const DraftRemovableWord = require('DraftRemovableWord');
+const DraftRemovableWord = require('../DraftRemovableWord.js');
 
 let forward;
 let backward;

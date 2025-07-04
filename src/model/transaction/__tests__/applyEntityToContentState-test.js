@@ -11,10 +11,10 @@
 
 'use strict';
 
-const SelectionState = require('SelectionState');
+const SelectionState = require('../../immutable/SelectionState.js');
 
-const applyEntityToContentState = require('applyEntityToContentState');
-const getSampleStateForTesting = require('getSampleStateForTesting');
+const applyEntityToContentState = require('../applyEntityToContentState.js');
+const getSampleStateForTesting = require('../getSampleStateForTesting.js');
 
 const {contentState, selectionState} = getSampleStateForTesting();
 

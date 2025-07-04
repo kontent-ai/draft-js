@@ -11,7 +11,7 @@
 
 'use strict';
 
-const DraftEntity = require('DraftEntity');
+const DraftEntity = require('../DraftEntity.js');
 
 beforeEach(() => {
   jest.resetModules();

@@ -11,13 +11,13 @@
 
 'use strict';
 
-jest.mock('SelectionState');
+jest.mock('../SelectionState.js');
 
 let contentState;
 
-const BlockMapBuilder = require('BlockMapBuilder');
-const ContentBlock = require('ContentBlock');
-const ContentState = require('ContentState');
+const BlockMapBuilder = require('../BlockMapBuilder.js');
+const ContentBlock = require('../ContentBlock.js');
+const ContentState = require('../ContentState.js');
 
 const SINGLE_BLOCK = [{text: 'Lorem ipsum', key: 'a'}];
 const MULTI_BLOCK = [
@@ -26,7 +26,7 @@ const MULTI_BLOCK = [
 ];
 const ZERO_WIDTH_CHAR_BLOCK = [{text: unescape('%u200B%u200B'), key: 'a'}];
 
-const SelectionState = require('SelectionState');
+const SelectionState = require('../SelectionState.js');
 
 const createLink = () => {
   return contentState.createEntity('LINK', 'MUTABLE', {uri: 'zombo.com'});

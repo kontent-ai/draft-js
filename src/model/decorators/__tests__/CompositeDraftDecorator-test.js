@@ -8,10 +8,10 @@
  * @format
  */
 
-jest.mock('ContentState');
+jest.mock('../../immutable/ContentState.js');
 
-const CompositeDraftDecorator = require('CompositeDraftDecorator');
-const ContentState = require('ContentState');
+const CompositeDraftDecorator = require('../CompositeDraftDecorator.js');
+const ContentState = require('../../immutable/ContentState.js');
 
 class ContentBlock {
   constructor(text) {

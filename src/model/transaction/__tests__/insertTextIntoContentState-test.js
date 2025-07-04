@@ -11,11 +11,11 @@
 
 'use strict';
 
-const CharacterMetadata = require('CharacterMetadata');
-const {BOLD} = require('SampleDraftInlineStyle');
+const CharacterMetadata = require('../../immutable/CharacterMetadata.js');
+const {BOLD} = require('../../immutable/SampleDraftInlineStyle.js');
 
-const getSampleStateForTesting = require('getSampleStateForTesting');
-const insertTextIntoContentState = require('insertTextIntoContentState');
+const getSampleStateForTesting = require('../getSampleStateForTesting.js');
+const insertTextIntoContentState = require('../insertTextIntoContentState.js');
 
 const {contentState, selectionState} = getSampleStateForTesting();
 

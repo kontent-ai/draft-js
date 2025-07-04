@@ -10,11 +10,9 @@
 
 'use strict';
 
-jest.mock('generateRandomKey');
-
-const Editor = require('DraftEditor.react');
-const EditorState = require('EditorState');
-const RichUtils = require('RichTextEditorUtil');
+const Editor = require('../../base/DraftEditor.react.js');
+const EditorState = require('../../../model/immutable/EditorState.js');
+const RichUtils = require('../../../model/modifier/RichTextEditorUtil.js');
 
 const React = require('react');
 const ReactTestRenderer = require('react-test-renderer');

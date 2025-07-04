@@ -10,9 +10,7 @@
 
 'use strict';
 
-jest.mock('generateRandomKey');
-
-const DraftTreeAdapter = require('DraftTreeAdapter');
+const DraftTreeAdapter = require('../DraftTreeAdapter.js');
 
 const assertFromRawTreeStateToRawState = rawState => {
   expect(

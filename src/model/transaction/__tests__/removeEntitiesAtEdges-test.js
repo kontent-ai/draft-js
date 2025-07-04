@@ -11,9 +11,9 @@
 
 'use strict';
 
-const applyEntityToContentBlock = require('applyEntityToContentBlock');
-const getSampleStateForTesting = require('getSampleStateForTesting');
-const removeEntitiesAtEdges = require('removeEntitiesAtEdges');
+const applyEntityToContentBlock = require('../applyEntityToContentBlock.js');
+const getSampleStateForTesting = require('../getSampleStateForTesting.js');
+const removeEntitiesAtEdges = require('../removeEntitiesAtEdges.js');
 
 const {contentState, selectionState} = getSampleStateForTesting();
 

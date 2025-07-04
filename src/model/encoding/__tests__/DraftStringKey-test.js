@@ -11,7 +11,7 @@
 
 'use strict';
 
-const {stringify, unstringify} = require('DraftStringKey');
+const {stringify, unstringify} = require('../DraftStringKey.js');
 
 test('must convert maybe strings to a string key', () => {
   expect(stringify('anything')).toEqual('_anything');

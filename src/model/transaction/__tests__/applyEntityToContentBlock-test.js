@@ -11,9 +11,9 @@
 
 'use strict';
 
-const ContentBlock = require('ContentBlock');
+const ContentBlock = require('../../immutable/ContentBlock.js');
 
-const applyEntityToContentBlock = require('applyEntityToContentBlock');
+const applyEntityToContentBlock = require('../applyEntityToContentBlock.js');
 
 const sampleBlock = new ContentBlock({
   key: 'a',

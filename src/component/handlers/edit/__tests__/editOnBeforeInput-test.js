@@ -11,15 +11,15 @@
 
 'use strict';
 
-import type DraftEditor from 'DraftEditor.react';
+import type DraftEditor from '../../../base/DraftEditor.react.js';
 
-const CompositeDraftDecorator = require('CompositeDraftDecorator');
-const ContentBlock = require('ContentBlock');
-const ContentState = require('ContentState');
-const EditorState = require('EditorState');
-const SelectionState = require('SelectionState');
+const CompositeDraftDecorator = require('../../../../model/decorators/CompositeDraftDecorator.js');
+const ContentBlock = require('../../../../model/immutable/ContentBlock.js');
+const ContentState = require('../../../../model/immutable/ContentState.js');
+const EditorState = require('../../../../model/immutable/EditorState.js');
+const SelectionState = require('../../../../model/immutable/SelectionState.js');
 
-const onBeforeInput = require('editOnBeforeInput');
+const onBeforeInput = require('../editOnBeforeInput.js');
 
 const DEFAULT_SELECTION = {
   anchorKey: 'a',

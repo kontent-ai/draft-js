@@ -16,21 +16,21 @@ jest
   .mock('getScrollPosition')
   .mock('getViewportDimensions');
 
-const BlockTree = require('BlockTree');
-const CharacterMetadata = require('CharacterMetadata');
-const ContentBlock = require('ContentBlock');
-const ContentState = require('ContentState');
-const DraftEditorBlock = require('DraftEditorBlock.react');
+const BlockTree = require('../../../model/immutable/BlockTree.js');
+const CharacterMetadata = require('../../../model/immutable/CharacterMetadata.js');
+const ContentBlock = require('../../../model/immutable/ContentBlock.js');
+const ContentState = require('../../../model/immutable/ContentState.js');
+const DraftEditorBlock = require('../DraftEditorBlock.react.js');
 const React = require('React');
 const ReactDOM = require('ReactDOM');
-const SampleDraftInlineStyle = require('SampleDraftInlineStyle');
-const SelectionState = require('SelectionState');
-const Style = require('Style');
-const UnicodeBidiDirection = require('UnicodeBidiDirection');
+const SampleDraftInlineStyle = require('../../../model/immutable/SampleDraftInlineStyle.js');
+const SelectionState = require('../../../model/immutable/SelectionState.js');
+const Style = require('fbjs/lib/Style');
+const UnicodeBidiDirection = require('fbjs/lib/UnicodeBidiDirection');
 
-const getElementPosition = require('getElementPosition');
-const getScrollPosition = require('getScrollPosition');
-const getViewportDimensions = require('getViewportDimensions');
+const getElementPosition = require('fbjs/lib/getElementPosition');
+const getScrollPosition = require('fbjs/lib/getScrollPosition');
+const getViewportDimensions = require('fbjs/lib/getViewportDimensions');
 const Immutable = require('immutable');
 const ReactTestRenderer = require('react-test-renderer');
 
@@ -63,7 +63,7 @@ class MockEditorLeaf extends React.Component {
     return mockLeafRender();
   }
 }
-jest.setMock('DraftEditorLeaf.react', MockEditorLeaf);
+jest.setMock('../DraftEditorLeaf.react.js', MockEditorLeaf);
 Style.getScrollParent.mockReturnValue(window);
 window.scrollTo = jest.fn();
 getElementPosition.mockReturnValue({
@@ -75,7 +75,7 @@ getElementPosition.mockReturnValue({
 getScrollPosition.mockReturnValue({x: 0, y: 0});
 getViewportDimensions.mockReturnValue({width: 1200, height: 800});
 
-const DraftEditorLeaf = require('DraftEditorLeaf.react');
+const DraftEditorLeaf = require('../DraftEditorLeaf.react.js');
 
 const returnEmptyString = () => {
   return '';

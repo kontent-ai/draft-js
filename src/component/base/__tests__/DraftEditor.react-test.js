@@ -11,10 +11,8 @@
 
 'use strict';
 
-jest.mock('generateRandomKey');
-
-const DraftEditor = require('DraftEditor.react');
-const EditorState = require('EditorState');
+const DraftEditor = require('../DraftEditor.react.js');
+const EditorState = require('../../../model/immutable/EditorState.js');
 const React = require('React');
 
 // $FlowFixMe[cannot-resolve-module]

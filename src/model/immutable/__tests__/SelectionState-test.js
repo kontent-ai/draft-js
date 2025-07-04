@@ -11,7 +11,7 @@
 
 'use strict';
 
-const SelectionState = require('SelectionState');
+const SelectionState = require('../SelectionState.js');
 
 const DEFAULT_CONFIG = {
   anchorKey: 'a',

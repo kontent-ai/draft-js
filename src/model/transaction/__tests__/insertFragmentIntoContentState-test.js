@@ -11,17 +11,15 @@
 
 'use strict';
 
-jest.mock('generateRandomKey');
+const BlockMapBuilder = require('../../immutable/BlockMapBuilder.js');
+const ContentBlock = require('../../immutable/ContentBlock.js');
+const ContentBlockNode = require('../../immutable/ContentBlockNode.js');
+const SelectionState = require('../../immutable/SelectionState.js');
 
-const BlockMapBuilder = require('BlockMapBuilder');
-const ContentBlock = require('ContentBlock');
-const ContentBlockNode = require('ContentBlockNode');
-const SelectionState = require('SelectionState');
-
-const getSampleStateForTesting = require('getSampleStateForTesting');
+const getSampleStateForTesting = require('../getSampleStateForTesting.js');
 const Immutable = require('immutable');
-const insertFragmentIntoContentState = require('insertFragmentIntoContentState');
-const invariant = require('invariant');
+const insertFragmentIntoContentState = require('../insertFragmentIntoContentState.js');
+const invariant = require('fbjs/lib/invariant');
 
 const {contentState, selectionState} = getSampleStateForTesting();
 const {List, Map} = Immutable;
