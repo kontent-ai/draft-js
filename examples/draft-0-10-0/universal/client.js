@@ -15,8 +15,10 @@
 'use strict';
 
 var React = require('react');
-var ReactDom = require('react-dom');
+var {createRoot} = require('react-dom/client');
 
 var SimpleEditor = require('./editor.js').SimpleEditor;
 
-ReactDom.render(<SimpleEditor />, document.getElementById('react-content'));
+const container = document.getElementById('react-content');
+const root = createRoot(container);
+root.render(<SimpleEditor />);

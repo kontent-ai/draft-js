@@ -18,19 +18,23 @@ const TEST_A = 'Hello';
 const TEST_B = ' World!';
 
 const DraftEditorTextNode = require('../DraftEditorTextNode.react.js');
-const React = require('React');
+const React = require('react');
 const ReactDOM = require('ReactDOM');
+const {createRoot} = require('react-dom/client');
 const UserAgent = require('fbjs/lib/UserAgent');
 
 let container;
+let root;
 
 beforeEach(() => {
   jest.resetModules();
   container = document.createElement('div');
+  root = createRoot(container);
 });
 
 const renderIntoContainer = element => {
-  return ReactDOM.render(element, container);
+  root.render(element);
+  return element;
 };
 
 const initializeAsIE = () => {
@@ -49,7 +53,7 @@ const initializeAsNonIE = () => {
 
 const expectPopulatedSpan = (stub, testString) => {
   // $FlowExpectedError[incompatible-type] node could be null
-  const node: Element = ReactDOM.findDOMNode(stub);
+  const node = ReactDOM.findDOMNode(stub);
   expect(node.tagName).toBe('SPAN');
   expect(node.childNodes.length).toBe(1);
   expect(node.firstChild && node.firstChild.textContent).toBe(testString);

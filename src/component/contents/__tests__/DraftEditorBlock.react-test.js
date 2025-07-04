@@ -21,8 +21,8 @@ const CharacterMetadata = require('../../../model/immutable/CharacterMetadata.js
 const ContentBlock = require('../../../model/immutable/ContentBlock.js');
 const ContentState = require('../../../model/immutable/ContentState.js');
 const DraftEditorBlock = require('../DraftEditorBlock.react.js');
-const React = require('React');
-const ReactDOM = require('ReactDOM');
+const React = require('react');
+const {createRoot} = require('react-dom/client');
 const SampleDraftInlineStyle = require('../../../model/immutable/SampleDraftInlineStyle.js');
 const SelectionState = require('../../../model/immutable/SelectionState.js');
 const Style = require('fbjs/lib/Style');
@@ -194,7 +194,8 @@ test('must allow update when `block` has changed', () => {
   const props = getProps(helloBlock);
 
   const container = document.createElement('div');
-  ReactDOM.render(<DraftEditorBlock {...props} />, container);
+  const root = createRoot(container);
+  root.render(<DraftEditorBlock {...props} />);
 
   expect(mockLeafRender.mock.calls.length).toMatchSnapshot();
 
@@ -204,7 +205,7 @@ test('must allow update when `block` has changed', () => {
   expect(updatedHelloBlock !== helloBlock).toMatchSnapshot();
   expect(props.block !== nextProps.block).toMatchSnapshot();
 
-  ReactDOM.render(<DraftEditorBlock {...nextProps} />, container);
+  root.render(<DraftEditorBlock {...nextProps} />);
 
   expect(mockLeafRender.mock.calls.length).toMatchSnapshot();
 });
@@ -214,7 +215,8 @@ test('must allow update when `tree` has changed', () => {
   const props = getProps(helloBlock);
 
   const container = document.createElement('div');
-  ReactDOM.render(<DraftEditorBlock {...props} />, container);
+  const root = createRoot(container);
+  root.render(<DraftEditorBlock {...props} />);
 
   expect(mockLeafRender.mock.calls.length).toMatchSnapshot();
 
@@ -232,7 +234,7 @@ test('must allow update when `tree` has changed', () => {
 
   expect(props.tree !== nextProps.tree).toMatchSnapshot();
 
-  ReactDOM.render(<DraftEditorBlock {...nextProps} />, container);
+  root.render(<DraftEditorBlock {...nextProps} />);
 
   expect(mockLeafRender.mock.calls.length).toMatchSnapshot();
 });
@@ -242,14 +244,15 @@ test('must allow update when `direction` has changed', () => {
   const props = getProps(helloBlock);
 
   const container = document.createElement('div');
-  ReactDOM.render(<DraftEditorBlock {...props} />, container);
+  const root = createRoot(container);
+  root.render(<DraftEditorBlock {...props} />);
 
   expect(mockLeafRender.mock.calls.length).toMatchSnapshot();
 
   const nextProps = {...props, direction: UnicodeBidiDirection.RTL};
   expect(props.direction !== nextProps.direction).toMatchSnapshot();
 
-  ReactDOM.render(<DraftEditorBlock {...nextProps} />, container);
+  root.render(<DraftEditorBlock {...nextProps} />);
 
   expect(mockLeafRender.mock.calls.length).toMatchSnapshot();
 });
@@ -259,7 +262,8 @@ test('must allow update when forcing selection', () => {
   const props = getProps(helloBlock);
 
   const container = document.createElement('div');
-  ReactDOM.render(<DraftEditorBlock {...props} />, container);
+  const root = createRoot(container);
+  root.render(<DraftEditorBlock {...props} />);
 
   expect(mockLeafRender.mock.calls.length).toMatchSnapshot();
 
@@ -269,7 +273,7 @@ test('must allow update when forcing selection', () => {
     forceSelection: true,
   };
 
-  ReactDOM.render(<DraftEditorBlock {...nextProps} />, container);
+  root.render(<DraftEditorBlock {...nextProps} />);
 
   expect(mockLeafRender.mock.calls.length).toMatchSnapshot();
 });
@@ -279,12 +283,13 @@ test('must reject update if conditions are not met', () => {
   const props = getProps(helloBlock);
 
   const container = document.createElement('div');
-  ReactDOM.render(<DraftEditorBlock {...props} />, container);
+  const root = createRoot(container);
+  root.render(<DraftEditorBlock {...props} />);
 
   expect(mockLeafRender.mock.calls.length).toMatchSnapshot();
 
   // Render again with the exact same props as before.
-  ReactDOM.render(<DraftEditorBlock {...props} />, container);
+  root.render(<DraftEditorBlock {...props} />);
 
   // No new leaf renders.
   expect(mockLeafRender.mock.calls.length).toMatchSnapshot();
@@ -295,7 +300,8 @@ test('must reject update if selection is not on an edge', () => {
   const props = getProps(helloBlock);
 
   const container = document.createElement('div');
-  ReactDOM.render(<DraftEditorBlock {...props} />, container);
+  const root = createRoot(container);
+  root.render(<DraftEditorBlock {...props} />);
 
   expect(mockLeafRender.mock.calls.length).toMatchSnapshot();
 
@@ -309,7 +315,7 @@ test('must reject update if selection is not on an edge', () => {
 
   // Render again with selection now moved elsewhere and the contents
   // unchanged.
-  ReactDOM.render(<DraftEditorBlock {...newProps} />, container);
+  root.render(<DraftEditorBlock {...newProps} />);
 
   // No new leaf renders.
   expect(mockLeafRender.mock.calls.length).toMatchSnapshot();
@@ -464,7 +470,8 @@ test('must scroll the window if needed', () => {
   });
 
   const container = document.createElement('div');
-  ReactDOM.render(<DraftEditorBlock {...props} />, container);
+  const root = createRoot(container);
+  root.render(<DraftEditorBlock {...props} />);
 
   const scrollCalls = window.scrollTo.mock.calls;
   expect(scrollCalls).toMatchSnapshot();
@@ -473,7 +480,8 @@ test('must scroll the window if needed', () => {
 test('must not scroll the window if unnecessary', () => {
   const props = getProps(getHelloBlock());
   const container = document.createElement('div');
-  ReactDOM.render(<DraftEditorBlock {...props} />, container);
+  const root = createRoot(container);
+  root.render(<DraftEditorBlock {...props} />);
 
   const scrollCalls = window.scrollTo.mock.calls;
   expect(scrollCalls).toMatchSnapshot();

@@ -85,10 +85,9 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
         },
       };
 
-      ReactDOM.render(
-        <PlainTextEditorExample />,
-        document.getElementById('target')
-      );
+      const container = document.getElementById('target');
+      const root = ReactDOM.createRoot(container);
+      root.render(<PlainTextEditorExample />);
     </script>
   </body>
 </html>

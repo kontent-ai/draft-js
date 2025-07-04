@@ -273,10 +273,9 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
         },
       };
 
-      ReactDOM.render(
-        <MediaEditorExample />,
-        document.getElementById('target')
-      );
+      const container = document.getElementById('target');
+      const root = ReactDOM.createRoot(container);
+      root.render(<MediaEditorExample />);
     </script>
   </body>
 </html>
