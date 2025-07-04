@@ -10,11 +10,11 @@
 
 'use strict';
 
-const BlockTree = require('BlockTree');
-const CharacterMetadata = require('CharacterMetadata');
-const ContentBlock = require('ContentBlock');
-const ContentState = require('ContentState');
-const {BOLD} = require('SampleDraftInlineStyle');
+const BlockTree = require('../BlockTree.js');
+const CharacterMetadata = require('../CharacterMetadata.js');
+const ContentBlock = require('../ContentBlock.js');
+const ContentState = require('../ContentState.js');
+const {BOLD} = require('../SampleDraftInlineStyle.js');
 
 const Immutable = require('immutable');
 

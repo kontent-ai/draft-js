@@ -12,11 +12,11 @@
  * production systems. This file may be update/removed without notice.
  */
 
-import type {RawDraftContentBlock} from 'RawDraftContentBlock';
-import type {RawDraftContentState} from 'RawDraftContentState';
+import type {RawDraftContentBlock} from '../../../model/encoding/RawDraftContentBlock.js';
+import type {RawDraftContentState} from '../../../model/encoding/RawDraftContentState.js';
 
-const generateRandomKey = require('generateRandomKey');
-const invariant = require('invariant');
+const generateRandomKey = require('../../../model/keys/generateRandomKey.js');
+const invariant = require('fbjs/lib/invariant');
 
 const traverseInDepthOrder = (
   blocks: Array<RawDraftContentBlock>,

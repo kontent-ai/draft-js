@@ -15,16 +15,16 @@
 // events.
 jest.useFakeTimers();
 
-const ContentBlock = require('ContentBlock');
-const ContentState = require('ContentState');
-const EditorState = require('EditorState');
-const SelectionState = require('SelectionState');
+const ContentBlock = require('../../../../model/immutable/ContentBlock.js');
+const ContentState = require('../../../../model/immutable/ContentState.js');
+const EditorState = require('../../../../model/immutable/EditorState.js');
+const SelectionState = require('../../../../model/immutable/SelectionState.js');
 
-const convertFromHTMLToContentBlocks = require('convertFromHTMLToContentBlocks');
-const editOnCompositionStart = require('editOnCompositionStart');
+const convertFromHTMLToContentBlocks = require('../../../../model/encoding/convertFromHTMLToContentBlocks.js');
+const editOnCompositionStart = require('../../edit/editOnCompositionStart.js');
 const {Map} = require('immutable');
 
-jest.mock('DOMObserver', () => {
+jest.mock('../DOMObserver.js', () => {
   function DOMObserver() {}
   DOMObserver.prototype.start = jest.fn();
   DOMObserver.prototype.stopAndFlushMutations = jest
@@ -32,8 +32,8 @@ jest.mock('DOMObserver', () => {
     .mockReturnValue(Map({}));
   return DOMObserver;
 });
-jest.mock('getContentEditableContainer');
-jest.mock('getDraftEditorSelection', () => {
+jest.mock('../../../utils/getContentEditableContainer.js');
+jest.mock('../../../selection/getDraftEditorSelection.js', () => {
   return jest.fn().mockReturnValue({
     selectionState: SelectionState.createEmpty('anchor-key'),
   });
@@ -60,7 +60,7 @@ function getEditorState(blocks) {
   );
 }
 
-function getEditorStateFromHTML(html: string) {
+function getEditorStateFromHTML(html) {
   const blocksFromHTML = convertFromHTMLToContentBlocks(html);
   const state =
     blocksFromHTML != null
@@ -88,7 +88,7 @@ function withGlobalGetSelectionAs(getSelectionValue, callback) {
 
 beforeEach(() => {
   jest.resetModules();
-  compositionHandler = require('DraftEditorCompositionHandler');
+  compositionHandler = require('../DraftEditorCompositionHandler.js');
   editor = {
     _latestEditorState: EditorState.createEmpty(),
     _onCompositionStart: compositionHandler.onCompositionStart,
@@ -119,7 +119,7 @@ test('Can handle a single mutation', () => {
   withGlobalGetSelectionAs({}, () => {
     editor._latestEditorState = getEditorState({blockkey0: ''});
     const mutations = Map({'blockkey0-0-0': '\u79c1'});
-    require('DOMObserver').prototype.stopAndFlushMutations.mockReturnValue(
+    require('../DOMObserver.js').prototype.stopAndFlushMutations.mockReturnValue(
       mutations,
     );
     // $FlowExpectedError[incompatible-use]
@@ -144,7 +144,7 @@ test('Can handle mutations in multiple blocks', () => {
       'blockkey0-0-0': 'reactjs',
       'blockkey1-0-0': 'draftjs',
     });
-    require('DOMObserver').prototype.stopAndFlushMutations.mockReturnValue(
+    require('../DOMObserver.js').prototype.stopAndFlushMutations.mockReturnValue(
       mutations,
     );
     // $FlowExpectedError[incompatible-use]
@@ -174,7 +174,7 @@ test('Can handle mutations in the same block in multiple leaf nodes', () => {
       [`${blockKey}-0-1`]: 'draftbb',
       [`${blockKey}-0-2`]: ' graphqlccc',
     });
-    require('DOMObserver').prototype.stopAndFlushMutations.mockReturnValue(
+    require('../DOMObserver.js').prototype.stopAndFlushMutations.mockReturnValue(
       mutations,
     );
     // $FlowExpectedError[incompatible-use]

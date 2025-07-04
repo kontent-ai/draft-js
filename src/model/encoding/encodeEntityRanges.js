@@ -11,11 +11,11 @@
 
 'use strict';
 
-import type {BlockNodeRecord} from 'BlockNodeRecord';
-import type {EntityRange} from 'EntityRange';
+import type {BlockNodeRecord} from '../immutable/BlockNodeRecord.js';
+import type {EntityRange} from './EntityRange.js';
 
-const DraftStringKey = require('DraftStringKey');
-const UnicodeUtils = require('UnicodeUtils');
+const DraftStringKey = require('./DraftStringKey.js');
+const UnicodeUtils = require('fbjs/lib/UnicodeUtils');
 
 const {strlen} = UnicodeUtils;
 

@@ -11,16 +11,14 @@
 
 'use strict';
 
-expect.addSnapshotSerializer(require('NonASCIIStringSnapshotSerializer'));
+expect.addSnapshotSerializer(require('../../../NonASCIIStringSnapshotSerializer.js'));
 
-jest.mock('generateRandomKey');
+const DefaultDraftBlockRenderMap = require('../../immutable/DefaultDraftBlockRenderMap.js');
 
-const DefaultDraftBlockRenderMap = require('DefaultDraftBlockRenderMap');
-
-const convertFromHTMLToContentBlocks = require('convertFromHTMLToContentBlocks');
-const cx = require('cx');
-const getSafeBodyFromHTML = require('getSafeBodyFromHTML');
-const mockUUID = require('mockUUID');
+const convertFromHTMLToContentBlocks = require('../convertFromHTMLToContentBlocks.js');
+const cx = require('fbjs/lib/cx');
+const getSafeBodyFromHTML = require('../../paste/getSafeBodyFromHTML.js');
+const mockUUID = require('../../keys/mockUUID.js');
 
 const DEFAULT_CONFIG = {
   DOMBuilder: getSafeBodyFromHTML,
@@ -59,7 +57,7 @@ const normalizeBlock = block => {
 };
 
 const toggleExperimentalTreeDataSupport = enabled => {
-  jest.doMock('gkx', () => name => {
+  jest.doMock('../../../stubs/gkx.js', () => name => {
     if (name === 'draft_tree_data_support') {
       return enabled;
     }
@@ -72,7 +70,7 @@ const toggleExperimentalTreeDataSupport = enabled => {
 
 beforeEach(() => {
   jest.resetModules();
-  jest.mock('uuid', () => mockUUID);
+  jest.mock('../../../util/uuid.js', () => mockUUID);
 });
 
 const convertFromHTML = (html_string, config) => {
@@ -122,8 +120,8 @@ const assertConvertFromHTMLToContentBlocks = (html_string, config = {}) => {
 };
 
 const testConvertingAdjacentHtmlElementsToContentBlocks = (
-  tag: string,
-  experimentalTreeDataSupport?: boolean = false,
+  tag,
+  experimentalTreeDataSupport = false,
 ) => {
   test(`must not merge tags when converting adjacent <${tag} />`, () => {
     const html_string = `
@@ -138,7 +136,7 @@ const testConvertingAdjacentHtmlElementsToContentBlocks = (
 };
 
 const testConvertingHtmlElementsToContentBlocksAndRootContentBlockNodesMatch = (
-  tag: string,
+  tag,
 ) => {
   test(`must convert root ContentBlockNodes to matching ContentBlock nodes for <${tag} />`, () => {
     expect(

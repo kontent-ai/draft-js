@@ -11,11 +11,11 @@
 
 'use strict';
 
-const EditorState = require('EditorState');
-const UnicodeUtils = require('UnicodeUtils');
+const EditorState = require('../../../../model/immutable/EditorState.js');
+const UnicodeUtils = require('fbjs/lib/UnicodeUtils');
 
-const moveSelectionForward = require('moveSelectionForward');
-const removeTextWithStrategy = require('removeTextWithStrategy');
+const moveSelectionForward = require('./moveSelectionForward.js');
+const removeTextWithStrategy = require('./removeTextWithStrategy.js');
 
 /**
  * Remove the selected range. If the cursor is collapsed, remove the following

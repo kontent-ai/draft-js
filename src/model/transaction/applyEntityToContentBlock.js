@@ -11,9 +11,9 @@
 
 'use strict';
 
-import type {BlockNodeRecord} from 'BlockNodeRecord';
+import type {BlockNodeRecord} from '../immutable/BlockNodeRecord.js';
 
-const CharacterMetadata = require('CharacterMetadata');
+const CharacterMetadata = require('../immutable/CharacterMetadata.js');
 
 function applyEntityToContentBlock(
   contentBlock: BlockNodeRecord,

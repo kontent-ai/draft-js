@@ -11,14 +11,14 @@
 
 'use strict';
 
-import type ContentState from 'ContentState';
-import type {DraftRemovalDirection} from 'DraftRemovalDirection';
-import type EditorState from 'EditorState';
-import type SelectionState from 'SelectionState';
+import type ContentState from '../../../../model/immutable/ContentState.js';
+import type {DraftRemovalDirection} from '../../../../model/constants/DraftRemovalDirection.js';
+import type EditorState from '../../../../model/immutable/EditorState.js';
+import type SelectionState from '../../../../model/immutable/SelectionState.js';
 
-const DraftModifier = require('DraftModifier');
+const DraftModifier = require('../../../../model/modifier/DraftModifier.js');
 
-const gkx = require('gkx');
+const gkx = require('../../../../stubs/gkx.js');
 
 const experimentalTreeDataSupport = gkx('draft_tree_data_support');
 

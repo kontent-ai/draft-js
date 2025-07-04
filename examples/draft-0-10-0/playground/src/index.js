@@ -16,12 +16,14 @@ import 'react-app-polyfill/ie9'; // For IE 9-11 support
 
 import GkManager from './GkManager';
 import React from 'react';
-import ReactDOM from 'react-dom';
+import {createRoot} from 'react-dom/client';
 import './index.css';
 import App from './App';
 import registerServiceWorker from './registerServiceWorker';
 
 console.log("Applying feature flag overwrites: ", GkManager);
 
-ReactDOM.render(<App />, document.getElementById('root'));
+const container = document.getElementById('root');
+const root = createRoot(container);
+root.render(<App />);
 registerServiceWorker();

@@ -10,15 +10,15 @@
 
 'use strict';
 
-const ContentBlockNode = require('ContentBlockNode');
-const ContentState = require('ContentState');
-const DefaultDraftBlockRenderMap = require('DefaultDraftBlockRenderMap');
-const DraftEditorContents = require('DraftEditorContentsExperimental.react');
-const EditorState = require('EditorState');
+const ContentBlockNode = require('../../../../model/immutable/ContentBlockNode.js');
+const ContentState = require('../../../../model/immutable/ContentState.js');
+const DefaultDraftBlockRenderMap = require('../../../../model/immutable/DefaultDraftBlockRenderMap.js');
+const DraftEditorContents = require('../DraftEditorContentsExperimental.react.js');
+const EditorState = require('../../../../model/immutable/EditorState.js');
 const React = require('React');
-const SelectionState = require('SelectionState');
+const SelectionState = require('../../../../model/immutable/SelectionState.js');
 
-const TestHelper = require('_DraftTestHelper');
+const TestHelper = require('../../../utils/_DraftTestHelper.js');
 const Immutable = require('immutable');
 const ReactTestRenderer = require('react-test-renderer');
 

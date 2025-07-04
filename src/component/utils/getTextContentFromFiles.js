@@ -11,7 +11,7 @@
 
 'use strict';
 
-const invariant = require('invariant');
+const invariant = require('fbjs/lib/invariant');
 
 const TEXT_CLIPPING_REGEX = /\.textClipping$/;
 

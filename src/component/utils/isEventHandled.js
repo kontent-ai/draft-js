@@ -11,7 +11,7 @@
 
 'use strict';
 
-import type {DraftHandleValue} from 'DraftHandleValue';
+import type {DraftHandleValue} from '../../model/constants/DraftHandleValue.js';
 
 /**
  * Utility method for determining whether or not the value returned

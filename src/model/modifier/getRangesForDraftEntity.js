@@ -11,10 +11,10 @@
 
 'use strict';
 
-import type {BlockNodeRecord} from 'BlockNodeRecord';
-import type {DraftRange} from 'DraftRange';
+import type {BlockNodeRecord} from '../immutable/BlockNodeRecord.js';
+import type {DraftRange} from './DraftRange.js';
 
-const invariant = require('invariant');
+const invariant = require('fbjs/lib/invariant');
 
 /**
  * Obtain the start and end positions of the range that has the

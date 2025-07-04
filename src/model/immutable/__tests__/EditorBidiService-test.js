@@ -11,9 +11,9 @@
 
 'use strict';
 
-const ContentBlock = require('ContentBlock');
-const ContentState = require('ContentState');
-const EditorBidiService = require('EditorBidiService');
+const ContentBlock = require('../ContentBlock.js');
+const ContentState = require('../ContentState.js');
+const EditorBidiService = require('../EditorBidiService.js');
 
 const Immutable = require('immutable');
 

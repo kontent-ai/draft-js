@@ -11,8 +11,8 @@
 
 'use strict';
 
-import type {DraftRange} from 'DraftRange';
-import type {DraftRemovalDirection} from 'DraftRemovalDirection';
+import type {DraftRange} from './DraftRange.js';
+import type {DraftRemovalDirection} from '../constants/DraftRemovalDirection.js';
 
 /**
  * Identify the range to delete from a segmented entity.

@@ -12,14 +12,14 @@
 'use strict';
 
 const Immutable = require('immutable');
-const insertIntoList = require('insertIntoList');
-const invariant = require('invariant');
+const insertIntoList = require('./insertIntoList.js');
+const invariant = require('fbjs/lib/invariant');
 
 const {Repeat} = Immutable;
 
-import type CharacterMetadata from 'CharacterMetadata';
-import type ContentState from 'ContentState';
-import type SelectionState from 'SelectionState';
+import type CharacterMetadata from '../immutable/CharacterMetadata.js';
+import type ContentState from '../immutable/ContentState.js';
+import type SelectionState from '../immutable/SelectionState.js';
 
 function insertTextIntoContentState(
   contentState: ContentState,

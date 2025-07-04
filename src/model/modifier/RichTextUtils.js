@@ -9,12 +9,12 @@
  * @emails oncall+draft_js
  */
 
-import type ContentState from 'ContentState';
-import type {DraftBlockType} from 'DraftBlockType';
-import type {DraftEditorCommand} from 'DraftEditorCommand';
-import type EditorState from 'EditorState';
-import type SelectionState from 'SelectionState';
-import type URI from 'URI';
+import type ContentState from '../immutable/ContentState.js';
+import type {DraftBlockType} from '../constants/DraftBlockType.js';
+import type {DraftEditorCommand} from '../constants/DraftEditorCommand.js';
+import type EditorState from '../immutable/EditorState.js';
+import type SelectionState from '../immutable/SelectionState.js';
+import type URI from 'fbjs/lib/URI';
 
 export type DataObjectForLink = {url: string, ...};
 

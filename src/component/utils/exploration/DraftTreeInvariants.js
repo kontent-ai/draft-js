@@ -11,10 +11,10 @@
  * This is unstable and not part of the public API and should not be used by
  * production systems. This file may be update/removed without notice.
  */
-import type {BlockMap} from 'BlockMap';
-import type ContentBlockNode from 'ContentBlockNode';
+import type {BlockMap} from '../../../model/immutable/BlockMap.js';
+import type ContentBlockNode from '../../../model/immutable/ContentBlockNode.js';
 
-const warning = require('warning');
+const warning = require('fbjs/lib/warning');
 
 const DraftTreeInvariants = {
   /**

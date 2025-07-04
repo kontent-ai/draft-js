@@ -11,10 +11,10 @@
 
 'use strict';
 
-import type {BlockMap} from 'BlockMap';
-import type EditorState from 'EditorState';
+import type {BlockMap} from '../../../model/immutable/BlockMap.js';
+import type EditorState from '../../../model/immutable/EditorState.js';
 
-const getContentStateFragment = require('getContentStateFragment');
+const getContentStateFragment = require('../../../model/transaction/getContentStateFragment.js');
 
 function getFragmentFromSelection(editorState: EditorState): ?BlockMap {
   const selectionState = editorState.getSelection();

@@ -10,12 +10,10 @@
 
 'use strict';
 
-jest.mock('generateRandomKey');
-
-const DraftPasteProcessor = require('DraftPasteProcessor');
+const DraftPasteProcessor = require('../DraftPasteProcessor.js');
 
 const Immutable = require('immutable');
-const mockUUID = require('mockUUID');
+const mockUUID = require('../../keys/mockUUID.js');
 
 const {OrderedSet, Map} = Immutable;
 
@@ -52,7 +50,7 @@ const CUSTOM_BLOCK_MAP = Map({
 const EMPTY_CHAR_METADATA = OrderedSet();
 
 const toggleExperimentalTreeDataSupport = enabled => {
-  jest.doMock('gkx', () => name => {
+  jest.doMock('../../../stubs/gkx.js', () => name => {
     return name === 'draft_tree_data_support' ? enabled : false;
   });
 };
@@ -82,7 +80,7 @@ const assertDraftPasteProcessorProcessHTML = (
 
 beforeEach(() => {
   jest.resetModules();
-  jest.mock('uuid', () => mockUUID);
+  jest.mock('../../../util/uuid.js', () => mockUUID);
 });
 
 test('must identify italics text', () => {

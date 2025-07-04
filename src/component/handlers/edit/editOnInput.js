@@ -11,19 +11,19 @@
 
 'use strict';
 
-import type {SelectionObject} from 'DraftDOMTypes';
-import type DraftEditor from 'DraftEditor.react';
+import type {SelectionObject} from '../../utils/DraftDOMTypes.js';
+import type DraftEditor from '../../base/DraftEditor.react.js';
 
-const DraftModifier = require('DraftModifier');
-const DraftOffsetKey = require('DraftOffsetKey');
-const EditorState = require('EditorState');
-const UserAgent = require('UserAgent');
+const DraftModifier = require('../../../model/modifier/DraftModifier.js');
+const DraftOffsetKey = require('../../selection/DraftOffsetKey.js');
+const EditorState = require('../../../model/immutable/EditorState.js');
+const UserAgent = require('fbjs/lib/UserAgent');
 
-const {notEmptyKey} = require('draftKeyUtils');
-const findAncestorOffsetKey = require('findAncestorOffsetKey');
-const findAncestorWithOffsetKey = require('findAncestorWithOffsetKey');
-const keyCommandPlainBackspace = require('keyCommandPlainBackspace');
-const nullthrows = require('nullthrows');
+const {notEmptyKey} = require('../../utils/draftKeyUtils.js');
+const findAncestorOffsetKey = require('../../selection/findAncestorOffsetKey.js');
+const findAncestorWithOffsetKey = require('../../selection/findAncestorWithOffsetKey.js');
+const keyCommandPlainBackspace = require('./commands/keyCommandPlainBackspace.js');
+const nullthrows = require('fbjs/lib/nullthrows');
 
 const isGecko = UserAgent.isEngine('Gecko');
 

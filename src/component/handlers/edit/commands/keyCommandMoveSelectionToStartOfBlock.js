@@ -11,7 +11,7 @@
 
 'use strict';
 
-const EditorState = require('EditorState');
+const EditorState = require('../../../../model/immutable/EditorState.js');
 
 /**
  * Collapse selection at the start of the first selected block. This is used

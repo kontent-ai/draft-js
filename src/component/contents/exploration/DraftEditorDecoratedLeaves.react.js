@@ -14,16 +14,16 @@
 
 'use strict';
 
-import type {BlockNodeRecord} from 'BlockNodeRecord';
-import type ContentState from 'ContentState';
-import type {DraftDecoratorType} from 'DraftDecoratorType';
-import type {BidiDirection} from 'UnicodeBidiDirection';
+import type {BlockNodeRecord} from '../../../model/immutable/BlockNodeRecord.js';
+import type ContentState from '../../../model/immutable/ContentState.js';
+import type {DraftDecoratorType} from '../../../model/decorators/DraftDecoratorType.js';
+import type {BidiDirection} from 'fbjs/lib/UnicodeBidiDirection';
 import type {Set} from 'immutable';
 
-const DraftOffsetKey = require('DraftOffsetKey');
+const DraftOffsetKey = require('../../selection/DraftOffsetKey.js');
 const React = require('React');
-const UnicodeBidi = require('UnicodeBidi');
-const UnicodeBidiDirection = require('UnicodeBidiDirection');
+const UnicodeBidi = require('fbjs/lib/UnicodeBidi');
+const UnicodeBidiDirection = require('fbjs/lib/UnicodeBidiDirection');
 
 type Props = {
   block: BlockNodeRecord,

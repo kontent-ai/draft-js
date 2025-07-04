@@ -11,7 +11,7 @@
 
 'use strict';
 
-import type {BlockNodeRawConfig} from 'BlockNode';
+import type {BlockNodeRawConfig} from './BlockNode.js';
 
 export type ContentStateRawType = {
   entityMap: ?{...},

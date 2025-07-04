@@ -11,27 +11,27 @@
 
 'use strict';
 
-import type {BlockNodeRecord} from 'BlockNodeRecord';
-import type {DraftBlockRenderMap} from 'DraftBlockRenderMap';
-import type {DraftInlineStyle} from 'DraftInlineStyle';
-import type {EntityMap} from 'EntityMap';
+import type {BlockNodeRecord} from '../immutable/BlockNodeRecord.js';
+import type {DraftBlockRenderMap} from '../immutable/DraftBlockRenderMap.js';
+import type {DraftInlineStyle} from '../immutable/DraftInlineStyle.js';
+import type {EntityMap} from '../immutable/EntityMap.js';
 
-const CharacterMetadata = require('CharacterMetadata');
-const ContentBlock = require('ContentBlock');
-const ContentBlockNode = require('ContentBlockNode');
-const DefaultDraftBlockRenderMap = require('DefaultDraftBlockRenderMap');
-const DraftEntity = require('DraftEntity');
-const URI = require('URI');
+const CharacterMetadata = require('../immutable/CharacterMetadata.js');
+const ContentBlock = require('../immutable/ContentBlock.js');
+const ContentBlockNode = require('../immutable/ContentBlockNode.js');
+const DefaultDraftBlockRenderMap = require('../immutable/DefaultDraftBlockRenderMap.js');
+const DraftEntity = require('../entity/DraftEntity.js');
+const URI = require('fbjs/lib/URI');
 
-const cx = require('cx');
-const generateRandomKey = require('generateRandomKey');
-const getSafeBodyFromHTML = require('getSafeBodyFromHTML');
-const gkx = require('gkx');
+const cx = require('fbjs/lib/cx');
+const generateRandomKey = require('../keys/generateRandomKey.js');
+const getSafeBodyFromHTML = require('../paste/getSafeBodyFromHTML.js');
+const gkx = require('../../stubs/gkx.js');
 const {List, Map, OrderedSet} = require('immutable');
-const isHTMLAnchorElement = require('isHTMLAnchorElement');
-const isHTMLBRElement = require('isHTMLBRElement');
-const isHTMLElement = require('isHTMLElement');
-const isHTMLImageElement = require('isHTMLImageElement');
+const isHTMLAnchorElement = require('../../component/utils/isHTMLAnchorElement.js');
+const isHTMLBRElement = require('../../component/utils/isHTMLBRElement.js');
+const isHTMLElement = require('../../component/utils/isHTMLElement.js');
+const isHTMLImageElement = require('../../component/utils/isHTMLImageElement.js');
 
 const experimentalTreeDataSupport = gkx('draft_tree_data_support');
 

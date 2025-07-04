@@ -11,8 +11,8 @@
 
 'use strict';
 
-import type {BlockMap} from 'BlockMap';
-import type {BlockNodeRecord} from 'BlockNodeRecord';
+import type {BlockMap} from './BlockMap.js';
+import type {BlockNodeRecord} from './BlockNodeRecord.js';
 
 const Immutable = require('immutable');
 

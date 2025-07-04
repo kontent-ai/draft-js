@@ -15,8 +15,8 @@
  * Get offset key from a node or it's child nodes. Return the first offset key
  * found on the DOM tree of given node.
  */
-const isElement = require('isElement');
-const getOffsetKeyFromNode = require('getOffsetKeyFromNode');
+const isElement = require('../utils/isElement.js');
+const getOffsetKeyFromNode = require('./getOffsetKeyFromNode.js');
 
 function getSelectionOffsetKeyForNode(node: Node): ?string {
   if (isElement(node)) {

@@ -11,22 +11,22 @@
 
 'use strict';
 
-import type {BlockMap} from 'BlockMap';
-import type DraftEditor from 'DraftEditor.react';
-import type {EntityMap} from 'EntityMap';
+import type {BlockMap} from '../../../model/immutable/BlockMap.js';
+import type DraftEditor from '../../base/DraftEditor.react.js';
+import type {EntityMap} from '../../../model/immutable/EntityMap.js';
 
-const BlockMapBuilder = require('BlockMapBuilder');
-const CharacterMetadata = require('CharacterMetadata');
-const DataTransfer = require('DataTransfer');
-const DraftModifier = require('DraftModifier');
-const DraftPasteProcessor = require('DraftPasteProcessor');
-const EditorState = require('EditorState');
-const RichTextEditorUtil = require('RichTextEditorUtil');
+const BlockMapBuilder = require('../../../model/immutable/BlockMapBuilder.js');
+const CharacterMetadata = require('../../../model/immutable/CharacterMetadata.js');
+const DataTransfer = require('fbjs/lib/DataTransfer');
+const DraftModifier = require('../../../model/modifier/DraftModifier.js');
+const DraftPasteProcessor = require('../../../model/paste/DraftPasteProcessor.js');
+const EditorState = require('../../../model/immutable/EditorState.js');
+const RichTextEditorUtil = require('../../../model/modifier/RichTextEditorUtil.js');
 
-const getEntityKeyForSelection = require('getEntityKeyForSelection');
-const getTextContentFromFiles = require('getTextContentFromFiles');
-const isEventHandled = require('isEventHandled');
-const splitTextIntoTextBlocks = require('splitTextIntoTextBlocks');
+const getEntityKeyForSelection = require('../../../model/entity/getEntityKeyForSelection.js');
+const getTextContentFromFiles = require('../../utils/getTextContentFromFiles.js');
+const isEventHandled = require('../../utils/isEventHandled.js');
+const splitTextIntoTextBlocks = require('../../utils/splitTextIntoTextBlocks.js');
 
 /**
  * Paste content.

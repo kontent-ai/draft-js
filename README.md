@@ -103,10 +103,9 @@ const styles = {
   }
 };
 
-ReactDOM.render(
-  <MyEditor />,
-  document.getElementById('container')
-);
+const container = document.getElementById('container');
+const root = ReactDOM.createRoot(container);
+root.render(<MyEditor />);
 ```
 
 Since the release of React 16.8, you can use [Hooks](https://reactjs.org/docs/hooks-intro.html) as a way to work with `EditorState` without using a class.

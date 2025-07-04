@@ -16,22 +16,22 @@ jest
   .mock('getScrollPosition')
   .mock('getViewportDimensions');
 
-const BlockTree = require('BlockTree');
-const CompositeDraftDecorator = require('CompositeDraftDecorator');
-const ContentBlockNode = require('ContentBlockNode');
-const ContentState = require('ContentState');
-const DefaultDraftBlockRenderMap = require('DefaultDraftBlockRenderMap');
-const DraftEditorBlockNode = require('DraftEditorBlockNode.react');
-const EditorState = require('EditorState');
+const BlockTree = require('../../../../model/immutable/BlockTree.js');
+const CompositeDraftDecorator = require('../../../../model/decorators/CompositeDraftDecorator.js');
+const ContentBlockNode = require('../../../../model/immutable/ContentBlockNode.js');
+const ContentState = require('../../../../model/immutable/ContentState.js');
+const DefaultDraftBlockRenderMap = require('../../../../model/immutable/DefaultDraftBlockRenderMap.js');
+const DraftEditorBlockNode = require('../DraftEditorBlockNode.react.js');
+const EditorState = require('../../../../model/immutable/EditorState.js');
 const React = require('React');
-const SelectionState = require('SelectionState');
-const Style = require('Style');
-const UnicodeBidiDirection = require('UnicodeBidiDirection');
+const SelectionState = require('../../../../model/immutable/SelectionState.js');
+const Style = require('fbjs/lib/Style');
+const UnicodeBidiDirection = require('fbjs/lib/UnicodeBidiDirection');
 
-const TestHelper = require('_DraftTestHelper');
-const getElementPosition = require('getElementPosition');
-const getScrollPosition = require('getScrollPosition');
-const getViewportDimensions = require('getViewportDimensions');
+const TestHelper = require('../../../utils/_DraftTestHelper.js');
+const getElementPosition = require('fbjs/lib/getElementPosition');
+const getScrollPosition = require('fbjs/lib/getScrollPosition');
+const getViewportDimensions = require('fbjs/lib/getViewportDimensions');
 const Immutable = require('immutable');
 const ReactTestRenderer = require('react-test-renderer');
 

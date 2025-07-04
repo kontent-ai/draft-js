@@ -11,7 +11,7 @@
 
 'use strict';
 
-import type {DraftInlineStyle} from 'DraftInlineStyle';
+import type {DraftInlineStyle} from './DraftInlineStyle.js';
 
 const {Map, OrderedSet, Record} = require('immutable');
 

@@ -11,15 +11,15 @@
 
 'use strict';
 
-import type {DOMDerivedSelection} from 'DOMDerivedSelection';
-import type EditorState from 'EditorState';
+import type {DOMDerivedSelection} from './DOMDerivedSelection.js';
+import type EditorState from '../../model/immutable/EditorState.js';
 
-const findAncestorOffsetKey = require('findAncestorOffsetKey');
-const getSelectionOffsetKeyForNode = require('getSelectionOffsetKeyForNode');
-const getUpdatedSelectionState = require('getUpdatedSelectionState');
-const invariant = require('invariant');
-const isElement = require('isElement');
-const nullthrows = require('nullthrows');
+const findAncestorOffsetKey = require('./findAncestorOffsetKey.js');
+const getSelectionOffsetKeyForNode = require('./getSelectionOffsetKeyForNode.js');
+const getUpdatedSelectionState = require('./getUpdatedSelectionState.js');
+const invariant = require('fbjs/lib/invariant');
+const isElement = require('../utils/isElement.js');
+const nullthrows = require('fbjs/lib/nullthrows');
 
 type SelectionPoint = {|
   key: string,

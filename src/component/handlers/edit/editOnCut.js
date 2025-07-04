@@ -11,15 +11,15 @@
 
 'use strict';
 
-import type DraftEditor from 'DraftEditor.react';
+import type DraftEditor from '../../base/DraftEditor.react.js';
 
-const DraftModifier = require('DraftModifier');
-const EditorState = require('EditorState');
-const Style = require('Style');
+const DraftModifier = require('../../../model/modifier/DraftModifier.js');
+const EditorState = require('../../../model/immutable/EditorState.js');
+const Style = require('fbjs/lib/Style');
 
-const getFragmentFromSelection = require('getFragmentFromSelection');
-const getScrollPosition = require('getScrollPosition');
-const isNode = require('isInstanceOfNode');
+const getFragmentFromSelection = require('./getFragmentFromSelection.js');
+const getScrollPosition = require('fbjs/lib/getScrollPosition');
+const isNode = require('../../utils/isInstanceOfNode.js');
 
 /**
  * On `cut` events, native behavior is allowed to occur so that the system

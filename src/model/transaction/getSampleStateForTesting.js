@@ -11,13 +11,13 @@
 
 'use strict';
 
-const BlockMapBuilder = require('BlockMapBuilder');
-const CharacterMetadata = require('CharacterMetadata');
-const ContentBlock = require('ContentBlock');
-const ContentState = require('ContentState');
-const EditorState = require('EditorState');
-const SampleDraftInlineStyle = require('SampleDraftInlineStyle');
-const SelectionState = require('SelectionState');
+const BlockMapBuilder = require('../immutable/BlockMapBuilder.js');
+const CharacterMetadata = require('../immutable/CharacterMetadata.js');
+const ContentBlock = require('../immutable/ContentBlock.js');
+const ContentState = require('../immutable/ContentState.js');
+const EditorState = require('../immutable/EditorState.js');
+const SampleDraftInlineStyle = require('../immutable/SampleDraftInlineStyle.js');
+const SelectionState = require('../immutable/SelectionState.js');
 
 const Immutable = require('immutable');
 

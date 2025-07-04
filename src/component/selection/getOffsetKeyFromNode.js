@@ -14,7 +14,7 @@
 /**
  * Get offset key from a node.
  */
-const isElement = require('isElement');
+const isElement = require('../utils/isElement.js');
 
 function getOffsetKeyFromNode(node: Node): ?string {
   if (isElement(node)) {

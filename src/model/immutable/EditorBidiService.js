@@ -11,10 +11,10 @@
 
 'use strict';
 
-import type ContentState from 'ContentState';
+import type ContentState from './ContentState.js';
 
 const Immutable = require('immutable');
-const UnicodeBidiDirection = require('UnicodeBidiDirection');
+const UnicodeBidiDirection = require('fbjs/lib/UnicodeBidiDirection');
 
 const {OrderedMap} = Immutable;
 

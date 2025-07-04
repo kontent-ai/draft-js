@@ -11,12 +11,12 @@
 
 'use strict';
 
-import type {DraftTextAlignment} from 'DraftTextAlignment';
-import type EditorState from 'EditorState';
+import type {DraftTextAlignment} from './DraftTextAlignment.js';
+import type EditorState from '../../model/immutable/EditorState.js';
 
 const React = require('React');
 
-const cx = require('cx');
+const cx = require('fbjs/lib/cx');
 
 type Props = {
   accessibilityID: string,

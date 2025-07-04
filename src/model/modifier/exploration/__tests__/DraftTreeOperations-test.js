@@ -11,10 +11,8 @@
 
 'use strict';
 
-jest.mock('generateRandomKey');
-
-const ContentBlockNode = require('ContentBlockNode');
-const DraftTreeOperations = require('DraftTreeOperations');
+const ContentBlockNode = require('../../../immutable/ContentBlockNode.js');
+const DraftTreeOperations = require('../DraftTreeOperations.js');
 
 const Immutable = require('immutable');
 const blockMap1 = Immutable.OrderedMap({

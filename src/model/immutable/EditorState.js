@@ -11,18 +11,18 @@
 
 'use strict';
 
-import type {BlockMap} from 'BlockMap';
-import type {DecoratorRangeRawType} from 'BlockTree';
-import type {ContentStateRawType} from 'ContentStateRawType';
-import type {DraftDecoratorType} from 'DraftDecoratorType';
-import type {DraftInlineStyle} from 'DraftInlineStyle';
-import type {EditorChangeType} from 'EditorChangeType';
-import type {EntityMap} from 'EntityMap';
+import type {BlockMap} from './BlockMap.js';
+import type {DecoratorRangeRawType} from './BlockTree.js';
+import type {ContentStateRawType} from './ContentStateRawType.js';
+import type {DraftDecoratorType} from '../decorators/DraftDecoratorType.js';
+import type {DraftInlineStyle} from './DraftInlineStyle.js';
+import type {EditorChangeType} from './EditorChangeType.js';
+import type {EntityMap} from './EntityMap.js';
 
-const BlockTree = require('BlockTree');
-const ContentState = require('ContentState');
-const EditorBidiService = require('EditorBidiService');
-const SelectionState = require('SelectionState');
+const BlockTree = require('./BlockTree.js');
+const ContentState = require('./ContentState.js');
+const EditorBidiService = require('./EditorBidiService.js');
+const SelectionState = require('./SelectionState.js');
 
 const Immutable = require('immutable');
 
@@ -621,9 +621,9 @@ function updateSelection(
  * Returns an OrderedMap that maps all available ContentBlock objects.
  */
 function generateNewTreeMap(
-  contentState: ContentState,
-  decorator?: ?DraftDecoratorType,
-): OrderedMap<string, List<any>> {
+  contentState,
+  decorator,
+) {
   return contentState
     .getBlockMap()
     .map(block => BlockTree.generate(contentState, block, decorator))

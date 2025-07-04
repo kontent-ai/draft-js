@@ -11,9 +11,9 @@
 
 'use strict';
 
-const UserAgent = require('UserAgent');
+const UserAgent = require('fbjs/lib/UserAgent');
 
-const invariant = require('invariant');
+const invariant = require('fbjs/lib/invariant');
 
 const isChrome = UserAgent.isBrowser('Chrome');
 

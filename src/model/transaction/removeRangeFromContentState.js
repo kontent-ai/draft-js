@@ -11,14 +11,14 @@
 
 'use strict';
 
-import type {BlockMap} from 'BlockMap';
-import type CharacterMetadata from 'CharacterMetadata';
-import type ContentState from 'ContentState';
-import type SelectionState from 'SelectionState';
+import type {BlockMap} from '../immutable/BlockMap.js';
+import type CharacterMetadata from '../immutable/CharacterMetadata.js';
+import type ContentState from '../immutable/ContentState.js';
+import type SelectionState from '../immutable/SelectionState.js';
 
-const ContentBlockNode = require('ContentBlockNode');
+const ContentBlockNode = require('../immutable/ContentBlockNode.js');
 
-const getNextDelimiterBlockKey = require('getNextDelimiterBlockKey');
+const getNextDelimiterBlockKey = require('./exploration/getNextDelimiterBlockKey.js');
 const Immutable = require('immutable');
 
 const {List, Map} = Immutable;

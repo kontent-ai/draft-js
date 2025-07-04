@@ -11,11 +11,11 @@
 
 'use strict';
 
-const ContentBlock = require('ContentBlock');
-const ContentState = require('ContentState');
-const EditorState = require('EditorState');
+const ContentBlock = require('../../../../model/immutable/ContentBlock.js');
+const ContentState = require('../../../../model/immutable/ContentState.js');
+const EditorState = require('../../../../model/immutable/EditorState.js');
 
-const onBlur = require('editOnBlur');
+const onBlur = require('../editOnBlur.js');
 
 const getEditorState = (text: string = 'Arsenal') => {
   return EditorState.createWithContent(

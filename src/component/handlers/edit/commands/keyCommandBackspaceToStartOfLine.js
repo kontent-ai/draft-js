@@ -11,14 +11,14 @@
 
 'use strict';
 
-import type {SelectionObject} from 'DraftDOMTypes';
+import type {SelectionObject} from '../../../utils/DraftDOMTypes.js';
 
-const EditorState = require('EditorState');
+const EditorState = require('../../../../model/immutable/EditorState.js');
 
-const expandRangeToStartOfLine = require('expandRangeToStartOfLine');
-const getDraftEditorSelectionWithNodes = require('getDraftEditorSelectionWithNodes');
-const moveSelectionBackward = require('moveSelectionBackward');
-const removeTextWithStrategy = require('removeTextWithStrategy');
+const expandRangeToStartOfLine = require('../../../selection/expandRangeToStartOfLine.js');
+const getDraftEditorSelectionWithNodes = require('../../../selection/getDraftEditorSelectionWithNodes.js');
+const moveSelectionBackward = require('./moveSelectionBackward.js');
+const removeTextWithStrategy = require('./removeTextWithStrategy.js');
 
 function keyCommandBackspaceToStartOfLine(
   editorState: EditorState,

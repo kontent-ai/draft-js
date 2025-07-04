@@ -11,7 +11,7 @@
 
 'use strict';
 
-import type {DraftBlockRenderConfig} from 'DraftBlockRenderConfig';
+import type {DraftBlockRenderConfig} from './DraftBlockRenderConfig.js';
 import type {Map} from 'immutable';
 
 // We should be able to be more specific on the key type

@@ -11,15 +11,15 @@
 
 'use strict';
 
-import type {BlockNodeRecord} from 'BlockNodeRecord';
-import type {DraftRemovalDirection} from 'DraftRemovalDirection';
-import type {EntityMap} from 'EntityMap';
-import type SelectionState from 'SelectionState';
+import type {BlockNodeRecord} from '../immutable/BlockNodeRecord.js';
+import type {DraftRemovalDirection} from '../constants/DraftRemovalDirection.js';
+import type {EntityMap} from '../immutable/EntityMap.js';
+import type SelectionState from '../immutable/SelectionState.js';
 
-const DraftEntitySegments = require('DraftEntitySegments');
+const DraftEntitySegments = require('./DraftEntitySegments.js');
 
-const getRangesForDraftEntity = require('getRangesForDraftEntity');
-const invariant = require('invariant');
+const getRangesForDraftEntity = require('./getRangesForDraftEntity.js');
+const invariant = require('fbjs/lib/invariant');
 
 /**
  * Given a SelectionState and a removal direction, determine the entire range

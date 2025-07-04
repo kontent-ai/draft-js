@@ -11,7 +11,7 @@
 
 'use strict';
 
-const TokenizeUtil = require('TokenizeUtil');
+const TokenizeUtil = require('fbjs/lib/TokenizeUtil');
 
 const punctuation = TokenizeUtil.getPunctuation();
 

@@ -11,11 +11,11 @@
 
 'use strict';
 
-import type {DraftEditorCommand} from 'DraftEditorCommand';
+import type {DraftEditorCommand} from '../../model/constants/DraftEditorCommand.js';
 
-const KeyBindingUtil = require('KeyBindingUtil');
-const Keys = require('Keys');
-const UserAgent = require('UserAgent');
+const KeyBindingUtil = require('./KeyBindingUtil.js');
+const Keys = require('fbjs/lib/Keys');
+const UserAgent = require('fbjs/lib/UserAgent');
 
 const isOSX = UserAgent.isPlatform('Mac OS X');
 

@@ -11,19 +11,17 @@
 
 'use strict';
 
-jest.mock('generateRandomKey');
+const mockUUID = require('../../keys/mockUUID.js');
+jest.mock('../../../util/uuid.js', () => mockUUID);
+const AtomicBlockUtils = require('../AtomicBlockUtils.js');
+const BlockMapBuilder = require('../../immutable/BlockMapBuilder.js');
+const ContentBlockNode = require('../../immutable/ContentBlockNode.js');
+const Entity = require('../../entity/DraftEntity.js');
+const EditorState = require('../../immutable/EditorState.js');
+const SelectionState = require('../../immutable/SelectionState.js');
 
-const mockUUID = require('mockUUID');
-jest.mock('uuid', () => mockUUID);
-const AtomicBlockUtils = require('AtomicBlockUtils');
-const BlockMapBuilder = require('BlockMapBuilder');
-const ContentBlockNode = require('ContentBlockNode');
-const Entity = require('DraftEntity');
-const EditorState = require('EditorState');
-const SelectionState = require('SelectionState');
-
-const getSampleStateForTesting = require('getSampleStateForTesting');
-const invariant = require('invariant');
+const getSampleStateForTesting = require('../../transaction/getSampleStateForTesting.js');
+const invariant = require('fbjs/lib/invariant');
 
 const {editorState, contentState, selectionState} = getSampleStateForTesting();
 
@@ -41,7 +39,7 @@ const getInvariantViolation = msg => {
 };
 
 const toggleExperimentalTreeDataSupport = enabled => {
-  jest.doMock('gkx', () => name => {
+  jest.doMock('../../../stubs/gkx.js', () => name => {
     return name === 'draft_tree_data_support' ? enabled : false;
   });
 };
@@ -86,7 +84,7 @@ const assertMoveAtomicBlock = (
 
 beforeEach(() => {
   jest.resetModules();
-  jest.mock('uuid', () => mockUUID);
+  jest.mock('../../../util/uuid.js', () => mockUUID);
 });
 
 test('must insert atomic at start of block with collapsed seletion', () => {
@@ -590,20 +588,21 @@ test("mustn't move atomic next to itself", () => {
 
 test('must be able to insert atomic block when experimentalTreeDataSupport is enabled', () => {
   // Insert atomic block at the first position
+  const editorStateWithContent = EditorState.createWithContent(
+    contentState.set(
+      'blockMap',
+      BlockMapBuilder.createFromArray([
+        new ContentBlockNode({
+          text: 'first block',
+          key: 'A',
+        }),
+      ]),
+    ),
+  );
   assertInsertAtomicBlock(
     EditorState.forceSelection(
-      EditorState.createWithContent(
-        contentState.set(
-          'blockMap',
-          BlockMapBuilder.createFromArray([
-            new ContentBlockNode({
-              text: 'first block',
-              key: 'A',
-            }),
-          ]),
-        ),
-      ),
-      SelectionState.createEmpty('A'),
+      editorStateWithContent,
+      editorStateWithContent.getSelection(),
     ),
     ENTITY_KEY,
     CHARACTER,
@@ -613,20 +612,21 @@ test('must be able to insert atomic block when experimentalTreeDataSupport is en
 
 test('must be able to move atomic block when experimentalTreeDataSupport is enabled', () => {
   // Insert atomic block at the first position
+  const editorStateWithContent = EditorState.createWithContent(
+    contentState.set(
+      'blockMap',
+      BlockMapBuilder.createFromArray([
+        new ContentBlockNode({
+          text: 'first block',
+          key: 'A',
+        }),
+      ]),
+    ),
+  );
   const resultEditor = assertInsertAtomicBlock(
     EditorState.forceSelection(
-      EditorState.createWithContent(
-        contentState.set(
-          'blockMap',
-          BlockMapBuilder.createFromArray([
-            new ContentBlockNode({
-              text: 'first block',
-              key: 'A',
-            }),
-          ]),
-        ),
-      ),
-      SelectionState.createEmpty('A'),
+      editorStateWithContent,
+      editorStateWithContent.getSelection(),
     ),
     ENTITY_KEY,
     CHARACTER,

@@ -10,14 +10,14 @@
 
 'use strict';
 
-const CharacterMetadata = require('CharacterMetadata');
-const ContentBlock = require('ContentBlock');
-const ContentState = require('ContentState');
-const DraftModifier = require('DraftModifier');
-const EditorState = require('EditorState');
-const RichTextEditorUtil = require('RichTextEditorUtil');
-const {BOLD, ITALIC} = require('SampleDraftInlineStyle');
-const SelectionState = require('SelectionState');
+const CharacterMetadata = require('../CharacterMetadata.js');
+const ContentBlock = require('../ContentBlock.js');
+const ContentState = require('../ContentState.js');
+const DraftModifier = require('../../modifier/DraftModifier.js');
+const EditorState = require('../EditorState.js');
+const RichTextEditorUtil = require('../../modifier/RichTextEditorUtil.js');
+const {BOLD, ITALIC} = require('../SampleDraftInlineStyle.js');
+const SelectionState = require('../SelectionState.js');
 
 const Immutable = require('immutable');
 

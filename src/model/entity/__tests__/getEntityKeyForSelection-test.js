@@ -9,8 +9,8 @@
  * @format
  */
 
-const getEntityKeyForSelection = require('getEntityKeyForSelection');
-const getSampleStateForTesting = require('getSampleStateForTesting');
+const getEntityKeyForSelection = require('../getEntityKeyForSelection.js');
+const getSampleStateForTesting = require('../../transaction/getSampleStateForTesting.js');
 
 const {contentState, selectionState} = getSampleStateForTesting();
 

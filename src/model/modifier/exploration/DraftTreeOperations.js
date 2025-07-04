@@ -11,14 +11,14 @@
  * This is unstable and not part of the public API and should not be used by
  * production systems. This file may be update/removed without notice.
  */
-import type {BlockMap} from 'BlockMap';
+import type {BlockMap} from '../../immutable/BlockMap.js';
 
-const ContentBlockNode = require('ContentBlockNode');
-const DraftTreeInvariants = require('DraftTreeInvariants');
+const ContentBlockNode = require('../../immutable/ContentBlockNode.js');
+const DraftTreeInvariants = require('../../../component/utils/exploration/DraftTreeInvariants.js');
 
-const generateRandomKey = require('generateRandomKey');
+const generateRandomKey = require('../../keys/generateRandomKey.js');
 const Immutable = require('immutable');
-const invariant = require('invariant');
+const invariant = require('fbjs/lib/invariant');
 
 type SiblingInsertPosition = 'previous' | 'next';
 

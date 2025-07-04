@@ -11,29 +11,29 @@
 
 'use strict';
 
-import type {BlockMap} from 'BlockMap';
-import type ContentState from 'ContentState';
-import type {DraftBlockType} from 'DraftBlockType';
-import type {DraftInlineStyle} from 'DraftInlineStyle';
-import type {DraftRemovalDirection} from 'DraftRemovalDirection';
-import type SelectionState from 'SelectionState';
+import type {BlockMap} from '../immutable/BlockMap.js';
+import type ContentState from '../immutable/ContentState.js';
+import type {DraftBlockType} from '../constants/DraftBlockType.js';
+import type {DraftInlineStyle} from '../immutable/DraftInlineStyle.js';
+import type {DraftRemovalDirection} from '../constants/DraftRemovalDirection.js';
+import type SelectionState from '../immutable/SelectionState.js';
 import type {Map} from 'immutable';
-import type {BlockDataMergeBehavior} from 'insertFragmentIntoContentState';
+import type {BlockDataMergeBehavior} from '../transaction/insertFragmentIntoContentState.js';
 
-const CharacterMetadata = require('CharacterMetadata');
-const ContentStateInlineStyle = require('ContentStateInlineStyle');
+const CharacterMetadata = require('../immutable/CharacterMetadata.js');
+const ContentStateInlineStyle = require('../transaction/ContentStateInlineStyle.js');
 
-const applyEntityToContentState = require('applyEntityToContentState');
-const getCharacterRemovalRange = require('getCharacterRemovalRange');
-const getContentStateFragment = require('getContentStateFragment');
+const applyEntityToContentState = require('../transaction/applyEntityToContentState.js');
+const getCharacterRemovalRange = require('./getCharacterRemovalRange.js');
+const getContentStateFragment = require('../transaction/getContentStateFragment.js');
 const Immutable = require('immutable');
-const insertFragmentIntoContentState = require('insertFragmentIntoContentState');
-const insertTextIntoContentState = require('insertTextIntoContentState');
-const invariant = require('invariant');
-const modifyBlockForContentState = require('modifyBlockForContentState');
-const removeEntitiesAtEdges = require('removeEntitiesAtEdges');
-const removeRangeFromContentState = require('removeRangeFromContentState');
-const splitBlockInContentState = require('splitBlockInContentState');
+const insertFragmentIntoContentState = require('../transaction/insertFragmentIntoContentState.js');
+const insertTextIntoContentState = require('../transaction/insertTextIntoContentState.js');
+const invariant = require('fbjs/lib/invariant');
+const modifyBlockForContentState = require('../transaction/modifyBlockForContentState.js');
+const removeEntitiesAtEdges = require('../transaction/removeEntitiesAtEdges.js');
+const removeRangeFromContentState = require('../transaction/removeRangeFromContentState.js');
+const splitBlockInContentState = require('../transaction/splitBlockInContentState.js');
 
 const {OrderedSet} = Immutable;
 

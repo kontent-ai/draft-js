@@ -11,9 +11,9 @@
 
 'use strict';
 
-import type DraftEditor from 'DraftEditor.react';
+import type DraftEditor from '../../base/DraftEditor.react.js';
 
-const getFragmentFromSelection = require('getFragmentFromSelection');
+const getFragmentFromSelection = require('./getFragmentFromSelection.js');
 
 /**
  * If we have a selection, create a ContentState fragment and store

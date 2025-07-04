@@ -11,16 +11,16 @@
 
 'use strict';
 
-import type {BlockMap} from 'BlockMap';
-import type ContentState from 'ContentState';
-import type SelectionState from 'SelectionState';
+import type {BlockMap} from '../immutable/BlockMap.js';
+import type ContentState from '../immutable/ContentState.js';
+import type SelectionState from '../immutable/SelectionState.js';
 
-const ContentBlockNode = require('ContentBlockNode');
+const ContentBlockNode = require('../immutable/ContentBlockNode.js');
 
-const generateRandomKey = require('generateRandomKey');
+const generateRandomKey = require('../keys/generateRandomKey.js');
 const Immutable = require('immutable');
-const invariant = require('invariant');
-const modifyBlockForContentState = require('modifyBlockForContentState');
+const invariant = require('fbjs/lib/invariant');
+const modifyBlockForContentState = require('./modifyBlockForContentState.js');
 
 const {List, Map} = Immutable;
 

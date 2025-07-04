@@ -11,9 +11,9 @@
 
 'use strict';
 
-const UserAgent = require('UserAgent');
+const UserAgent = require('fbjs/lib/UserAgent');
 
-const isSoftNewlineEvent = require('isSoftNewlineEvent');
+const isSoftNewlineEvent = require('./isSoftNewlineEvent.js');
 
 const isOSX = UserAgent.isPlatform('Mac OS X');
 

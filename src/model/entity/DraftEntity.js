@@ -9,14 +9,14 @@
  * @emails oncall+draft_js
  */
 
-import type {DraftEntityMutability} from 'DraftEntityMutability';
-import type {DraftEntityType} from 'DraftEntityType';
+import type {DraftEntityMutability} from './DraftEntityMutability.js';
+import type {DraftEntityType} from './DraftEntityType.js';
 
-const DraftEntityInstance = require('DraftEntityInstance');
+const DraftEntityInstance = require('./DraftEntityInstance.js');
 
 const Immutable = require('immutable');
-const invariant = require('invariant');
-const uuid = require('uuid');
+const invariant = require('fbjs/lib/invariant');
+const uuid = require('../../util/uuid.js');
 
 const {Map} = Immutable;
 

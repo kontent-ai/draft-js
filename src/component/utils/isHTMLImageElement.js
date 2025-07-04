@@ -9,7 +9,7 @@
  * @emails oncall+draft_js
  */
 
-const isElement = require('isElement');
+const isElement = require('./isElement.js');
 
 function isHTMLImageElement(node: ?Node): boolean {
   if (!node || !node.ownerDocument) {

@@ -11,11 +11,11 @@
 
 'use strict';
 
-const DraftRemovableWord = require('DraftRemovableWord');
-const EditorState = require('EditorState');
+const DraftRemovableWord = require('../../../../model/modifier/DraftRemovableWord.js');
+const EditorState = require('../../../../model/immutable/EditorState.js');
 
-const moveSelectionBackward = require('moveSelectionBackward');
-const removeTextWithStrategy = require('removeTextWithStrategy');
+const moveSelectionBackward = require('./moveSelectionBackward.js');
+const removeTextWithStrategy = require('./removeTextWithStrategy.js');
 
 /**
  * Delete the word that is left of the cursor, as well as any spaces or

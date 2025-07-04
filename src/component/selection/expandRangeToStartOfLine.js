@@ -9,11 +9,11 @@
  * @emails oncall+draft_js
  */
 
-const UnicodeUtils = require('UnicodeUtils');
+const UnicodeUtils = require('fbjs/lib/UnicodeUtils');
 
-const getCorrectDocumentFromNode = require('getCorrectDocumentFromNode');
-const getRangeClientRects = require('getRangeClientRects');
-const invariant = require('invariant');
+const getCorrectDocumentFromNode = require('../utils/getCorrectDocumentFromNode.js');
+const getRangeClientRects = require('./getRangeClientRects.js');
+const invariant = require('fbjs/lib/invariant');
 /**
  * Return the computed line height, in pixels, for the provided element.
  */

@@ -10,32 +10,32 @@
 
 'use strict';
 
-const AtomicBlockUtils = require('AtomicBlockUtils');
-const BlockMapBuilder = require('BlockMapBuilder');
-const CharacterMetadata = require('CharacterMetadata');
-const CompositeDraftDecorator = require('CompositeDraftDecorator');
-const ContentBlock = require('ContentBlock');
-const ContentState = require('ContentState');
-const DefaultDraftBlockRenderMap = require('DefaultDraftBlockRenderMap');
-const DefaultDraftInlineStyle = require('DefaultDraftInlineStyle');
-const DraftEditor = require('DraftEditor.react');
-const DraftEditorBlock = require('DraftEditorBlock.react');
-const DraftEntity = require('DraftEntity');
-const DraftModifier = require('DraftModifier');
-const DraftEntityInstance = require('DraftEntityInstance');
-const EditorState = require('EditorState');
-const KeyBindingUtil = require('KeyBindingUtil');
-const RawDraftContentState = require('RawDraftContentState');
-const RichTextEditorUtil = require('RichTextEditorUtil');
-const SelectionState = require('SelectionState');
+const AtomicBlockUtils = require('./model/modifier/AtomicBlockUtils.js');
+const BlockMapBuilder = require('./model/immutable/BlockMapBuilder.js');
+const CharacterMetadata = require('./model/immutable/CharacterMetadata.js');
+const CompositeDraftDecorator = require('./model/decorators/CompositeDraftDecorator.js');
+const ContentBlock = require('./model/immutable/ContentBlock.js');
+const ContentState = require('./model/immutable/ContentState.js');
+const DefaultDraftBlockRenderMap = require('./model/immutable/DefaultDraftBlockRenderMap.js');
+const DefaultDraftInlineStyle = require('./model/immutable/DefaultDraftInlineStyle.js');
+const DraftEditor = require('./component/base/DraftEditor.react.js');
+const DraftEditorBlock = require('./component/contents/DraftEditorBlock.react.js');
+const DraftEntity = require('./model/entity/DraftEntity.js');
+const DraftModifier = require('./model/modifier/DraftModifier.js');
+const DraftEntityInstance = require('./model/entity/DraftEntityInstance.js');
+const EditorState = require('./model/immutable/EditorState.js');
+const KeyBindingUtil = require('./component/utils/KeyBindingUtil.js');
+const RawDraftContentState = require('./model/encoding/RawDraftContentState.js');
+const RichTextEditorUtil = require('./model/modifier/RichTextEditorUtil.js');
+const SelectionState = require('./model/immutable/SelectionState.js');
 
-const convertFromDraftStateToRaw = require('convertFromDraftStateToRaw');
-const convertFromRawToDraftState = require('convertFromRawToDraftState');
-const generateRandomKey = require('generateRandomKey');
-const getDefaultKeyBinding = require('getDefaultKeyBinding');
-const getVisibleSelectionRect = require('getVisibleSelectionRect');
+const convertFromDraftStateToRaw = require('./model/encoding/convertFromDraftStateToRaw.js');
+const convertFromRawToDraftState = require('./model/encoding/convertFromRawToDraftState.js');
+const generateRandomKey = require('./model/keys/generateRandomKey.js');
+const getDefaultKeyBinding = require('./component/utils/getDefaultKeyBinding.js');
+const getVisibleSelectionRect = require('./component/selection/getVisibleSelectionRect.js');
 
-const convertFromHTML = require('convertFromHTMLToContentBlocks');
+const convertFromHTML = require('./model/encoding/convertFromHTMLToContentBlocks.js');
 
 const DraftPublic = {
   Editor: DraftEditor,

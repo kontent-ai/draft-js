@@ -11,8 +11,8 @@
 
 'use strict';
 
-const getCorrectDocumentFromNode = require('getCorrectDocumentFromNode');
-const getOffsetKeyFromNode = require('getOffsetKeyFromNode');
+const getCorrectDocumentFromNode = require('../utils/getCorrectDocumentFromNode.js');
+const getOffsetKeyFromNode = require('./getOffsetKeyFromNode.js');
 
 /**
  * Gets the nearest ancestor with offset key, matching the given predicate.

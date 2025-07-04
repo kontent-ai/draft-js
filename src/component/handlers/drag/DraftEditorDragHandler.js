@@ -11,20 +11,20 @@
 
 'use strict';
 
-import type DraftEditor from 'DraftEditor.react';
-import type SelectionState from 'SelectionState';
+import type DraftEditor from '../../base/DraftEditor.react.js';
+import type SelectionState from '../../../model/immutable/SelectionState.js';
 
-const DataTransfer = require('DataTransfer');
-const DraftModifier = require('DraftModifier');
-const EditorState = require('EditorState');
+const DataTransfer = require('fbjs/lib/DataTransfer');
+const DraftModifier = require('../../../model/modifier/DraftModifier.js');
+const EditorState = require('../../../model/immutable/EditorState.js');
 
-const findAncestorOffsetKey = require('findAncestorOffsetKey');
-const getCorrectDocumentFromNode = require('getCorrectDocumentFromNode');
-const getTextContentFromFiles = require('getTextContentFromFiles');
-const getUpdatedSelectionState = require('getUpdatedSelectionState');
-const getWindowForNode = require('getWindowForNode');
-const isEventHandled = require('isEventHandled');
-const nullthrows = require('nullthrows');
+const findAncestorOffsetKey = require('../../selection/findAncestorOffsetKey.js');
+const getCorrectDocumentFromNode = require('../../utils/getCorrectDocumentFromNode.js');
+const getTextContentFromFiles = require('../../utils/getTextContentFromFiles.js');
+const getUpdatedSelectionState = require('../../selection/getUpdatedSelectionState.js');
+const getWindowForNode = require('../../utils/getWindowForNode.js');
+const isEventHandled = require('../../utils/isEventHandled.js');
+const nullthrows = require('fbjs/lib/nullthrows');
 
 /**
  * Get a SelectionState for the supplied mouse event.

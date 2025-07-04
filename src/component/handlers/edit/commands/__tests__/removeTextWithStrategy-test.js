@@ -11,10 +11,8 @@
 
 'use strict';
 
-jest.mock('generateRandomKey');
-
 const toggleExperimentalTreeDataSupport = enabled => {
-  jest.doMock('gkx', () => name => {
+  jest.doMock('../../../../../stubs/gkx.js', () => name => {
     return name === 'draft_tree_data_support' ? enabled : false;
   });
 };
@@ -22,16 +20,16 @@ const toggleExperimentalTreeDataSupport = enabled => {
 // Seems to be important to put this at the top
 toggleExperimentalTreeDataSupport(true);
 
-const BlockMapBuilder = require('BlockMapBuilder');
-const ContentBlockNode = require('ContentBlockNode');
-const EditorState = require('EditorState');
-const SelectionState = require('SelectionState');
-const UnicodeUtils = require('UnicodeUtils');
+const BlockMapBuilder = require('../../../../../model/immutable/BlockMapBuilder.js');
+const ContentBlockNode = require('../../../../../model/immutable/ContentBlockNode.js');
+const EditorState = require('../../../../../model/immutable/EditorState.js');
+const SelectionState = require('../../../../../model/immutable/SelectionState.js');
+const UnicodeUtils = require('fbjs/lib/UnicodeUtils');
 
-const getSampleStateForTesting = require('getSampleStateForTesting');
+const getSampleStateForTesting = require('../../../../../model/transaction/getSampleStateForTesting.js');
 const Immutable = require('immutable');
-const moveSelectionForward = require('moveSelectionForward');
-const removeTextWithStrategy = require('removeTextWithStrategy');
+const moveSelectionForward = require('../moveSelectionForward.js');
+const removeTextWithStrategy = require('../removeTextWithStrategy.js');
 
 const {List} = Immutable;
 

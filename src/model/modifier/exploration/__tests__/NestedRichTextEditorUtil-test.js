@@ -8,16 +8,14 @@
  * @format
  */
 
-jest.mock('generateRandomKey');
+const AtomicBlockUtils = require('../../AtomicBlockUtils.js');
+const BlockMapBuilder = require('../../../immutable/BlockMapBuilder.js');
+const ContentBlockNode = require('../../../immutable/ContentBlockNode.js');
+const EditorState = require('../../../immutable/EditorState.js');
+const NestedRichTextEditorUtil = require('../NestedRichTextEditorUtil.js');
+const SelectionState = require('../../../immutable/SelectionState.js');
 
-const AtomicBlockUtils = require('AtomicBlockUtils');
-const BlockMapBuilder = require('BlockMapBuilder');
-const ContentBlockNode = require('ContentBlockNode');
-const EditorState = require('EditorState');
-const NestedRichTextEditorUtil = require('NestedRichTextEditorUtil');
-const SelectionState = require('SelectionState');
-
-const getSampleStateForTesting = require('getSampleStateForTesting');
+const getSampleStateForTesting = require('../../../transaction/getSampleStateForTesting.js');
 const Immutable = require('immutable');
 
 const {List} = Immutable;
@@ -90,7 +88,7 @@ const contentBlockNodes = [
 ];
 
 const toggleExperimentalTreeDataSupport = enabled => {
-  jest.doMock('gkx', () => name => {
+  jest.doMock('../../../../stubs/gkx.js', () => name => {
     return name === 'draft_tree_data_support' ? enabled : false;
   });
 };

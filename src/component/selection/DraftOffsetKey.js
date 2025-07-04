@@ -11,7 +11,7 @@
 
 'use strict';
 
-import type {DraftOffsetKeyPath} from 'DraftOffsetKeyPath';
+import type {DraftOffsetKeyPath} from './DraftOffsetKeyPath.js';
 
 const KEY_DELIMITER = '-';
 

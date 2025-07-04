@@ -11,14 +11,14 @@
 
 'use strict';
 
-import type {SelectionObject} from 'DraftDOMTypes';
-import type DraftEditor from 'DraftEditor.react';
+import type {SelectionObject} from '../../utils/DraftDOMTypes.js';
+import type DraftEditor from '../../base/DraftEditor.react.js';
 
-const DraftOffsetKey = require('DraftOffsetKey');
-const SelectionState = require('SelectionState');
+const DraftOffsetKey = require('../../selection/DraftOffsetKey.js');
+const SelectionState = require('../../../model/immutable/SelectionState.js');
 
-const findAncestorWithOffsetKey = require('findAncestorWithOffsetKey');
-const getOffsetKeyFromNode = require('getOffsetKeyFromNode');
+const findAncestorWithOffsetKey = require('../../selection/findAncestorWithOffsetKey.js');
+const getOffsetKeyFromNode = require('../../selection/getOffsetKeyFromNode.js');
 
 /**
  * Reconstructs selection based on the current DOM and DOM selection.

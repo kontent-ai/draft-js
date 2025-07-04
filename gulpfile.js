@@ -8,8 +8,6 @@
 'use strict';
 
 var packageData = require('./package.json');
-var moduleMap = require('./scripts/module-map');
-var fbjsConfigurePreset = require('babel-preset-fbjs/configure');
 var del = require('del');
 var gulpCheckDependencies = require('fbjs-scripts/gulp/check-dependencies');
 var gulp = require('gulp');
@@ -17,19 +15,19 @@ var babel = require('gulp-babel');
 var cleanCSS = require('gulp-clean-css');
 var concatCSS = require('gulp-concat-css');
 var derequire = require('gulp-derequire');
-var flatten = require('gulp-flatten');
 var header = require('gulp-header');
 var gulpif = require('gulp-if');
 var rename = require('gulp-rename');
-var gulpUtil = require('gulp-util');
-var StatsPlugin = require('stats-webpack-plugin');
+// gulp-util is deprecated, using recommended alternatives
+var log = require('fancy-log');
+var PluginError = require('plugin-error');
 var through = require('through2');
-var UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+var TerserPlugin = require('terser-webpack-plugin');
 var webpackStream = require('webpack-stream');
+var webpack = require('webpack');
 
 var paths = {
   dist: 'dist',
-  lib: 'lib',
   src: [
     'src/**/*.js',
     '!src/**/__tests__/**/*.js',
@@ -40,10 +38,13 @@ var paths = {
 
 var babelOptsJS = {
   presets: [
-    fbjsConfigurePreset({
-      stripDEV: true,
-      rewriteModules: {map: moduleMap},
-    }),
+    ['@babel/preset-env', {
+      targets: {
+        browsers: ['> 1%', 'last 2 versions', 'not ie <= 8']
+      }
+    }],
+    '@babel/preset-react',
+    '@babel/preset-flow'
   ],
   plugins: [
     require('@babel/plugin-proposal-nullish-coalescing-operator'),
@@ -53,10 +54,7 @@ var babelOptsJS = {
 
 var babelOptsFlow = {
   presets: [
-    fbjsConfigurePreset({
-      target: 'flow',
-      rewriteModules: {map: moduleMap},
-    }),
+    '@babel/preset-flow'
   ],
   plugins: [
     require('@babel/plugin-proposal-nullish-coalescing-operator'),
@@ -102,28 +100,29 @@ var buildDist = function(opts) {
       library: 'Draft',
     },
     plugins: [
-      new webpackStream.webpack.DefinePlugin({
+      new webpack.DefinePlugin({
         'process.env.NODE_ENV': JSON.stringify(
           opts.debug ? 'development' : 'production',
         ),
       }),
-      new webpackStream.webpack.LoaderOptionsPlugin({
+      new webpack.LoaderOptionsPlugin({
         debug: opts.debug,
       }),
-      new StatsPlugin(`../meta/bundle-size-stats/${opts.output}.json`, {
-        chunkModules: true,
-      }),
     ],
+    mode: opts.debug ? 'development' : 'production',
   };
   if (!opts.debug) {
-    webpackOpts.plugins.push(new UglifyJsPlugin());
+    webpackOpts.optimization = {
+      minimize: true,
+      minimizer: [new TerserPlugin()],
+    };
   }
   const wpStream = webpackStream(webpackOpts, null, function(err, stats) {
     if (err) {
-      throw new gulpUtil.PluginError('webpack', err);
+      throw new PluginError('webpack', err);
     }
     if (stats.compilation.errors.length) {
-      gulpUtil.log('webpack', '\n' + stats.toString({colors: true}));
+      log('webpack', '\n' + stats.toString({colors: true}));
     }
   });
   return wpStream;
@@ -132,7 +131,7 @@ var buildDist = function(opts) {
 gulp.task(
   'clean',
   gulp.series(function() {
-    return del([paths.dist, paths.lib]);
+    return del([paths.dist]);
   }),
 );
 
@@ -142,20 +141,7 @@ gulp.task(
     return gulp
       .src(paths.src)
       .pipe(babel(babelOptsJS))
-      .pipe(flatten())
-      .pipe(gulp.dest(paths.lib));
-  }),
-);
-
-gulp.task(
-  'flow',
-  gulp.series(function() {
-    return gulp
-      .src(paths.src)
-      .pipe(babel(babelOptsFlow))
-      .pipe(flatten())
-      .pipe(rename({extname: '.js.flow'}))
-      .pipe(gulp.dest(paths.lib));
+      .pipe(gulp.dest('dist/modules'));
   }),
 );
 
@@ -216,7 +202,7 @@ gulp.task(
       output: 'Draft.js',
     };
     return gulp
-      .src('./lib/Draft.js')
+      .src('./dist/modules/Draft.js')
       .pipe(buildDist(opts))
       .pipe(derequire())
       .pipe(
@@ -237,7 +223,7 @@ gulp.task(
       output: 'Draft.min.js',
     };
     return gulp
-      .src('./lib/Draft.js')
+      .src('./dist/modules/Draft.js')
       .pipe(buildDist(opts))
       .pipe(
         gulpif(
@@ -273,9 +259,8 @@ gulp.task(
 gulp.task(
   'default',
   gulp.series(
-    'check-dependencies',
     'clean',
-    gulp.parallel('modules', 'flow'),
+    gulp.parallel('modules'),
     gulp.parallel('dist', 'dist:min'),
   ),
 );

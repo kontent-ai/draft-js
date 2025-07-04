@@ -11,7 +11,7 @@
 
 'use strict';
 
-const Keys = require('Keys');
+const Keys = require('fbjs/lib/Keys');
 
 function isSoftNewlineEvent(e: SyntheticKeyboardEvent<>): boolean {
   return (

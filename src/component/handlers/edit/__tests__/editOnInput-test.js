@@ -11,16 +11,16 @@
 
 'use strict';
 
-const ContentBlock = require('ContentBlock');
-const ContentState = require('ContentState');
-const EditorState = require('EditorState');
+const ContentBlock = require('../../../../model/immutable/ContentBlock.js');
+const ContentState = require('../../../../model/immutable/ContentState.js');
+const EditorState = require('../../../../model/immutable/EditorState.js');
 
-const onInput = require('editOnInput');
+const onInput = require('../editOnInput.js');
 
-jest.mock('findAncestorOffsetKey', () => jest.fn(() => 'blockkey-0-0'));
-jest.mock('keyCommandPlainBackspace', () => jest.fn(() => ({})));
+jest.mock('../../../selection/findAncestorOffsetKey.js', () => jest.fn(() => 'blockkey-0-0'));
+jest.mock('../commands/keyCommandPlainBackspace.js', () => jest.fn(() => ({})));
 
-const getEditorState = (text: string = '') => {
+const getEditorState = (text = '') => {
   return EditorState.createWithContent(
     ContentState.createFromBlockArray([
       new ContentBlock({
@@ -65,7 +65,7 @@ test('restoreEditorDOM and keyCommandPlainBackspace are NOT called when the `inp
     // $FlowExpectedError[incompatible-call]
     onInput(editor, inputEvent);
 
-    expect(require('keyCommandPlainBackspace')).toHaveBeenCalledTimes(0);
+    expect(require('../commands/keyCommandPlainBackspace.js')).toHaveBeenCalledTimes(0);
     expect(editor.restoreEditorDOM).toHaveBeenCalledTimes(0);
     expect(editor.update).toHaveBeenCalledTimes(0);
   });
@@ -98,9 +98,9 @@ test('restoreEditorDOM and keyCommandPlainBackspace are called when backspace is
     onInput(editor, inputEvent);
 
     // $FlowExpectedError[prop-missing]
-    const newEditorState = require('keyCommandPlainBackspace').mock.results[0]
+    const newEditorState = require('../commands/keyCommandPlainBackspace.js').mock.results[0]
       .value;
-    expect(require('keyCommandPlainBackspace')).toHaveBeenCalledWith(
+    expect(require('../commands/keyCommandPlainBackspace.js')).toHaveBeenCalledWith(
       editorState,
     );
     expect(editor.restoreEditorDOM).toHaveBeenCalledTimes(1);

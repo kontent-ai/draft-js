@@ -11,9 +11,9 @@
 
 'use strict';
 
-import type DraftEditor from 'DraftEditor.react';
+import type DraftEditor from '../../base/DraftEditor.react.js';
 
-const EditorState = require('EditorState');
+const EditorState = require('../../../model/immutable/EditorState.js');
 
 /**
  * The user has begun using an IME input system. Switching to `composite` mode

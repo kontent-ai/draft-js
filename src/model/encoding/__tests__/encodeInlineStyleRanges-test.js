@@ -11,11 +11,11 @@
 
 'use strict';
 
-const ContentBlock = require('ContentBlock');
-const SampleDraftInlineStyle = require('SampleDraftInlineStyle');
+const ContentBlock = require('../../immutable/ContentBlock.js');
+const SampleDraftInlineStyle = require('../../immutable/SampleDraftInlineStyle.js');
 
-const createCharacterList = require('createCharacterList');
-const encodeInlineStyleRanges = require('encodeInlineStyleRanges');
+const createCharacterList = require('../createCharacterList.js');
+const encodeInlineStyleRanges = require('../encodeInlineStyleRanges.js');
 const Immutable = require('immutable');
 
 const {

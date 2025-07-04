@@ -13,8 +13,8 @@
 
 // missing parent -> child connection
 
-const ContentBlockNode = require('ContentBlockNode');
-const DraftTreeInvariants = require('DraftTreeInvariants');
+const ContentBlockNode = require('../../../../model/immutable/ContentBlockNode.js');
+const DraftTreeInvariants = require('../DraftTreeInvariants.js');
 
 const Immutable = require('immutable');
 

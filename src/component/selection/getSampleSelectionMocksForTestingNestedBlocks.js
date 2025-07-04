@@ -11,9 +11,9 @@
 
 'use strict';
 
-const ContentBlockNode = require('ContentBlockNode');
-const ContentState = require('ContentState');
-const EditorState = require('EditorState');
+const ContentBlockNode = require('../../model/immutable/ContentBlockNode.js');
+const ContentState = require('../../model/immutable/ContentState.js');
+const EditorState = require('../../model/immutable/EditorState.js');
 
 const Immutable = require('immutable');
 

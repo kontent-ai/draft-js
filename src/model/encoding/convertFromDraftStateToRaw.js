@@ -11,18 +11,18 @@
 
 'use strict';
 
-import type {BlockNodeRecord} from 'BlockNodeRecord';
-import type ContentState from 'ContentState';
-import type {RawDraftContentBlock} from 'RawDraftContentBlock';
-import type {RawDraftContentState} from 'RawDraftContentState';
+import type {BlockNodeRecord} from '../immutable/BlockNodeRecord.js';
+import type ContentState from '../immutable/ContentState.js';
+import type {RawDraftContentBlock} from './RawDraftContentBlock.js';
+import type {RawDraftContentState} from './RawDraftContentState.js';
 
-const ContentBlock = require('ContentBlock');
-const ContentBlockNode = require('ContentBlockNode');
-const DraftStringKey = require('DraftStringKey');
+const ContentBlock = require('../immutable/ContentBlock.js');
+const ContentBlockNode = require('../immutable/ContentBlockNode.js');
+const DraftStringKey = require('./DraftStringKey.js');
 
-const encodeEntityRanges = require('encodeEntityRanges');
-const encodeInlineStyleRanges = require('encodeInlineStyleRanges');
-const invariant = require('invariant');
+const encodeEntityRanges = require('./encodeEntityRanges.js');
+const encodeInlineStyleRanges = require('./encodeInlineStyleRanges.js');
+const invariant = require('fbjs/lib/invariant');
 
 const createRawBlock = (block: BlockNodeRecord, entityStorageMap: *) => {
   return {

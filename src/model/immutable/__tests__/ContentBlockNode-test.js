@@ -11,9 +11,9 @@
 
 'use strict';
 
-const CharacterMetadata = require('CharacterMetadata');
-const ContentBlockNode = require('ContentBlockNode');
-const {BOLD, NONE} = require('SampleDraftInlineStyle');
+const CharacterMetadata = require('../CharacterMetadata.js');
+const ContentBlockNode = require('../ContentBlockNode.js');
+const {BOLD, NONE} = require('../SampleDraftInlineStyle.js');
 
 const Immutable = require('immutable');
 

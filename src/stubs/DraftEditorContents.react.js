@@ -10,10 +10,10 @@
 
 'use strict';
 
-const gkx = require('gkx');
+const gkx = require('./gkx.js');
 
 const experimentalTreeDataSupport = gkx('draft_tree_data_support');
 
 module.exports = experimentalTreeDataSupport
-  ? require('DraftEditorContentsExperimental.react')
-  : require('DraftEditorContents-core.react');
+  ? require('../component/contents/exploration/DraftEditorContentsExperimental.react.js')
+  : require('../component/contents/DraftEditorContents-core.react.js');

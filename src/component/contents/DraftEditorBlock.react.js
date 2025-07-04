@@ -11,30 +11,30 @@
 
 'use strict';
 
-import type {BlockNodeRecord} from 'BlockNodeRecord';
-import type ContentState from 'ContentState';
-import type {DraftDecoratorComponentProps} from 'DraftDecorator';
-import type {DraftDecoratorType} from 'DraftDecoratorType';
-import type {DraftInlineStyle} from 'DraftInlineStyle';
-import type SelectionState from 'SelectionState';
-import type {BidiDirection} from 'UnicodeBidiDirection';
+import type {BlockNodeRecord} from '../../model/immutable/BlockNodeRecord.js';
+import type ContentState from '../../model/immutable/ContentState.js';
+import type {DraftDecoratorComponentProps} from '../../model/decorators/DraftDecorator.js';
+import type {DraftDecoratorType} from '../../model/decorators/DraftDecoratorType.js';
+import type {DraftInlineStyle} from '../../model/immutable/DraftInlineStyle.js';
+import type SelectionState from '../../model/immutable/SelectionState.js';
+import type {BidiDirection} from 'fbjs/lib/UnicodeBidiDirection';
 import type {List} from 'immutable';
 
-const DraftEditorLeaf = require('DraftEditorLeaf.react');
-const DraftOffsetKey = require('DraftOffsetKey');
+const DraftEditorLeaf = require('./DraftEditorLeaf.react.js');
+const DraftOffsetKey = require('../selection/DraftOffsetKey.js');
 const React = require('React');
-const Scroll = require('Scroll');
-const Style = require('Style');
-const UnicodeBidi = require('UnicodeBidi');
-const UnicodeBidiDirection = require('UnicodeBidiDirection');
+const Scroll = require('fbjs/lib/Scroll');
+const Style = require('fbjs/lib/Style');
+const UnicodeBidi = require('fbjs/lib/UnicodeBidi');
+const UnicodeBidiDirection = require('fbjs/lib/UnicodeBidiDirection');
 
-const cx = require('cx');
-const getElementPosition = require('getElementPosition');
-const getScrollPosition = require('getScrollPosition');
-const getViewportDimensions = require('getViewportDimensions');
-const invariant = require('invariant');
-const isHTMLElement = require('isHTMLElement');
-const nullthrows = require('nullthrows');
+const cx = require('fbjs/lib/cx');
+const getElementPosition = require('fbjs/lib/getElementPosition');
+const getScrollPosition = require('fbjs/lib/getScrollPosition');
+const getViewportDimensions = require('fbjs/lib/getViewportDimensions');
+const invariant = require('fbjs/lib/invariant');
+const isHTMLElement = require('../utils/isHTMLElement.js');
+const nullthrows = require('fbjs/lib/nullthrows');
 
 const SCROLL_BUFFER = 10;
 

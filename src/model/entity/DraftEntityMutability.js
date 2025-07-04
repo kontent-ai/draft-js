@@ -11,7 +11,7 @@
 
 'use strict';
 
-const ComposedEntityMutability = require('ComposedEntityMutability');
+const ComposedEntityMutability = require('../../stubs/ComposedEntityMutability.js');
 
 /**
  * An enum representing the possible "mutability" options for an entity.

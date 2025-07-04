@@ -11,11 +11,11 @@
 
 'use strict';
 
-import type {DOMDerivedSelection} from 'DOMDerivedSelection';
-import type {SelectionObject} from 'DraftDOMTypes';
-import type EditorState from 'EditorState';
+import type {DOMDerivedSelection} from './DOMDerivedSelection.js';
+import type {SelectionObject} from '../utils/DraftDOMTypes.js';
+import type EditorState from '../../model/immutable/EditorState.js';
 
-const getDraftEditorSelectionWithNodes = require('getDraftEditorSelectionWithNodes');
+const getDraftEditorSelectionWithNodes = require('./getDraftEditorSelectionWithNodes.js');
 
 /**
  * Convert the current selection range to an anchor/focus pair of offset keys

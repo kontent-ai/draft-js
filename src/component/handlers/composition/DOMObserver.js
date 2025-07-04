@@ -11,15 +11,15 @@
 
 'use strict';
 
-const UserAgent = require('UserAgent');
-const DraftOffsetKey = require('DraftOffsetKey');
+const UserAgent = require('fbjs/lib/UserAgent');
+const DraftOffsetKey = require('../../selection/DraftOffsetKey.js');
 
-const findAncestorOffsetKey = require('findAncestorOffsetKey');
-const findAncestorWithOffsetKey = require('findAncestorWithOffsetKey');
-const getOffsetKeyFromNode = require('getOffsetKeyFromNode');
-const getWindowForNode = require('getWindowForNode');
+const findAncestorOffsetKey = require('../../selection/findAncestorOffsetKey.js');
+const findAncestorWithOffsetKey = require('../../selection/findAncestorWithOffsetKey.js');
+const getOffsetKeyFromNode = require('../../selection/getOffsetKeyFromNode.js');
+const getWindowForNode = require('../../utils/getWindowForNode.js');
 const Immutable = require('immutable');
-const invariant = require('invariant');
+const invariant = require('fbjs/lib/invariant');
 
 const {Map} = Immutable;
 

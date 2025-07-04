@@ -11,12 +11,12 @@
 
 'use strict';
 
-import type {DraftBlockRenderConfig} from 'DraftBlockRenderConfig';
-import type {CoreDraftBlockType} from 'DraftBlockType';
+import type {DraftBlockRenderConfig} from './DraftBlockRenderConfig.js';
+import type {CoreDraftBlockType} from '../constants/DraftBlockType.js';
 
 const React = require('React');
 
-const cx = require('cx');
+const cx = require('fbjs/lib/cx');
 const {Map} = require('immutable');
 
 type DefaultCoreDraftBlockRenderMap = Map<

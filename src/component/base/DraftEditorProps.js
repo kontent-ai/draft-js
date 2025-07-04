@@ -11,17 +11,17 @@
 
 'use strict';
 
-import type {BlockNodeRecord} from 'BlockNodeRecord';
-import type {DraftBlockRenderMap} from 'DraftBlockRenderMap';
-import type {DraftDragType} from 'DraftDragType';
-import type DraftEditor from 'DraftEditor.react';
-import type {DraftEditorCommand} from 'DraftEditorCommand';
-import type {DraftHandleValue} from 'DraftHandleValue';
-import type {DraftInlineStyle} from 'DraftInlineStyle';
-import type {DraftTextAlignment} from 'DraftTextAlignment';
-import type EditorState from 'EditorState';
-import type SelectionState from 'SelectionState';
-import type {BidiDirection} from 'UnicodeBidiDirection';
+import type {BlockNodeRecord} from '../../model/immutable/BlockNodeRecord.js';
+import type {DraftBlockRenderMap} from '../../model/immutable/DraftBlockRenderMap.js';
+import type {DraftDragType} from '../../model/constants/DraftDragType.js';
+import type DraftEditor from './DraftEditor.react.js';
+import type {DraftEditorCommand} from '../../model/constants/DraftEditorCommand.js';
+import type {DraftHandleValue} from '../../model/constants/DraftHandleValue.js';
+import type {DraftInlineStyle} from '../../model/immutable/DraftInlineStyle.js';
+import type {DraftTextAlignment} from './DraftTextAlignment.js';
+import type EditorState from '../../model/immutable/EditorState.js';
+import type SelectionState from '../../model/immutable/SelectionState.js';
+import type {BidiDirection} from 'fbjs/lib/UnicodeBidiDirection';
 
 export type DraftEditorProps = {
   /**

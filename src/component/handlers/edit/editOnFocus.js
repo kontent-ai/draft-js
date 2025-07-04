@@ -11,10 +11,10 @@
 
 'use strict';
 
-import type DraftEditor from 'DraftEditor.react';
+import type DraftEditor from '../../base/DraftEditor.react.js';
 
-const EditorState = require('EditorState');
-const UserAgent = require('UserAgent');
+const EditorState = require('../../../model/immutable/EditorState.js');
+const UserAgent = require('fbjs/lib/UserAgent');
 
 function editOnFocus(editor: DraftEditor, e: SyntheticFocusEvent<>): void {
   const editorState = editor._latestEditorState;

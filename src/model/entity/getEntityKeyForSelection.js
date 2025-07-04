@@ -11,11 +11,11 @@
 
 'use strict';
 
-import type ContentState from 'ContentState';
-import type {EntityMap} from 'EntityMap';
-import type SelectionState from 'SelectionState';
+import type ContentState from '../immutable/ContentState.js';
+import type {EntityMap} from '../immutable/EntityMap.js';
+import type SelectionState from '../immutable/SelectionState.js';
 
-const {notEmptyKey} = require('draftKeyUtils');
+const {notEmptyKey} = require('../../component/utils/draftKeyUtils.js');
 
 /**
  * Return the entity key that should be used when inserting text for the

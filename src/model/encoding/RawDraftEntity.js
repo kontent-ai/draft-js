@@ -11,8 +11,8 @@
 
 'use strict';
 
-import type {DraftEntityMutability} from 'DraftEntityMutability';
-import type {DraftEntityType} from 'DraftEntityType';
+import type {DraftEntityMutability} from '../entity/DraftEntityMutability.js';
+import type {DraftEntityType} from '../entity/DraftEntityType.js';
 
 /**
  * A plain object representation of an EntityInstance.
