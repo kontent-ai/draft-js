@@ -23,7 +23,13 @@ const isHTMLBRElement = require('isHTMLBRElement');
 const setDraftEditorSelection = require('setDraftEditorSelection')
   .setDraftEditorSelection;
 
-type CSSStyleObject = {[property: string]: string | number, ...};
+type CSSStyleObject = {
+  [property: string]: string | number,
+  className?: string,
+  tagName?: string,
+  attributes?: {[key: string]: string | boolean, ...},
+  ...
+};
 
 type CustomStyleMap = {[name: string]: CSSStyleObject, ...};
 type CustomStyleFn = (
@@ -168,20 +174,38 @@ class DraftEditorLeaf extends React.Component<Props> {
       }, {});
 
     let renderClassName;
+    let renderTagName = 'span';
+    let renderAttributes = {};
+    
     if (styleObj.className) {
       const {className, ...otherStyles} = styleObj;
       renderClassName = className;
       styleObj = otherStyles;
     }
+    
+    if (styleObj.tagName) {
+      const {tagName, ...otherStyles} = styleObj;
+      renderTagName = tagName;
+      styleObj = otherStyles;
+    }
+    
+    if (styleObj.attributes) {
+      const {attributes, ...otherStyles} = styleObj;
+      renderAttributes = attributes;
+      styleObj = otherStyles;
+    }
+
+    const Element = renderTagName;
 
     return (
-      <span
+      <Element
         data-offset-key={offsetKey}
         ref={ref => (this.leaf = ref)}
         className={renderClassName}
-        style={styleObj}>
+        style={styleObj}
+        {...renderAttributes}>
         <DraftEditorTextNode>{text}</DraftEditorTextNode>
-      </span>
+      </Element>
     );
   }
 }
