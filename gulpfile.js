@@ -24,7 +24,6 @@ var rename = require('gulp-rename');
 var gulpUtil = require('gulp-util');
 var StatsPlugin = require('stats-webpack-plugin');
 var through = require('through2');
-var UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 var webpackStream = require('webpack-stream');
 
 var paths = {
@@ -46,8 +45,8 @@ var babelOptsJS = {
     }),
   ],
   plugins: [
-    require('@babel/plugin-proposal-nullish-coalescing-operator'),
-    require('@babel/plugin-proposal-optional-chaining'),
+    require('@babel/plugin-transform-nullish-coalescing-operator'),
+    require('@babel/plugin-transform-optional-chaining'),
   ],
 };
 
@@ -59,8 +58,8 @@ var babelOptsFlow = {
     }),
   ],
   plugins: [
-    require('@babel/plugin-proposal-nullish-coalescing-operator'),
-    require('@babel/plugin-proposal-optional-chaining'),
+    require('@babel/plugin-transform-nullish-coalescing-operator'),
+    require('@babel/plugin-transform-optional-chaining'),
   ],
 };
 
@@ -101,14 +100,12 @@ var buildDist = function(opts) {
       libraryTarget: 'umd',
       library: 'Draft',
     },
+    mode: opts.debug ? 'development' : 'production',
     plugins: [
       new webpackStream.webpack.DefinePlugin({
         'process.env.NODE_ENV': JSON.stringify(
           opts.debug ? 'development' : 'production',
         ),
-      }),
-      new webpackStream.webpack.LoaderOptionsPlugin({
-        debug: opts.debug,
       }),
       new StatsPlugin(`../meta/bundle-size-stats/${opts.output}.json`, {
         chunkModules: true,
@@ -116,7 +113,9 @@ var buildDist = function(opts) {
     ],
   };
   if (!opts.debug) {
-    webpackOpts.plugins.push(new UglifyJsPlugin());
+    webpackOpts.optimization = {
+      minimize: true,
+    };
   }
   const wpStream = webpackStream(webpackOpts, null, function(err, stats) {
     if (err) {
@@ -268,6 +267,15 @@ gulp.task(
   gulp.series(function() {
     gulp.watch(paths.src, gulp.parallel('dist'));
   }),
+);
+
+gulp.task(
+  'build-only',
+  gulp.series(
+    'clean',
+    gulp.parallel('modules', 'flow'),
+    gulp.parallel('dist', 'dist:min'),
+  ),
 );
 
 gulp.task(

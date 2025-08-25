@@ -16,8 +16,8 @@ module.exports = {
     var options = {
       presets: [fbjsConfigurePreset({rewriteModules: {map: moduleMap}})],
       plugins: [
-        require('@babel/plugin-proposal-nullish-coalescing-operator'),
-        require('@babel/plugin-proposal-optional-chaining')
+        require('@babel/plugin-transform-nullish-coalescing-operator'),
+        require('@babel/plugin-transform-optional-chaining')
       ],
       filename: filename,
       retainLines: true,
