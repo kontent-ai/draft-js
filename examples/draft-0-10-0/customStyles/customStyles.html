@@ -27,10 +27,14 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
     <div class="docs">
       <h1>DraftJS Inline style customization test</h1>
       <p>This page showcases customizations of the DraftJS editor and scenarios for it's testing. It is also a documentation for the type of customizations made.</p>
-      <h2>Class name support for inline styles</h2>
-      <p>DraftJS editor supports natively only inline styles rendered directly to the editor leaf DOM nodes. With this customization <code>className</code> property can be added to the style object and it renders to the <code>class</code> attribute in the resulting HTML.</p>
-      <p>Add text and apply <strong>Leaf</strong> inline style from the toolbar. The style should be applied (Kontent.ai logo <span class="rte__inline-leaf rte__inline-leaf-programmatic" style="display: inline-block; text-decoration: underline;">leaf</span> design), there should be inline style <code>display: inline-block; text-decoration: underline;</code> and class names <code>rte__inline-leaf rte__inline-leaf-programmatic</code> rendered.</p>
-      <p>It should combine well with the <strong>Highlight</strong> inline style from the toolbar which should apply <span class="rte__highlight">highlight</span> and class name <code>rte__highlight</code> and mix properly with the other styles including <strong>LEAF</strong> like this: <span class="rte__inline-leaf rte__inline-leaf-programmatic" style="display: inline-block; text-decoration: underline;">Hello </span><span class="rte__inline-leaf rte__inline-leaf-programmatic rte__highlight" style="display: inline-block; text-decoration: underline;">world</span></p>
+      <h2>Enhanced inline style customization</h2>
+      <p>DraftJS editor supports natively only inline styles rendered directly to the editor leaf DOM nodes. With this customization, the style object can include <code>className</code>, <code>tagName</code>, and <code>attributes</code> properties to render semantic HTML elements with custom styling and accessibility features.</p>
+      
+      <p><strong>Class name support:</strong> Add text and apply <strong>Leaf</strong> inline style from the toolbar. The style should be applied (Kontent.ai logo <span class="rte__inline-leaf rte__inline-leaf-programmatic" style="display: inline-block; text-decoration: underline;">leaf</span> design), there should be inline style <code>display: inline-block; text-decoration: underline;</code> and class names <code>rte__inline-leaf rte__inline-leaf-programmatic</code> rendered.</p>
+      
+      <p><strong>TagName and attributes support:</strong> The <strong>Highlight</strong> style renders as <code>&lt;mark&gt;</code> with <code>title</code> attribute: <mark class="rte__highlight" title="Highlighted text for emphasis">important text</mark></p>
+      
+      <p>These features work together - the highlight combines semantic markup, CSS classes, and accessibility attributes. Try applying both styles and inspect the DOM to see the custom elements and attributes.</p>
       <h2>RTL short-circuit</h2>
       <p>We disabled the default handling of RTL detection in individual blocks for performance reasons. No need to test it here.</p>
       <h2><code>getIn</code> error</h2>
@@ -177,8 +181,11 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
         },
 
         HIGHLIGHT: {
+          tagName: 'mark',
+          attributes: {
+            title: 'Highlighted text for emphasis',
+          },
           className: 'rte__highlight',
-          display: 'inline-block',
         },
       };
 
