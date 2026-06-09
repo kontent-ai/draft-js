@@ -3,6 +3,7 @@ dist/
 lib/
 build/
 node_modules
+.pnpm-store/
 website/src/docs/
 npm-debug.log
 !website/static/
