@@ -33,15 +33,16 @@
   },
   "dependencies": {
     "fbjs": "^2.0.0",
-    "immutable": "~3.7.4",
     "object-assign": "^4.1.1"
   },
   "peerDependencies": {
+    "immutable": "^3.7.4",
     "react": ">=0.14.0",
     "react-dom": ">=0.14.0"
   },
   "devDependencies": {
     "@babel/core": "^7.11.0",
+    "immutable": "^3.7.4",
     "@babel/plugin-transform-nullish-coalescing-operator": "^7.18.0",
     "@babel/plugin-transform-optional-chaining": "^7.18.0",
     "alex": "^8.2.0",
